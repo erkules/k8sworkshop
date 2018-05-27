@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: servicer
+spec:
+  template:
+    metadata:
+      name: tagessjob
+    spec:
+      containers:
+      - name: curl
+        image: tutum/curl
+        command: 
+        - curl
+        - www
+      restartPolicy: Never
+
