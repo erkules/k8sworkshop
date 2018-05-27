@@ -6,6 +6,7 @@ spec:
   containers:
   - name:  writer
     image: busybox
+    imagePullPolicy: IfNotPresent
     command: 
     - sh 
     - -c 
@@ -15,6 +16,7 @@ spec:
       mountPath: /srv
   - name:  reader
     image: busybox
+    imagePullPolicy: IfNotPresent
     command:
     - tail
     - -f

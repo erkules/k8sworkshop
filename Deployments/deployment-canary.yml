@@ -23,4 +23,5 @@ spec:
         image: erkules/nginxhostname:testing
         ports:
         - containerPort: 80
+        imagePullPolicy: IfNotPresent
 

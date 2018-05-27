@@ -8,4 +8,5 @@ spec:
     image: erkules/nginxhostname:v2
     ports:
     - containerPort: 80
+    imagePullPolicy: IfNotPresent
 
