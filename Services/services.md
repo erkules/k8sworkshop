@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: www
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: www
+
