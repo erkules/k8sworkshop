@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: busyboxexporter
+spec:
+  ports:
+    - port: 8888
+  selector:
+    app: busyboxexporter
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: busyboxexporter
+data:
+  metrics: |-
+    #!/bin/ash
+    echo HTTP/1.1 200 OK
+    echo Content-Type: text/plain
+    echo
+    echo
+    echo erkan_queue_length $((RANDOM%10))
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busyboxeporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busyboxexporter
+  template:
+    metadata:
+      labels:
+        app: busyboxexporter
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port:   '8888'
+        prometheus.io/path:   '/cgi-bin/metrics'
+    spec:
+      containers:
+        - name: meinexporter
+          image: busybox
+          args:
+            - busybox
+            - httpd
+            - -f
+            - -p
+            - '8888'
+            - -h
+            - /www
+          volumeMounts:
+            - name: cgi-script
+              mountPath: /www/cgi-bin
+      volumes:
+        - name: cgi-script
+          configMap:
+            name: busyboxexporter
+            defaultMode: 0555
+
+
