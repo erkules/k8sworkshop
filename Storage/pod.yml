@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: storage
+spec:
+  containers:
+  - name: storage
+    image: alpine
+    command:
+    - sleep
+    - "5000"
+    volumeMounts:
+    - name: website
+      mountPath: /srv
+    imagePullPolicy: IfNotPresent
+  volumes:
+  - name: website
+    persistentVolumeClaim:
+      claimName: mio
+
