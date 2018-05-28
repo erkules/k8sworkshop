@@ -45,7 +45,7 @@ spec:
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: website
-          mountPath: /var/www
+          mountPath: /usr/share/nginx/html
         imagePullPolicy: IfNotPresent
       volumes:
       - name: website
