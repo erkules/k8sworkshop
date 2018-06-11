@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pong
+spec:
+  containers:
+  - name: pong
+    image: alpine
+    command:
+    - sleep
+    - "5000"
+

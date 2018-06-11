@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ping
+spec:
+  containers:
+  - name: ping
+    image: alpine
+    command:
+    - sleep
+    - "5000"
+
