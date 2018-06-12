@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wwwanti
+spec:
+  replicas: 2
+  minReadySeconds: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: www
+  template:
+    metadata:
+      name: www
+      labels:
+        app: www
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - www
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - name: image1
+        image: erkules/nginxhostname
+        ports:
+        - containerPort: 80
+        imagePullPolicy: IfNotPresent
+
