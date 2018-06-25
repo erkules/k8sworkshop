@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind:       Ingress
+metadata:
+  name: lalaal
+spec:
+  rules:
+  - host: hallo.welt
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName:  www
+          servicePort:  80
+
