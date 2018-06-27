@@ -1,0 +1,93 @@
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: alertmanager
+  namespace: monitoring
+spec:
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 3
+  serviceName: alertmanager-ha
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      name: alertmanager
+      labels:
+        app: alertmanager
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key:      app
+                operator: In
+                values:
+                -  alertmanager
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - name: alertmanager
+        image: prom/alertmanager:v0.9.1
+        args:
+          - -config.file=/etc/alertmanager/alertmanager.yml
+          - -storage.path=/alertmanager
+          - -mesh.listen-address=:6783
+          - -mesh.peer=alertmanager-0.alertmanager-ha
+          - -mesh.peer=alertmanager-1.alertmanager-ha
+          - -mesh.peer=alertmanager-2.alertmanager-ha
+        env:
+        - name:  https_proxy
+          value: http://internet.vxr.internal:80
+        ports:
+        - name: alertmanager
+          containerPort: 9093
+        - name: mesh
+          containerPort: 6783
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/alertmanager
+        - name: alertmanager
+          mountPath: /alertmanager
+      volumes:
+      - name: config-volume
+        configMap:
+          name: alertmanager-config
+      - name: alertmanager
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/path: '/metrics'
+    prometheus.io/port:  '9093'
+  labels:
+    name: alertmanager
+  name: alertmanager
+  namespace: monitoring
+spec:
+  selector:
+    app: alertmanager
+  ports:
+  - name: alertmanager
+    port: 9093
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: alertmanager
+  name: alertmanager-ha
+  namespace: monitoring
+spec:
+  clusterIP: None
+  selector:
+    app: alertmanager
+  ports:
+  - name: alertmanager
+    port: 9093

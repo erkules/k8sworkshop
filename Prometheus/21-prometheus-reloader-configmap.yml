@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-reloader
+  namespace: monitoring
+data:
+  run.sh:  |-
+    #!/bin/sh
+    while true
+    do
+    echo starting check
+    test -e /tmp/checked && OLD_CHECK=$(cat /tmp/checked)|| OLD_CHECK=0
+    sleep 60
+    NEW_CHECK==$(md5sum /etc/prometheus/*|md5sum -| cut -f 1 -d ' ')
+      if [ $NEW_CHECK != $OLD_CHECK ] 
+      then
+      echo reloading prometheus
+      curl -X POST localhost:9090/-/reload
+      echo $NEW_CHECK >/tmp/checked
+      fi
+    done

@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prometheus
+  namespace: monitoring
+type: Opaque
+data:
+  auth: ZGV2b3BzOiRhcHIxJC5BeW1RcjMwJG1MY2FyeHIzYXRraUEyZHB0WE8vRzAK
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: monitoring
+  annotations:
+#    ingress.kubernetes.io/auth-secret: prometheus
+#    ingress.kubernetes.io/auth-type: basic
+#    ingress.kubernetes.io/auth-realm: "prometheus"
+#    ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/force-ssl-redirect: "false"
+    ingress.kubernetes.io/ssl-redirect: "false"
+
+
+spec:
+  rules:
+  - host: prometheus.bello.nonprd.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prometheus
+          servicePort: 9090
+  - host: alertmanager.bello.nonprd.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: alertmanager
+          servicePort: 9093
+  - host: grafana.bello.nonprd.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: grafana
+          servicePort: 3000
+

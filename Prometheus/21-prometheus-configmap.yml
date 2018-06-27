@@ -1,0 +1,233 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval: 15s
+      external_labels: 
+        monitor: 'k8s-test-scraper'
+    rule_files:
+    - "/etc/prometheus/rules.yml"
+    scrape_configs:
+    - job_name: prometheus
+      scrape_interval: 5s
+      scrape_timeout: 5s
+      metrics_path: /metrics
+      scheme: http
+      static_configs:
+      - targets:
+        - localhost:9090
+    - job_name: alertmanager
+      scrape_interval: 5s
+      scrape_timeout: 5s
+      metrics_path: /metrics
+      scheme: http
+      static_configs:
+      - targets:
+        - alertmanager:9093
+    - job_name: 'kubelet'
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: kubernetes.default.svc:443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics
+    - job_name: 'kubernetes-cadvisor'
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: kubernetes.default.svc:443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+    - job_name: 'endpoints'
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+        action: replace
+        target_label: __scheme__
+        regex: (https?)
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        action: replace
+        target_label: __address__
+        regex: (.+)(?::\d+);(\d+)
+        replacement: $1:$2
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        action: replace
+        target_label: kubernetes_service
+    - job_name: 'kubernetes-pods' 
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: kubernetes_pod_name
+  rules.yml: |-
+    groups:
+    - name: generic.rules
+      rules:
+      - alert: ServiceDown
+        expr:  up == 0
+        for:   1m
+        annotations:
+          summary:     "Service {{ $labels.job }} on  {{ $labels.instance }} down"
+          description: "{{ $labels.instance }} or job {{ $labels.job }} has been down for more than 5m"
+        labels:
+          severity: pipapolopo
+    
+      - alert: ImAlive
+        expr:  vector(1)
+        for:   1m
+        annotations:
+          summary:     "Prometheus is alive"
+          title:       "Prometheus is alive"
+          text:        "Prometheus is alive"
+      - alert: FileSystemFull
+        expr:  1-node_filesystem_free{mountpoint="/rootfs"}/node_filesystem_size{mountpoint="/rootfs"} >0.8
+        for:   5m
+        annotations:
+          title:       "Filesystem is over 80% ( {{ $value }} )"
+          summary:     "Filesystem is over 80% ( {{ $value }} ) on node {{ $labels.instance }}"
+          text:        "Filesystem is over 80% ( {{ $value }} ) on node {{ $labels.instance }}"
+
+      - alert: FileSystemFullIn4h
+        expr:  predict_linear(node_filesystem_free{mountpoint="/rootfs"}[1h],4 * 3600) < 0
+        for:   5m
+        annotations:
+          title:       "Filesystem is full in at least 4h"
+          summary:     "Filesystem is full in at least 4h on node {{ $labels.instance }}"
+          text:        "Filesystem is full in at least 4h on node {{ $labels.instance }}"
+
+      - alert: FileSystemInodesFull
+        expr:  1-node_filesystem_files_free{mountpoint="/rootfs"}/node_filesystem_files{mountpoint="/rootfs"} >0.8
+        for:   5m
+        annotations:
+          title:       "Running low on Inodes"
+          summary:     "Running low on Inodes on node {{ $labels.instance }}"
+          text:        "Running low on Inodes on node {{ $labels.instance }}"
+      - record:  node_load5:divided_by_cpu:5m
+        expr:    node_load5/count(node_cpu{mode="idle"}) without (cpu,mode)
+      - alert: HighLoad5m
+        expr:  node_load5:divided_by_cpu:5m > 1
+        for:   5m
+        annotations:
+          title:       "High Load"
+          summary:     "High Load on node {{ $labels.instance }}"
+          text:        "High Load on node {{ $labels.instance }}"
+    - name: ./kubelet.rules
+      rules:
+      - alert: K8SNodeNotReady
+        expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          description: The Kubelet on {{ $labels.node }} has not checked in with the API,
+            or has set itself to NotReady, for more than an hour
+          summary: Node status is NotReady
+      - alert: K8SManyNodesNotReady
+        expr: count(kube_node_status_condition{condition="Ready",status="true"} == 0)
+          > 1 and (count(kube_node_status_condition{condition="Ready",status="true"} ==
+          0) / count(kube_node_status_condition{condition="Ready",status="true"})) > 0.2
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          description: '{{ $value }} Kubernetes nodes (more than 10% are in the NotReady
+            state).'
+          summary: Many Kubernetes nodes are Not Ready
+      - alert: K8SKubeletDown
+        expr: count(up{job="kubelet"} == 0) / count(up{job="kubelet"}) > 0.03
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          description: Prometheus failed to scrape {{ $value }}% of kubelets.
+          summary: Many Kubelets cannot be scraped
+      - alert: K8SKubeletDown
+        expr: absent(up{job="kubelet"} == 1) or count(up{job="kubelet"} == 0) / count(up{job="kubelet"})
+          > 0.1
+        for: 1h
+        labels:
+          severity: critical
+        annotations:
+          description: Prometheus failed to scrape {{ $value }}% of kubelets, or all Kubelets
+            have disappeared from service discovery.
+          summary: Many Kubelets cannot be scraped
+      - alert: K8SKubeletTooManyPods
+        expr: kubelet_running_pod_count > 100
+        labels:
+          severity: warning
+        annotations:
+          description: Kubelet {{$labels.instance}} is running {{$value}} pods, close
+            to the limit of 110
+          summary: Kubelet is close to pod limit
+  crystal.yml: |-
+    groups:
+    - name: crystal.rules
+      rules:
+      - alert: CertCheck
+        expr:  crystalmon_pxr_devops_cert_check < 100
+        for:   5m
+        annotations:
+          summary:     "Cert on Node {{ $labels.instance }} is valid {{ $value }} days"
+          description: "Cert on Node {{ $labels.instance }} is valid {{ $value }} days"
+        labels:
+          severity: pipapo
+     
