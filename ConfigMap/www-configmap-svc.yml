@@ -20,7 +20,7 @@ data:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: configmap
+  name: server
   labels:
     hallo: welt
 spec:
