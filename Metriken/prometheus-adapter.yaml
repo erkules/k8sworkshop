@@ -1,0 +1,327 @@
+---
+# Source: prometheus-adapter/templates/custom-metrics-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hallo-prometheus-adapter
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+data:
+  config.yaml: |
+    rules:
+    - seriesQuery: 'erkan_queue_length{app="busyboxexporter",kubernetes_namespace!="",kubernetes_pod_name!=""}'
+      resources:
+        overrides:
+          kubernetes_namespace: {resource: "namespace"}
+          kubernetes_pod_name: {resource: "pod"}
+      metricsQuery: 'sum(<<.Series>>) by (<<.GroupBy>>)'
+    - seriesQuery: '{__name__=~"^container_.*",container_name!="POD",namespace!="",pod_name!=""}'
+      seriesFilters: []
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod_name:
+            resource: pod
+      name:
+        matches: ^container_(.*)_seconds_total$
+        as: ""
+      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>,container_name!="POD"}[5m]))
+        by (<<.GroupBy>>)
+    - seriesQuery: '{__name__=~"^container_.*",container_name!="POD",namespace!="",pod_name!=""}'
+      seriesFilters:
+      - isNot: ^container_.*_seconds_total$
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod_name:
+            resource: pod
+      name:
+        matches: ^container_(.*)_total$
+        as: ""
+      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>,container_name!="POD"}[5m]))
+        by (<<.GroupBy>>)
+    - seriesQuery: '{__name__=~"^container_.*",container_name!="POD",namespace!="",pod_name!=""}'
+      seriesFilters:
+      - isNot: ^container_.*_total$
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod_name:
+            resource: pod
+      name:
+        matches: ^container_(.*)$
+        as: ""
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,container_name!="POD"}) by (<<.GroupBy>>)
+    - seriesQuery: '{namespace!="",__name__!~"^container_.*"}'
+      seriesFilters:
+      - isNot: .*_total$
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: ""
+        as: ""
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+    - seriesQuery: '{namespace!="",__name__!~"^container_.*"}'
+      seriesFilters:
+      - isNot: .*_seconds_total
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: ^(.*)_total$
+        as: ""
+      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>}[5m])) by (<<.GroupBy>>)
+    - seriesQuery: '{namespace!="",__name__!~"^container_.*"}'
+      seriesFilters: []
+      resources:
+        template: <<.Resource>>
+      name:
+        matches: ^(.*)_seconds_total$
+        as: ""
+      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>}[5m])) by (<<.GroupBy>>)
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiserver-service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: hallo-prometheus-adapter
+---
+# Source: prometheus-adapter/templates/custom-metrics-cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: prometheus-adapter-server-resources
+rules:
+- apiGroups:
+  - custom.metrics.k8s.io
+  resources: ["*"]
+  verbs: ["*"]
+---
+# Source: prometheus-adapter/templates/custom-metrics-resource-reader-cluster-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: prometheus-adapter-resource-reader
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - pods
+  - services
+  - configmaps
+  verbs:
+  - get
+  - list
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiserver-auth-delegator-cluster-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: prometheus-adapter:system:auth-delegator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: hallo-prometheus-adapter
+  namespace: "default"
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiserver-resource-reader-cluster-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: prometheus-adapter-resource-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-adapter-resource-reader
+subjects:
+- kind: ServiceAccount
+  name: hallo-prometheus-adapter
+  namespace: "default"
+---
+# Source: prometheus-adapter/templates/hpa-custom-metrics-cluster-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: prometheus-adapter-hpa-controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-adapter-server-resources
+subjects:
+- kind: ServiceAccount
+  name: hallo-prometheus-adapter
+  namespace: "default"
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiserver-auth-reader-role-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: prometheus-adapter-auth-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+- kind: ServiceAccount
+  name: hallo-prometheus-adapter
+  namespace: "default"
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiserver-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    {}
+    
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: hallo-prometheus-adapter
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: https
+  selector:
+    app: prometheus-adapter
+    release: hallo
+  type: ClusterIP
+
+
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiserver-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: hallo-prometheus-adapter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-adapter
+      release: hallo
+  template:
+    metadata:
+      labels:
+        app: prometheus-adapter
+        chart: prometheus-adapter-v0.2.0
+        release: hallo
+        heritage: Tiller
+      name: prometheus-adapter
+      annotations:
+        checksum/config: 9755a549d4f0dd8692137e302d63a1b3b112bfef8b7c181b4d497a9be3c80aae
+    spec:
+      serviceAccountName: hallo-prometheus-adapter
+      containers:
+      - name: prometheus-adapter
+        image: "directxman12/k8s-prometheus-adapter-amd64:v0.2.1"
+        imagePullPolicy: IfNotPresent
+        args:
+        - /adapter
+        - --secure-port=6443
+        - --cert-dir=/tmp/cert
+        - --logtostderr=true
+        - --prometheus-url=http://prometheus.monitoring:9090
+        - --metrics-relist-interval=30s
+        - --v=4
+        - --config=/etc/adapter/config.yaml
+        ports:
+        - containerPort: 6443
+          name: https
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 30
+        volumeMounts:
+        - mountPath: /etc/adapter/
+          name: config
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: hallo-prometheus-adapter
+
+---
+# Source: prometheus-adapter/templates/custom-metrics-apiservice.yaml
+apiVersion: apiregistration.k8s.io/v1beta1
+kind: APIService
+metadata:
+  labels:
+    app: prometheus-adapter
+    chart: prometheus-adapter-v0.2.0
+    release: hallo
+    heritage: Tiller
+  name: v1beta1.custom.metrics.k8s.io
+spec:
+  service:
+    name: hallo-prometheus-adapter
+    namespace: "default"
+  
+  group: custom.metrics.k8s.io
+  version: v1beta1
+  insecureSkipTLSVerify: true
+  groupPriorityMinimum: 100
+  versionPriority: 100
+
+---
+# Source: prometheus-adapter/templates/secret.yaml
+
