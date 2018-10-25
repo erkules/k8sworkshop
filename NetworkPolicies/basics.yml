@@ -3,7 +3,7 @@ kind: Namespace
 metadata:
   name: netz
   labels:
-    farbe: blau
+    name: netzname
 ---
 
 apiVersion: apps/v1
