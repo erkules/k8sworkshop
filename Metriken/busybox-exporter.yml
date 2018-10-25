@@ -19,13 +19,13 @@ data:
     echo Content-Type: text/plain
     echo
     echo
-    echo erkan_queue_length $((RANDOM%10))
+    echo erkan_queue_length $((5+RANDOM%10))
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: busyboxeporter
+  name: busyboxexporter
 spec:
   replicas: 1
   selector:
