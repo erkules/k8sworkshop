@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wwwnodeaffiniti
+spec:
+  replicas: 2
+  minReadySeconds: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: www
+  template:
+    metadata:
+      name: www
+      labels:
+        app: www
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nodelabel
+                operator: In
+                values:
+                - red
+      containers:
+      - name: image1
+        image: erkules/nginxhostname
+        ports:
+        - containerPort: 80
+        imagePullPolicy: IfNotPresent
+
