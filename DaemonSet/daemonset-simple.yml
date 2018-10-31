@@ -10,5 +10,5 @@ spec:
         app: wwwds
     spec:
       containers:
-      - image:  erkules/nginxhostanem
+      - image:  erkules/nginxhostname
         name: www
