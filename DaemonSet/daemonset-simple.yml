@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: wwwds
+spec:
+  template:
+    metadata:
+      name: wwwds
+      labels:
+        app: wwwds
+    spec:
+      containers:
+      - image:  erkules/nginxhostanem
+        name: www
