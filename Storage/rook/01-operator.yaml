@@ -18,6 +18,53 @@ spec:
     - rcc
   scope: Namespaced
   version: v1beta1
+  validation:
+    openAPIV3Schema:
+      properties:
+        spec:
+          properties:
+            cephVersion:
+              properties:
+                allowUnsupported:
+                  type: boolean
+                image:
+                  type: string
+                name:
+                  pattern: ^(luminous|mimic|nautilus)$
+                  type: string
+            dashboard:
+              properties:
+                enabled:
+                  type: boolean
+                urlPrefix:
+                  type: string
+            dataDirHostPath:
+              pattern: ^/(\S+)
+              type: string
+            mon:
+              properties:
+                allowMultiplePerNode:
+                  type: boolean
+                count:
+                  maximum: 9
+                  minimum: 1
+                  type: integer
+              required:
+              - count
+            network:
+              properties:
+                hostNetwork:
+                  type: boolean
+            storage:
+              properties:
+                nodes:
+                  items: {}
+                  type: array
+                useAllDevices: {}
+                useAllNodes:
+                  type: boolean
+          required:
+          - mon
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
@@ -97,6 +144,7 @@ rules:
   resources:
   - secrets
   - pods
+  - pods/log
   - services
   - configmaps
   verbs:
@@ -310,6 +358,12 @@ spec:
         # Set the path where the Rook agent can find the flex volumes
         # - name: FLEXVOLUME_DIR_PATH
         #  value: "<PathToFlexVolumes>"
+        # Set the path where kernel modules can be found
+        # - name: LIB_MODULES_DIR_PATH
+        #  value: "<PathToLibModules>"
+        # Mount any extra directories into the agent container
+        # - name: AGENT_MOUNTS
+        #  value: "somemount=/host/path:/container/path,someothermount=/host/path2:/container/path2"
         # Rook Discover toleration. Will tolerate all taints with all keys.
         # Choose between NoSchedule, PreferNoSchedule and NoExecute:
         # - name: DISCOVER_TOLERATION
@@ -333,6 +387,9 @@ spec:
         # current mon with a new mon (useful for compensating flapping network).
         - name: ROOK_MON_OUT_TIMEOUT
           value: "300s"
+        # The duration between discovering devices in the rook-discover daemonset.
+        - name: ROOK_DISCOVER_DEVICES_INTERVAL
+          value: "60m"
         # Whether to start pods as privileged that mount a host path, which includes the Ceph mon and osd pods.
         # This is necessary to workaround the anyuid issues when running on OpenShift.
         # For more details see https://github.com/rook/rook/issues/1314#issuecomment-355799641
