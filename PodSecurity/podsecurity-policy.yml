@@ -1,0 +1,25 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: erkan
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:     
+    - ALL
+  DefaultAddCapabilities:      
+  volumes:     
+    - 'configMap'
+    - 'secret'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC:     false
+  hostPID:     false
+  runAsUser:  
+    rule: 'MustRunAsNonRoot'
+  seLinux:                 
+    rule: 'RunAsAny'                       
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'

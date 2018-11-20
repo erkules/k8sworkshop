@@ -1,0 +1,32 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: erkan
+rules:
+- apiGroups:
+  - extensions
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+  resourceNames:
+  - erkan
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: 
+  name: erkan-psp
+  namespace: erkan
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: erkan
+- kind: User
+  name: erkan
+  namespace: erkan
+roleRef:
+  kind: ClusterRole
+  name: erkan
+  apiGroup: rbac.authorization.k8s.io
+
