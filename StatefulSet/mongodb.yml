@@ -28,22 +28,22 @@ data:
     done
     echo "connected to local."
 
-    HOST=mongo-0.mongo:27017
+    MASTER=mongo-0.mongo:27017
 
-    until /usr/bin/mongo --host=${HOST} --eval 'printjson(db.serverStatus())'; do
+    until /usr/bin/mongo --host=${MASTER} --eval 'printjson(db.serverStatus())'; do
       echo "connecting to remote mongo..."
       sleep 2
     done
     echo "connected to remote."
 
     if [[ "${HOSTNAME}" != 'mongo-0' ]]; then
-      until /usr/bin/mongo --host=${HOST} --eval="printjson(rs.status())" \
+      until /usr/bin/mongo --host=${MASTER} --eval="printjson(rs.status())" \
             | grep -v "no replset config has been received"; do
         echo "waiting for replication set initialization"
         sleep 2
       done
       echo "adding self to mongo-0"
-      /usr/bin/mongo --host=${HOST} \
+      /usr/bin/mongo --host=${MASTER} \
          --eval="printjson(rs.add('${HOSTNAME}.mongo'))"
     fi
 
