@@ -39,7 +39,7 @@ spec:
                 -  prometheus
             topologyKey: kubernetes.io/hostname
       containers:
-      - image: prom/prometheus:v2.0.0
+      - image: prom/prometheus:v2.5.0
         name: prometheus
         args:
         - --config.file=/etc/prometheus/prometheus.yml

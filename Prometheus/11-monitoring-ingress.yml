@@ -25,21 +25,21 @@ metadata:
 
 spec:
   rules:
-  - host: prometheus.bello.nonprd.local
+  - host: prometheus.erkmerk.de
     http:
       paths:
       - path: /
         backend:
           serviceName: prometheus
           servicePort: 9090
-  - host: alertmanager.bello.nonprd.local
+  - host: alertmanager.erkmerk.de
     http:
       paths:
       - path: /
         backend:
           serviceName: alertmanager
           servicePort: 9093
-  - host: grafana.bello.nonprd.local
+  - host: grafana.erkmerk.de
     http:
       paths:
       - path: /

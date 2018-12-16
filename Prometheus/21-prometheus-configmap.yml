@@ -118,6 +118,13 @@ data:
       - source_labels: [__meta_kubernetes_pod_name]
         action: replace
         target_label: kubernetes_pod_name
+    alerting:
+      alertmanagers:
+      - static_configs:
+        - targets:
+          - "alertmanager-0.alertmanager-ha:9093"
+          - "alertmanager-1.alertmanager-ha:9093"
+          - "alertmanager-2.alertmanager-ha:9093"
   rules.yml: |-
     groups:
     - name: generic.rules

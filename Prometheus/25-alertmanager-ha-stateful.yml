@@ -31,14 +31,14 @@ spec:
             topologyKey: kubernetes.io/hostname
       containers:
       - name: alertmanager
-        image: prom/alertmanager:v0.9.1
+        image: prom/alertmanager:v0.15.3
         args:
-          - -config.file=/etc/alertmanager/alertmanager.yml
-          - -storage.path=/alertmanager
-          - -mesh.listen-address=:6783
-          - -mesh.peer=alertmanager-0.alertmanager-ha
-          - -mesh.peer=alertmanager-1.alertmanager-ha
-          - -mesh.peer=alertmanager-2.alertmanager-ha
+          - --config.file=/etc/alertmanager/alertmanager.yml
+          - --storage.path=/alertmanager
+          - --cluster.listen-address=:6783
+          - --cluster.peer=alertmanager-0.alertmanager-ha:6783
+          - --cluster.peer=alertmanager-1.alertmanager-ha:6783
+          - --cluster.peer=alertmanager-2.alertmanager-ha:6783
         env:
         - name:  https_proxy
           value: http://internet.vxr.internal:80
