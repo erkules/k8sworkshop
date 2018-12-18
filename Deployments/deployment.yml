@@ -3,12 +3,12 @@ kind: Deployment
 metadata:
   name: www
 spec:
-  replicas: 4
-  minReadySeconds: 4
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
+  replicas: 4
+  minReadySeconds: 4
   selector:
     matchLabels:
       app: www
@@ -21,6 +21,3 @@ spec:
       containers:
       - name: image1
         image: erkules/nginxhostname
-        ports:
-        - containerPort: 80
-        imagePullPolicy: IfNotPresent
