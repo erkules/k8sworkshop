@@ -3,6 +3,8 @@ kind: DaemonSet
 metadata:
   name: wwwds
 spec:
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       name: wwwds
@@ -14,5 +16,5 @@ spec:
         operator: Exists
         effect: NoSchedule
       containers:
-      - image:  erkules/nginxhostname
+      - image:  erkules/nginxhostname:v2
         name: www
