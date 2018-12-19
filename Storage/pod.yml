@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: storage
 spec:
+  nodeSelector:
+    kubernetes.io/hostname: erkan2
   containers:
   - name: storage
     image: alpine
@@ -13,6 +15,7 @@ spec:
     - name: website
       mountPath: /srv
     imagePullPolicy: IfNotPresent
+  terminationGracePeriodSeconds: 5
   volumes:
   - name: website
     persistentVolumeClaim:

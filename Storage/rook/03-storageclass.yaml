@@ -1,30 +1,29 @@
-apiVersion: ceph.rook.io/v1beta1
-kind: Pool
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
 metadata:
   name: replicapool
   namespace: rook-ceph
 spec:
   replicated:
     size: 1
-  # For an erasure-coded pool, comment out the replication size above and uncomment the following settings.
-  # Make sure you have enough OSDs to support the replica size or erasure code chunks.
-  #erasureCoded:
-  #  dataChunks: 2
-  #  codingChunks: 1
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-   name: storageblau
+   name: rook-ceph-block
    annotations:
      storageclass.kubernetes.io/is-default-class: "true"
 provisioner: ceph.rook.io/block
 parameters:
-  pool: replicapool
+  blockPool: replicapool
   # Specify the namespace of the rook cluster from which to create volumes.
   # If not specified, it will use `rook` as the default namespace of the cluster.
   # This is also the namespace where the cluster will be
   clusterNamespace: rook-ceph
   # Specify the filesystem type of the volume. If not specified, it will use `ext4`.
-  # fstype: ext4
-
+  fstype: xfs
+  # (Optional) Specify an existing Ceph user that will be used for mounting storage with this StorageClass.
+  #mountUser: user1
+  # (Optional) Specify an existing Kubernetes secret name containing just one key holding the Ceph user secret.
+  # The secret must exist in each namespace(s) where the storage will be consumed.
+  #mountSecret: ceph-user1-secret
