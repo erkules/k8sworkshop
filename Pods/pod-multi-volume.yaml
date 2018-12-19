@@ -16,7 +16,6 @@ spec:
       mountPath: /srv
   - name:  reader
     image: busybox
-    imagePullPolicy: IfNotPresent
     command:
     - tail
     - -f

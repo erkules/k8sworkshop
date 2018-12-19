@@ -30,7 +30,4 @@ spec:
       containers:
       - name: image1
         image: erkules/nginxhostname
-        ports:
-        - containerPort: 80
-        imagePullPolicy: IfNotPresent
 
