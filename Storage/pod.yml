@@ -3,8 +3,8 @@ kind: Pod
 metadata:
   name: storage
 spec:
-  nodeSelector:
-    kubernetes.io/hostname: erkan2
+  #nodeSelector:
+  #  kubernetes.io/hostname: <hostname>
   containers:
   - name: storage
     image: alpine
