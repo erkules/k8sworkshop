@@ -32,12 +32,11 @@ spec:
         fsGroup: 472
       containers:
       - image: grafana/grafana:5.4.2
-        command:
-          - sleep
-          - "5000"
         name: grafana-core
+        #command:
+        #  - sleep
+        #  - "5000"
         imagePullPolicy: IfNotPresent
-        # env:
         resources:
           # keep request = limit to keep this container in guaranteed class
           limits:
@@ -46,12 +45,12 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
-        env:
-          # The following env variables set up basic auth twith the default admin user and admin password.
-          - name:  GF_SECURITY_ADMIN_PASSWORD
-            value: admin
-          - name:  PROMETHEUS_ENDPOINT
-            value: http://prometheus:9090
+            #            #env:
+            #          # #env:The following env variables set up basic auth twith the default admin user and admin password.
+            #          - #env:name:  GF_SECURITY_ADMIN_PASSWORD
+            #            #env:value: admin
+            #          - #env:name:  PROMETHEUS_ENDPOINT
+            #            #env:value: http://prometheus:9090
           #readinessProbe:
           #httpGet:
           #path: /login
@@ -60,7 +59,7 @@ spec:
           #timeoutSeconds: 1
         volumeMounts:
         - name: grafana-persistent-storage
-          mountPath: /var
+          mountPath: /var/lib/grafana
       volumes:
       - name: grafana-persistent-storage
         emptyDir: {}
