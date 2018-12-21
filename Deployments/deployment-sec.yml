@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wwwsec
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 10
+  selector:
+    matchLabels:
+      app: www
+  template:
+    metadata:
+      name: www
+      labels:
+        app: www
+    spec:
+      containers:
+      - name: image1
+        image: erkules/nginxhostname:v2
+        securityContext:
+          runAsUser: 1000
+        command:
+          - sleep 
+          - "5000"
