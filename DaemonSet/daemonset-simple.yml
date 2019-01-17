@@ -11,10 +11,10 @@ spec:
       labels:
         app: wwwds
     spec:
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
+      #tolerations:
+      #- key: node-role.kubernetes.io/master
+      #  operator: Exists
+      #  effect: NoSchedule
       containers:
       - image:  erkules/nginxhostname:v2
         name: www
