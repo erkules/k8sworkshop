@@ -79,7 +79,7 @@ spec:
             memory: 5Mi
           limits:
             cpu: 10m
-            memory: 10Mi
+            memory: 20Mi
       volumes:
       - emptyDir: {}
         name: data
