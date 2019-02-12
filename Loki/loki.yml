@@ -1,0 +1,457 @@
+---
+# Source: loki/templates/loki/podsecuritypolicy.yaml
+
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: release-name-loki
+  labels:
+    app: loki
+    chart: loki-0.0.1
+    heritage: Tiller
+    release: release-name
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: false
+---
+# Source: loki/templates/promtail/podsecuritypolicy.yaml
+
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: release-name-promtail
+  labels:
+    app: promtail
+    chart: loki-0.0.1
+    heritage: Tiller
+    release: release-name
+spec:
+  privileged: true
+  allowPrivilegeEscalation: true
+  volumes:
+    - 'secret'
+    - 'configMap'
+    - 'hostPath'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: false
+---
+# Source: loki/templates/loki/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-loki
+  labels:
+    app: loki
+    chart: loki-0.0.1
+    release: release-name
+    heritage: Tiller
+data:
+  loki.yaml: |
+    auth_enabled: false
+
+    server:
+      http_listen_port: 3100
+
+    limits_config:
+      enforce_metric_name: false
+
+    ingester:
+      lifecycler:
+        ring:
+          store: inmemory
+          replication_factor: 1
+      chunk_idle_period: 15m
+    schema_config:
+      configs:
+      - from: 0
+        store: boltdb
+        object_store: filesystem
+        schema: v9
+        index:
+          prefix: index_
+          period: 168h
+    storage_config:
+      boltdb:
+        directory: /data/loki/index
+      filesystem:
+        directory: /data/loki/chunks
+---
+# Source: loki/templates/promtail/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-promtail
+  labels:
+    app: promtail
+    chart: loki-0.0.1
+    release: release-name
+    heritage: Tiller
+data:
+  promtail.yaml: |
+    scrape_configs:
+      - job_name: kubernetes-pods
+        kubernetes_sd_configs:
+        - role: pod
+        relabel_configs:
+        - source_labels:
+          - __meta_kubernetes_pod_node_name
+          target_label: __host__
+        - action: drop
+          regex: ^$
+          source_labels:
+          - __meta_kubernetes_pod_label_name
+        - action: replace
+          replacement: $1
+          separator: /
+          source_labels:
+          - __meta_kubernetes_namespace
+          - __meta_kubernetes_pod_label_name
+          target_label: job
+        - action: replace
+          source_labels:
+          - __meta_kubernetes_namespace
+          target_label: namespace
+        - action: replace
+          source_labels:
+          - __meta_kubernetes_pod_name
+          target_label: instance
+        - action: replace
+          source_labels:
+          - __meta_kubernetes_pod_container_name
+          target_label: container_name
+        - action: labelmap
+          regex: __meta_kubernetes_pod_label_(.+)
+        - replacement: /var/log/pods/$1/*.log
+          separator: /
+          source_labels:
+          - __meta_kubernetes_pod_uid
+          - __meta_kubernetes_pod_container_name
+          target_label: __path__
+      - job_name: kubernetes-pods-app
+        kubernetes_sd_configs:
+        - role: pod
+        relabel_configs:
+        - source_labels:
+          - __meta_kubernetes_pod_node_name
+          target_label: __host__
+        - action: drop
+          regex: ^$
+          source_labels:
+          - __meta_kubernetes_pod_label_app
+        - action: drop
+          regex: .+
+          source_labels:
+          - __meta_kubernetes_pod_label_name
+        - action: replace
+          replacement: $1
+          separator: /
+          source_labels:
+          - __meta_kubernetes_namespace
+          - __meta_kubernetes_pod_label_app
+          target_label: job
+        - action: replace
+          source_labels:
+          - __meta_kubernetes_namespace
+          target_label: namespace
+        - action: replace
+          source_labels:
+          - __meta_kubernetes_pod_name
+          target_label: instance
+        - action: replace
+          source_labels:
+          - __meta_kubernetes_pod_container_name
+          target_label: container_name
+        - action: labelmap
+          regex: __meta_kubernetes_pod_label_(.+)
+        - replacement: /var/log/pods/$1/*.log
+          separator: /
+          source_labels:
+          - __meta_kubernetes_pod_uid
+          - __meta_kubernetes_pod_container_name
+          target_label: __path__
+---
+# Source: loki/templates/loki/serviceaccount.yaml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: loki
+    chart: loki-0.0.1
+    heritage: Tiller
+    release: release-name
+  name: release-name-loki
+---
+# Source: loki/templates/promtail/clusterrole.yaml
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app: promtail
+    chart: loki-0.0.1
+    release: release-name
+    heritage: Tiller
+  name: release-name-promtail-clusterrole
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources:
+  - nodes
+  - nodes/proxy
+  - services
+  - endpoints
+  - pods
+  verbs: ["get", "watch", "list"]
+---
+# Source: loki/templates/promtail/clusterrolebinding.yaml
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: release-name-promtail-clusterrolebinding
+  labels:
+    app: promtail
+    chart: loki-0.0.1
+    release: release-name
+    heritage: Tiller
+subjects:
+  - kind: ServiceAccount
+    name: release-name-loki
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: release-name-promtail-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: loki/templates/loki/role.yaml
+
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: release-name-loki
+  labels:
+    app: loki
+    chart: loki-0.0.1
+    heritage: Tiller
+    release: release-name
+rules:
+- apiGroups:      ['extensions']
+  resources:      ['podsecuritypolicies']
+  verbs:          ['use']
+  resourceNames:  [release-name-loki]
+---
+# Source: loki/templates/promtail/role.yaml
+
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  name: release-name-promtail
+  labels:
+    app: promtail
+    chart: loki-0.0.1
+    heritage: Tiller
+    release: release-name
+rules:
+- apiGroups:      ['extensions']
+  resources:      ['podsecuritypolicies']
+  verbs:          ['use']
+  resourceNames:  [release-name-promtail]
+---
+# Source: loki/templates/loki/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: release-name-loki
+  labels:
+    app: loki
+    chart: loki-0.0.1
+    heritage: Tiller
+    release: release-name
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: release-name-loki
+subjects:
+- kind: ServiceAccount
+  name: release-name-loki
+---
+# Source: loki/templates/promtail/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: release-name-promtail
+  labels:
+    app: promtail
+    chart: loki-0.0.1
+    heritage: Tiller
+    release: release-name
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: release-name-promtail
+subjects:
+- kind: ServiceAccount
+  name: release-name-loki
+---
+# Source: loki/templates/loki/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-loki
+  labels:
+    app: loki
+    chart: loki-0.0.1
+    release: release-name
+    heritage: Tiller
+spec:
+  ports:
+    - name: loki
+      port: 3100
+      protocol: TCP
+      targetPort: 3100
+  selector:
+    app: loki
+    release: release-name
+---
+# Source: loki/templates/promtail/daemonset.yaml
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: release-name-promtail
+  labels:
+    app: promtail
+    chart: loki-0.0.1
+    release: release-name
+    heritage: Tiller
+spec:
+  selector:
+    matchLabels:
+      app: promtail
+      release: release-name
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: promtail
+        release: release-name
+    spec:
+      serviceAccountName: release-name-loki
+      containers:
+        - name: loki
+          image: "grafana/promtail:master"
+          imagePullPolicy: IfNotPresent
+          args:
+            - "-config.file=/etc/promtail/promtail.yaml"
+            - "-client.url=http://release-name-loki:3100/api/prom/push"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/promtail
+            - name: varlog
+              mountPath: /var/log
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+          env:
+          - name: HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          ports:
+            - containerPort: 80
+              name: http-metrics
+          securityContext:
+            privileged: true
+            runAsUser: 0
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+        
+      volumes:
+        - name: config
+          configMap:
+            name: release-name-promtail
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
+
+---
+# Source: loki/templates/loki/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: release-name-loki
+  labels:
+    app: loki
+    chart: loki-0.0.1
+    release: release-name
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loki
+      release: release-name
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: loki
+        release: release-name
+    spec:
+      serviceAccountName: release-name-loki
+      containers:
+        - name: loki
+          image: "grafana/loki:master"
+          imagePullPolicy: IfNotPresent
+          args:
+            - "-config.file=/etc/loki/loki.yaml"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/loki
+            - name: storage
+              mountPath: "/data"
+              subPath: 
+          ports:
+            - name: loki
+              containerPort: 3100
+              protocol: TCP
+      volumes:
+        - name: config
+          configMap:
+            name: release-name-loki
+        - name: storage
+          emptyDir: {}
+---
+# Source: loki/templates/loki/pvc.yaml
+
