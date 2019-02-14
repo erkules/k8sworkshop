@@ -4,7 +4,7 @@ metadata:
   name: www
   labels:
     kostenstelle: ab6
-    service:      www
+    dienst:      www
 spec:
   containers:
   - name: meinserver
