@@ -10,9 +10,10 @@ spec:
     - containerPort: 80
     imagePullPolicy: IfNotPresent
     livenessProbe:
-      httpGet:
-        path: /
-        port: 80
+      exec:
+        command:
+        - cat 
+        - /etc/issue
       timeoutSeconds: 1
       initialDelaySeconds: 5
 
