@@ -31,7 +31,7 @@ spec:
       securityContext:
         fsGroup: 472
       containers:
-      - image: grafana/grafana:5.4.2
+      - image: grafana/grafana:master
         name: grafana-core
         #command:
         #  - sleep
