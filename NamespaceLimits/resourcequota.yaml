@@ -10,10 +10,10 @@ metadata:
   namespace: donquota
 spec:
   hard:
-    pods: 2
+    pods: 4
     configmaps: 5
     services: 2
-    count/deployments.extensions: 2
+    count/deployments.apps: 2
     limits.cpu: 1
     limits.memory: 1Gi
     requests.cpu: 1
