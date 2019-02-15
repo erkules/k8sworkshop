@@ -5,14 +5,15 @@ metadata:
   namespace: donquota
 spec:
   limits:
-  - max:
+  - type: Pod 
+    max:
       cpu: "2" 
       memory: 1Gi 
     min:
       cpu: 200m
       memory: 6Mi 
-    type: Pod 
-  - default:
+  - type: Container
+    default:
       cpu: 300m
       memory: 200Mi
     defaultRequest:
@@ -24,5 +25,4 @@ spec:
     min:
       cpu: 100m
       memory: 3Mi 
-    type: Container
 

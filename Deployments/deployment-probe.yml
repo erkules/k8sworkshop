@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploymentprobe
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: internal
+  template:
+    metadata:
+      name: www
+      labels:
+        app: internal
+    spec:
+      containers:
+      - name: image1
+        image: erkules/nginxhostname
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /etc/issue
