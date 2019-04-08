@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pidns
+spec:
+  shareProcessNamespace: true
+  containers:
+  - name:  writer
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    command: 
+    - sh 
+    - -c 
+    - "while true; do date >> /srv/log ; sleep 1 ; done "
+    volumeMounts:
+    - name:      gemeinsam
+      mountPath: /srv
+  - name:  reader
+    image: busybox
+    command:
+    - tail
+    - -f
+    - /srv/log
+    volumeMounts:
+    - name:      gemeinsam
+      mountPath: /srv
+  volumes:
+  - name: gemeinsam
+    emptyDir: {}
+
