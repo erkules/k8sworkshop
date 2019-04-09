@@ -25,21 +25,21 @@ metadata:
 
 spec:
   rules:
-  - host: prometheus.erkmerk.de
+  - host: prometheus.erkan.erkmerk.de
     http:
       paths:
       - path: /
         backend:
           serviceName: prometheus
           servicePort: 9090
-  - host: alertmanager.erkmerk.de
+  - host: alertmanager.erkan.erkmerk.de
     http:
       paths:
       - path: /
         backend:
           serviceName: alertmanager
           servicePort: 9093
-  - host: grafana.erkmerk.de
+  - host: grafana.erkan.erkmerk.de
     http:
       paths:
       - path: /
