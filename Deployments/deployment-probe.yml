@@ -7,8 +7,9 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-  replicas: 4
-  minReadySeconds: 4
+      maxSurge: 0
+  replicas: 2
+  minReadySeconds: 10
   selector:
     matchLabels:
       app: internal
@@ -21,8 +22,8 @@ spec:
       containers:
       - name: image1
         image: erkules/nginxhostname
-        readinessProbe:
-          exec:
-            command:
-            - cat
-            - /etc/issue
+        #readinessProbe:
+        #  exec:
+        #    command:
+        #    - cat
+        #    - /etc/issue
