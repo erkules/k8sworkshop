@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 1
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      name: mysql
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: datenbank
+        image: mariadb
+        volumeMounts:
+        - name: mysqldata
+          mountPath: /var/lib/mysql
+        env:
+        - name:  MYSQL_ALLOW_EMPTY_PASSWORD
+          value: jajaja
+      terminationGracePeriodSeconds: 5
+      volumes:
+      - name: mysqldata
+        persistentVolumeClaim:
+          claimName: mysql
+
+
