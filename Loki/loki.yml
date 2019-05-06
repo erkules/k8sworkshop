@@ -103,7 +103,8 @@ metadata:
 data:
   promtail.yaml: |
     scrape_configs:
-      - job_name: kubernetes-pods
+      - entry_parser: raw
+        job_name: kubernetes-pods
         kubernetes_sd_configs:
         - role: pod
         relabel_configs:
@@ -131,13 +132,13 @@ data:
           target_label: container_name
         - action: labelmap
           regex: __meta_kubernetes_pod_label_(.+)
-        - replacement: /var/log/pods/$1/*.log
+        - replacement: /var/log/pods/*$1*/*/*.log
           separator: /
           source_labels:
           - __meta_kubernetes_pod_uid
-          - __meta_kubernetes_pod_container_name
           target_label: __path__
-      - job_name: kubernetes-pods-app
+      - entry_parser: raw
+        job_name: kubernetes-pods-app
         kubernetes_sd_configs:
         - role: pod
         relabel_configs:
@@ -315,6 +316,7 @@ spec:
           args:
             - "-config.file=/etc/promtail/promtail.yaml"
             - "-client.url=http://loki:3100/api/prom/push"
+            - "-log.level=debug"
           volumeMounts:
             - name: config
               mountPath: /etc/promtail
@@ -377,6 +379,7 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
+            - "-log.level=debug"
           volumeMounts:
             - name: config
               mountPath: /etc/loki
