@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysqlclient
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: mysqlclient
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysqlclient 
+data:
+  metrics: |-
+    #!/bin/bash
+    echo HTTP/1.1 200 OK
+    echo Content-Type: text/plain
+    echo
+    echo
+    mysql -h mysql -e "select id from haha.jaja"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysqlinit
+data:
+  init.sh: |-
+    #!/bin/bash
+    apt update
+    apt install -y mariadb-client
+    apt install -y busybox
+    busybox httpd -f -p '8080' -h /www
+    tail -f /dev/null
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysqlclient
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysqlclient 
+  template:
+    metadata:
+      labels:
+        app: mysqlclient
+
+    spec:
+      containers:
+        - name: client
+          image: ubuntu
+          command: 
+          - /bin/bash 
+          - /init/init.sh
+          volumeMounts:
+            - name: cgi-script
+              mountPath: /www/cgi-bin
+            - name: mysqlinit
+              mountPath: /init
+      volumes:
+        - name: cgi-script
+          configMap:
+            name: mysqlclient 
+            defaultMode: 0555
+        - name: mysqlinit
+          configMap:
+            name: mysqlinit
+            defaultMode: 0777
+
+

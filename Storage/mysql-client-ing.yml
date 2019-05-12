@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind:       Ingress
+metadata:
+  name: mysqlclient
+spec:
+  rules:
+  - host: data.erkmerk.de
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName:  mysqlclient
+          servicePort:  8080
+
