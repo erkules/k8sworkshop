@@ -377,6 +377,13 @@ spec:
         - name: loki
           image: "grafana/loki:master"
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1000Mi
+            limits:
+              cpu: 100m
+              memory: 2000Mi
           args:
             - "-config.file=/etc/loki/loki.yaml"
             - "-log.level=debug"
