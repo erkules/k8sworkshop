@@ -1,0 +1,7 @@
+configMapGenerator:
+- name: index
+  files:
+  - index.html
+  - mama.html
+resources:
+- www-configmap-svc.yml
