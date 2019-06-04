@@ -16,7 +16,8 @@ Sich mit der Pod/Datenbank verbinden u
 
 # Die "Applikation"
 
-Achtung: mysql-client-svc.yml anpassen :)
+Achtung: Checken ob der `host` Eintrag von mysql-client-ing.yml
+angepasst werden muss.
 
 
 ~~~
