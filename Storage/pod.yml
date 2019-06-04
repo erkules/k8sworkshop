@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: storage
+  name: podwithstorage
 spec:
   #nodeSelector:
   #  kubernetes.io/hostname: <hostname>
