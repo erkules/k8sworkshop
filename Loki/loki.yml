@@ -76,12 +76,13 @@ data:
     ingester:
       lifecycler:
         ring:
-          store: inmemory
+          kvstore: 
+            store: inmemory
           replication_factor: 1
       chunk_idle_period: 15m
     schema_config:
       configs:
-      - from: 0
+      - from: 2019-04-15
         store: boltdb
         object_store: filesystem
         schema: v9
@@ -322,6 +323,9 @@ spec:
               mountPath: /etc/promtail
             - name: varlog
               mountPath: /var/log
+            - name: varlogcontainers
+              mountPath: /var/log/containers
+              readOnly: true
             - name: varlibdockercontainers
               mountPath: /var/lib/docker/containers
               readOnly: true
@@ -350,6 +354,9 @@ spec:
         - name: varlibdockercontainers
           hostPath:
             path: /var/lib/docker/containers
+        - name: varlogcontainers
+          hostPath:
+            path: /var/log/containers
 
 ---
 # Source: loki/templates/loki/deployment.yaml
