@@ -30,12 +30,12 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: www
+      app: web
   template:
     metadata:
       name: www
       labels:
-        app: www
+        app: web
     spec:
       containers:
       - name: image1
@@ -51,4 +51,15 @@ spec:
       - name: website
         configMap:
           name: index
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: web
 
