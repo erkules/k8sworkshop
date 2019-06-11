@@ -20,7 +20,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: www
+  name: web
 spec:
   replicas: 4
   minReadySeconds: 4
@@ -33,7 +33,7 @@ spec:
       app: web
   template:
     metadata:
-      name: www
+      name: web
       labels:
         app: web
     spec:
