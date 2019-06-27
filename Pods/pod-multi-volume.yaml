@@ -6,7 +6,6 @@ spec:
   containers:
   - name:  writer
     image: busybox
-    imagePullPolicy: IfNotPresent
     command: 
     - sh 
     - -c 

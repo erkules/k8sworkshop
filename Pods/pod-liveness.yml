@@ -6,9 +6,6 @@ spec:
   containers:
   - name: meinserver
     image: erkules/nginxhostname
-    ports:
-    - containerPort: 80
-    imagePullPolicy: IfNotPresent
     livenessProbe:
       exec:
         command:
