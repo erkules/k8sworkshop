@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind:       Ingress
+metadata:
+  name: lalaal
+  namespace: kube-system
+spec:
+  rules:
+  - host: kibana.erkan.erkmerk.de
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName:  kibana-logging
+          servicePort:  5601
+
