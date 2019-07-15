@@ -1,7 +1,7 @@
 ---
 # Source: loki/templates/loki/podsecuritypolicy.yaml
 #
-#apiVersion: extensions/v1beta1
+#apiVersion: policy/v1beta1
 #kind: PodSecurityPolicy
 #metadata:
 #  name: loki
@@ -291,7 +291,7 @@ spec:
     app: loki
 ---
 # Source: loki/templates/promtail/daemonset.yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: promtail
