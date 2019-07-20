@@ -19,3 +19,5 @@ filebeat:
 ~~~
 
 VPA
+
+Add node-problem-detector (to Promehteus?)
