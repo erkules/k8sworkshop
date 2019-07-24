@@ -22,6 +22,9 @@ metadata:
   name: node-exporter
   namespace: monitoring
 spec:
+  selector:
+    matchLabels:
+      app: node-exporter
   template:
     metadata:
       labels:

@@ -22,6 +22,9 @@ metadata:
   namespace: monitoring
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
   template:
     metadata:
       labels:
@@ -39,7 +42,7 @@ spec:
                 -  prometheus
             topologyKey: kubernetes.io/hostname
       containers:
-      - image: prom/prometheus:v2.5.0
+      - image: prom/prometheus:v2.9.2
         name: prometheus
         args:
         - --config.file=/etc/prometheus/prometheus.yml

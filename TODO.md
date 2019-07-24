@@ -20,4 +20,7 @@ filebeat:
 
 VPA
 
-Add node-problem-detector (to Promehteus?)
+Soll der Node-Detector in Prometheus/ bleiben? 
+Dann müsste er aber auch in das monitoring namespace :/
+
+
