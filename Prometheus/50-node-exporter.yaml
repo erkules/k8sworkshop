@@ -22,6 +22,8 @@ metadata:
   name: node-exporter
   namespace: monitoring
 spec:
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: node-exporter
