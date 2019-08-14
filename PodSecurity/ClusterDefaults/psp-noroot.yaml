@@ -1,0 +1,50 @@
+---
+
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: noroot
+spec:
+  privileged: false
+  runAsUser:
+    rule: MustRunAsNonRoot
+  seLinux:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - '*'
+---
+---
+kind:        ClusterRole
+apiVersion:  rbac.authorization.k8s.io/v1
+metadata:
+  name:      noroot
+rules:
+- apiGroups: ['extensions']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - noroot
+
+---
+kind:         Namespace
+apiVersion:   v1
+metadata:
+  name:       noroot
+---
+kind:        RoleBinding
+apiVersion:  rbac.authorization.k8s.io/v1
+metadata:
+  name:      defaultns
+  namespace: noroot
+roleRef:
+  kind:      ClusterRole
+  name:      noroot
+  apiGroup:  rbac.authorization.k8s.io
+subjects:
+- kind:      ServiceAccount
+  name:      default
+  namespace: noroot

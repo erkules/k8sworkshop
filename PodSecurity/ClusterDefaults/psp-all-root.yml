@@ -1,0 +1,56 @@
+---
+
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: root
+spec:
+  privileged: true
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  hostNetwork: true
+  hostPID:     true
+  volumes:
+  - '*'
+
+---
+
+kind: ClusterRole
+apiVersion:  rbac.authorization.k8s.io/v1
+metadata:
+  name:   root
+rules: 
+  - apiGroups: ['extensions']
+    resources: ['podsecuritypolicies']
+    verbs:     ['use']
+    resourceNames:
+    - root
+---
+
+kind:        RoleBinding
+apiVersion:  rbac.authorization.k8s.io/v1
+metadata:
+  name:      root-psp
+roleRef:
+  kind:      ClusterRole
+  name:      root
+  apiGroup:  rbac.authorization.k8s.io
+subjects:
+- kind: Group
+  apiGroup: rbac.authorization.k8s.io
+  name: system:serviceaccounts:kube-system
+  namespace: kube-system
+- kind: ServiceAccount
+  name: traefik-ingress-controller
+  namespace: kube-system
+- kind: Group
+  apiGroup: rbac.authorization.k8s.io
+  name: system:serviceaccounts:monitoring
+  namespace: monitoring
+

@@ -3,6 +3,9 @@ kind: DaemonSet
 metadata:
   name: wwwds
 spec:
+  selector:
+    matchLabels:
+      app: wwwds
   updateStrategy:
     type: RollingUpdate
   template:

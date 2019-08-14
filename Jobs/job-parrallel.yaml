@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+spec:
+  backoffLimit: 4                    
+  parallelism: 3
+  completions: 7
+  template:
+    metadata:
+      name: pi
+    spec:
+      containers:
+      - name: hallo
+        image: busybox
+        command: 
+        - sleep
+        - "10"
+      restartPolicy: OnFailure  
