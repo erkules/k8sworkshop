@@ -11,12 +11,12 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: www
+      app: wwwanti
   template:
     metadata:
-      name: www
+      name: wwwanti
       labels:
-        app: www
+        app: wwwanti
     spec:
       affinity:
         podAntiAffinity:
@@ -26,7 +26,7 @@ spec:
               - key: app
                 operator: In
                 values:
-                - www
+                - wwwanti
             topologyKey: kubernetes.io/hostname
       containers:
       - name: image1
