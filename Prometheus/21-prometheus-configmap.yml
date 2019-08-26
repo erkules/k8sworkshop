@@ -146,7 +146,7 @@ data:
           title:       "Prometheus is alive"
           text:        "Prometheus is alive"
       - alert: FileSystemFull
-        expr:  1-node_filesystem_free{mountpoint="/rootfs"}/node_filesystem_size{mountpoint="/rootfs"} >0.8
+        expr:  1-node_filesystem_free_bytes{mountpoint="/"}/node_filesystem_size{mountpoint="/"} >0.8
         for:   5m
         annotations:
           title:       "Filesystem is over 80% ( {{ $value }} )"
@@ -154,7 +154,7 @@ data:
           text:        "Filesystem is over 80% ( {{ $value }} ) on node {{ $labels.instance }}"
 
       - alert: FileSystemFullIn4h
-        expr:  predict_linear(node_filesystem_free{mountpoint="/rootfs"}[1h],4 * 3600) < 0
+        expr:  predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h],4 * 3600) < 0
         for:   5m
         annotations:
           title:       "Filesystem is full in at least 4h"
@@ -162,7 +162,7 @@ data:
           text:        "Filesystem is full in at least 4h on node {{ $labels.instance }}"
 
       - alert: FileSystemInodesFull
-        expr:  1-node_filesystem_files_free{mountpoint="/rootfs"}/node_filesystem_files{mountpoint="/rootfs"} >0.8
+        expr:  1-node_filesystem_files_free{mountpoint="/"}/node_filesystem_files{mountpoint="/"} >0.8
         for:   5m
         annotations:
           title:       "Running low on Inodes"
