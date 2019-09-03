@@ -9,7 +9,5 @@ spec:
   - Ingress
   ingress:
   - from:
-    - namespaceSelector:
-        matchLabels:
-          name: netzname
+    - podSelector: {}
   
