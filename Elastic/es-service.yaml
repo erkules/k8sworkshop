@@ -5,9 +5,6 @@ metadata:
   namespace: kube-system
   labels:
     k8s-app: elasticsearch-logging
-    kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
-    kubernetes.io/name: "Elasticsearch"
 spec:
   ports:
   - port: 9200
@@ -15,3 +12,35 @@ spec:
     targetPort: db
   selector:
     k8s-app: elasticsearch-logging
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: kube-system
+  labels:
+    k8s-app: elasticsearch-logging
+spec:
+  ports:
+  - port: 9200
+    protocol: TCP
+    targetPort: db
+  selector:
+    k8s-app: elasticsearch-logging
+    #---
+    #kind: Service
+    #apiVersion: v1
+    #metadata:
+    #  name: elasticsearch
+    #  namespace: kube-system
+    #  labels:
+    #    app: elasticsearch
+    #spec:
+    #  selector:
+    #    app: elasticsearch
+    #  clusterIP: None
+    #  ports:
+    #  - port: 9200
+    #    name: rest
+    #  - port: 9300
+    #    name: inter-node

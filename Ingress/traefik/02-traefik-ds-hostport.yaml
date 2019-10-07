@@ -38,6 +38,11 @@ spec:
           containerPort: 8080
           hostPort: 8080
         args:
+        - --providers.kubernetesingress
+        - --log.level=INFO
         - --api
-        - --kubernetes
-        - --logLevel=INFO
+        - --api.insecure
+        - --api.dashboard
+          #        - --api
+          #        - --kubernetes
+          #        - --logLevel=INFO

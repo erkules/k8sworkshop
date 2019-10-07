@@ -1,17 +1,3 @@
-#  We delete the Service to make 
-#  shure we don't scrape endpoints
-#  :)
-#
-#
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: busyboxexporter
-# spec:
-#   ports:
-#     - port: 8888
-#   selector:
-#     app: busyboxexporter
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -24,7 +10,7 @@ data:
     echo Content-Type: text/plain
     echo
     echo
-    echo erkan_queue_length $((5+RANDOM%10))
+    echo erkan_queue_length $((3+RANDOM%2))
 
 ---
 apiVersion: apps/v1
