@@ -1,7 +1,9 @@
+NOCH TESTEN
+
 # simple-registry.yml
 
 Ganz schlimm!
-Aber so reichte s auf den Workern die hosts zu füllen
+Aber so reichtes auf den Workern die hosts zu füllen
 
 
 # Step richtig
