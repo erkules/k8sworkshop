@@ -1,14 +1,13 @@
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: serverless
+#---
+#kind: Namespace
+#apiVersion: v1
+#metadata:
+#  name: serverless
 ---
 kind: Service
 apiVersion: serving.knative.dev/v1alpha1
 metadata:
   name: www
-  namespace: serverless
 spec:
   template:
     metadata:
