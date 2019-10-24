@@ -14,7 +14,7 @@ spec:
       name: www-v2
       annotations:
         autoscaling.knative.dev/target: "1"
-        autoscaling.knative.dev/minScale: "2" 
+        #autoscaling.knative.dev/minScale: "2" 
     spec:
       containers:
       - image: gcr.io/knative-samples/helloworld-go
