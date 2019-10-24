@@ -1,0 +1,22 @@
+kind: Task
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: task-einfach-env
+spec:
+  inputs:
+    params:
+    - name: welt
+      type: string
+      description: was für mein Echo
+  steps:
+  - image: alpine
+    command:
+    - echo
+    - "$(inputs.params.welt)"
+  - image: alpine
+    command:
+    - date
+  - image: alpine
+    command:
+    - sleep
+    - "10"

@@ -1,0 +1,10 @@
+kind: Task
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: task-einfach
+spec:
+  steps:
+  - image: alpine
+    command:
+    - echo
+    - "ich bin ein Task"

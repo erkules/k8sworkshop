@@ -1,0 +1,22 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: serverless
+---
+kind: Service
+apiVersion: serving.knative.dev/v1alpha1
+metadata:
+  name: www
+  namespace: serverless
+spec:
+  template:
+    metadata:
+      name: www-v2
+    spec:
+      containers:
+      - image: gcr.io/knative-samples/helloworld-go
+        env:
+        - name: TARGET
+          value: hahav2
+

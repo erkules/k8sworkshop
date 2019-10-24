@@ -1,0 +1,7 @@
+kind: TaskRun
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: task-einfach-inkludiert
+spec:
+  taskRef:
+    name: task-einfach

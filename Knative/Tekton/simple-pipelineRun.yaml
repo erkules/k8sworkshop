@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: pipepalim
+spec:
+  pipelineRef:
+    name: simple-pipeline
+  params:
+  - name: pipelinename
+    value: IbimsPipeline

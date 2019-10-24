@@ -1,0 +1,66 @@
+  kind: PipelineResource
+  apiVersion: tekton.dev/v1alpha1
+  metadata:
+    name: dockerfile-git
+  spec:    
+    type: git
+    params:
+    - name: revision
+      value: master
+    - name: url
+      value: https://github.com/erkules/dockerfiles.git
+---      
+kind: PipelineResource
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: docker-registry
+spec:    
+  type: image
+  params:
+    - name: url
+      value: registry.registry:5000/meinimage
+---
+
+kind: Task
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: task-einfach-image-build
+spec:
+  inputs:
+    resources:
+    - name: whereismygit
+      type: git
+  outputs:
+    resources:
+    - name: wheretopush
+      type: image
+  steps:
+  - name: build-push
+    image: gcr.io/kaniko-project/executor
+    args:
+    #- --dockerfile=$(inputs.params.url)
+    - --dockerfile=/workspace/whereismygit/NginxUser/Dockerfile
+    - --destination=$(outputs.resources.wheretopush.url)
+    - --context=/workspace/whereismygit/NginxUser
+    - --skip-tls-verify
+    - --insecure
+---      
+kind: TaskRun
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: image-builder
+spec:    
+  taskRef:
+    name: task-einfach-image-build
+  inputs:
+    resources:
+    - name: whereismygit
+      resourceRef:
+        name: dockerfile-git
+  outputs:
+    resources:
+    - name: wheretopush 
+      resourceRef:
+        name: docker-registry
+  
+  # Hier könnte deine inputs i.e. stehen

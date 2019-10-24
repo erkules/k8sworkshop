@@ -1,0 +1,11 @@
+kind: TaskRun
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: task-einfach-inkludiert
+spec:
+  taskSpec:
+    steps:
+    - image: alpine
+      command:
+      - echo
+      - "ich bin ein Task"
