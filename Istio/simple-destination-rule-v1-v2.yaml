@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: www
+spec:
+  host: www
+  subsets:
+    - name:  hallo
+      labels:
+        version: v1
+    - name:  welt
+      labels:
+        version: v2

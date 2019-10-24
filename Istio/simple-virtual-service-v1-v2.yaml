@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: www
+spec:
+  hosts:
+# Ziel vom curl
+    - 'test.hallo'
+  gateways:
+    - gateway
+  http:
+    - route:
+      - destination:
+          host: www
+          subset: hallo
+          port:
+            number: 80
+        weight: 10
+      - destination:
+          host: www
+          subset: welt
+          port:
+            number: 80
+        weight: 90
