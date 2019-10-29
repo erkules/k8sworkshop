@@ -16,7 +16,7 @@ spec:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: rook-ceph-block
+  name: blockstorage
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
 
