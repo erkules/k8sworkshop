@@ -1,13 +1,37 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: promquota
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota
+  namespace: promquota
+spec:
+  hard:
+    pods: 4
+    configmaps: 5
+    services: 2
+    count/deployments.apps: 2
+    limits.cpu: 1
+    limits.memory: 1Gi
+    requests.cpu: 1
+    requests.memory: 2Gi
+    persistentvolumeclaims: 2
+    default.storageclass.storage.k8s.io/requests.storage: 500Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wwwlimitted
+  namespace: promquota
 spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-  replicas: 4
+  replicas: 6
   minReadySeconds: 4
   selector:
     matchLabels:

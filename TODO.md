@@ -23,4 +23,10 @@ VPA
 Soll der Node-Detector in Prometheus/ bleiben? 
 Dann müsste er aber auch in das monitoring namespace :/
 
+# Ceph
 
+~~~
+    replicapool      1       19 B           3     19 B         0        25 GiB 
+[root@erkan3 /]# ceph osd pool autoscale-status
+Error ENOTSUP: Module 'pg_autoscaler' is not enabled (required by command 'osd pool autoscale-status'): use `ceph mgr module enable pg_autoscaler` to enable it
+~~~
