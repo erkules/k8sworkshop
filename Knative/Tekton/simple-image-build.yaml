@@ -1,14 +1,14 @@
-  kind: PipelineResource
-  apiVersion: tekton.dev/v1alpha1
-  metadata:
-    name: dockerfile-git
-  spec:    
-    type: git
-    params:
-    - name: revision
-      value: master
-    - name: url
-      value: https://github.com/erkules/dockerfiles.git
+kind: PipelineResource
+apiVersion: tekton.dev/v1alpha1
+metadata:
+  name: dockerfile-git
+spec:    
+  type: git
+  params:
+  - name: revision
+    value: master
+  - name: url
+    value: https://github.com/erkules/dockerfiles.git
 ---      
 kind: PipelineResource
 apiVersion: tekton.dev/v1alpha1
