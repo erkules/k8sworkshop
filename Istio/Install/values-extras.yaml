@@ -80,7 +80,7 @@ tracing:
   enabled: false
 
 kiali:
-  enabled: false
+  enabled: true
 
 certmanager:
   enabled: false

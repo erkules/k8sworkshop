@@ -1,0 +1,87 @@
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: eventing
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: event-watcher
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k8s-ra-event-watcher
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: event-watcher
+subjects:
+- kind: ServiceAccount
+  name: eventing
+---
+# Enable Broker by 
+# kubectl label namespace <namespace> knative-eventing-injection=enabled
+#
+apiVersion: sources.eventing.knative.dev/v1alpha1
+kind: ApiServerSource
+metadata:
+  name: testevents
+spec:
+  serviceAccountName: eventing
+  mode: Resource
+  resources:
+    - apiVersion: v1
+      kind: Event
+  sink:
+    apiVersion: eventing.knative.dev/v1alpha1
+    kind: Broker
+    name: default
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Broker
+metadata:
+  name: default
+spec:
+  channelTemplateSpec:
+    apiVersion: messaging.knative.dev/v1alpha1
+    kind: InMemoryChannel
+---
+apiVersion: eventing.knative.dev/v1alpha1
+kind: Trigger
+metadata:
+  name: testevents-trigger
+spec:
+  broker: default
+  subscriber:
+    ref:
+      apiVersion: serving.knative.dev/v1alpha1
+      kind: Service
+      name: k8s-display
+
+---
+
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: k8s-display
+spec:
+  template:
+    spec:
+      containers:
+        - # This corresponds to
+          # https://github.com/knative/eventing-contrib/blob/release-0.5/cmd/event_display/main.go
+          #image: gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display@sha256:bf45b3eb1e7fc4cb63d6a5a6416cf696295484a7662e0cf9ccdf5c080542c21d
+          image: gcr.io/knative-releases/github.com/knative/eventing-sources/cmd/event_display
+
+
+

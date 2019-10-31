@@ -8,7 +8,7 @@ global:
 
 sidecarInjectorWebhook:
   enabled: true
-  enableNamespacesByDefault: true
+  enableNamespacesByDefault: false
 
 gateways:
   istio-ingressgateway:
