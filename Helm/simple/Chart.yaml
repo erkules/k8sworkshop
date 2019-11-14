@@ -1,0 +1,11 @@
+apiVersion: v2
+name: simple
+description: Erstes Helm3 Chart
+
+type: application
+
+version: 0.1.0
+
+#appVersion wird auch gerne als tag verwendet. Wie haben hier eins definiert.
+#
+appVersion: v3

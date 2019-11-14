@@ -1,0 +1,9 @@
+Wuff wo komme ich denn her.
+
+Ich bin einfach die NOTES.txt welche am Ende der Installation ausgegeben wird.
+
+Kann selbstredend auch Templating also:
+
+Chart.Name: {{ .Chart.Name }}
+
+Release.Name: {{ .Release.Name }}

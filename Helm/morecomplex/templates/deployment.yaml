@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "morecomplex.fullname" . }}
+  labels:
+    {{- include "morecomplex.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "morecomplex.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "morecomplex.selectorLabels" . | nindent 8 }}
+        {{- include "morecomplex.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "morecomplex.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: index
+            mountPath: /usr/share/nginx.html
+      volumes:
+      - name: index
+        configMap:
+          name: {{ include "morecomplex.fullname" . }}

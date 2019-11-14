@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "morecomplex.fullname" . }}-test-connection"
+  labels:
+{{ include "morecomplex.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: erkules/kubectl:v1.16.2
+      command: 
+      - curl
+      -  {{ include "morecomplex.fullname" . }}
+  restartPolicy: Never
