@@ -1,7 +1,7 @@
 
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: {{ include "morecomplex.fullname" . }}-pre-install
   labels:
@@ -9,18 +9,23 @@ metadata:
   annotations:
     "helm.sh/hook": pre-install
 spec:
-  containers:
-    - name: wget
-      image: erkules/kubectl:v1.16.2
-      command: 
-      - sh
-      - -c 
-      - " echo pre-install && sleep 10 "
-  restartPolicy: Never
+  template:
+    spec:
+      containers:
+        - name: wget
+          image: erkules/kubectl:v1.16.2
+          command: 
+          - sh
+          - -c 
+          - " echo pre-install && sleep 10 "
+      restartPolicy: Never
+  backoffLimit: 4
+
+
+
 ---
----
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: {{ include "morecomplex.fullname" . }}-post-install
   labels:
@@ -28,22 +33,23 @@ metadata:
   annotations:
     "helm.sh/hook": post-install
 spec:
-  containers:
-    - name: wget
-      image: erkules/kubectl:v1.16.2
-      command: 
-      - sh
-      - -c 
-      - " echo post-install && sleep 10 "
-  restartPolicy: Never
+  template:
+    spec:
+      containers:
+        - name: wget
+          image: erkules/kubectl:v1.16.2
+          command: 
+          - sh
+          - -c 
+          - " echo post-install && sleep 10 "
+      restartPolicy: Never
+  backoffLimit: 4
+
+
+
 ---
-
-
-
-
----
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: {{ include "morecomplex.fullname" . }}-pre-delete
   labels:
@@ -51,18 +57,23 @@ metadata:
   annotations:
     "helm.sh/hook": pre-delete
 spec:
-  containers:
-    - name: wget
-      image: erkules/kubectl:v1.16.2
-      command: 
-      - sh
-      - -c 
-      - " echo pre-delete && sleep 10 "
-  restartPolicy: Never
+  template:
+    spec:
+      containers:
+        - name: wget
+          image: erkules/kubectl:v1.16.2
+          command: 
+          - sh
+          - -c 
+          - " echo pre-delete && sleep 10 "
+      restartPolicy: Never
+  backoffLimit: 4
+
+
+
 ---
----
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: {{ include "morecomplex.fullname" . }}-post-delete
   labels:
@@ -70,52 +81,20 @@ metadata:
   annotations:
     "helm.sh/hook": post-delete
 spec:
-  containers:
-    - name: wget
-      image: erkules/kubectl:v1.16.2
-      command: 
-      - sh
-      - -c 
-      - " echo post-delete && sleep 10 "
-  restartPolicy: Never
----
+  template:
+    spec:
+      containers:
+        - name: wget
+          image: erkules/kubectl:v1.16.2
+          command: 
+          - sh
+          - -c 
+          - " echo post-delete && sleep 10 "
+      restartPolicy: Never
+  backoffLimit: 4
 
 
 
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: {{ include "morecomplex.fullname" . }}-pre-upgrade
-  labels:
-{{ include "morecomplex.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": pre-upgrade
-spec:
-  containers:
-    - name: wget
-      image: erkules/kubectl:v1.16.2
-      command: 
-      - sh
-      - -c 
-      - " echo pre-upgrade && sleep 10 "
-  restartPolicy: Never
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: {{ include "morecomplex.fullname" . }}-post-upgrade
-  labels:
-{{ include "morecomplex.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": post-upgrade
-spec:
-  containers:
-    - name: wget
-      image: erkules/kubectl:v1.16.2
-      command: 
-      - sh
-      - -c 
-      - " echo post-upgrade && sleep 10 "
-  restartPolicy: Never
----
+
+
+
