@@ -1,0 +1,87 @@
+---
+# ServiceAccount
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: operatorsa
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: linsenraum-crd-viewer
+rules:
+- apiGroups: 
+  - "linsenraum.de"
+  resources:
+  - "erkan"
+  - "erkans"
+  verbs:
+  - list
+  - get
+  - watch
+---
+# Rolebinding
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: operator-binding-linsenraum
+subjects:
+- kind: ServiceAccount
+  name: operatorsa
+roleRef:
+  kind: ClusterRole
+  name: linsenraum-crd-viewer 
+  apiGroup: rbac.authorization.k8s.io
+---
+# Configmap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: linsenraum-operator
+data:
+  script.sh: |
+    export TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+    export NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+    export CACRT=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    curl -s -N  --cacert $CACRT -H "Authorization: Bearer $TOKEN" https://kubernetes.default:443/apis/linsenraum.de/v1alpha1/erkan
+    curl -s -N  --cacert $CACRT -H "Authorization: Bearer $TOKEN" https://kubernetes.default:443/api/v1/namespaces/${NAMESPACE}/pods?watch=true| jq --unbuffered -r '.object.metadata.name' | while read -r pod
+    do
+    # Wir checken ob der name doof ist (ja hätten wir auch im jq machen können
+    echo Found running Pod $pod
+    eval echo $pod | grep doof
+    if [ $? -eq  0 ]
+    then
+    # Checken ob 
+    echo "$pod got a wrong name: TERMINATE IT (if it is running)"
+    PHASE=$(curl -s -N  --cacert $CACRT -H "Authorization: Bearer $TOKEN" https://kubernetes.default:443/api/v1/namespaces/${NAMESPACE}/pods/haha | jq -r .status.phase )
+    if [ $PHASE == Running ]
+    then
+    echo $pod is running so we kill it
+    sleep 5
+    curl --cacert $CACRT -H "Authorization: Bearer $TOKEN" -X DELETE https://kubernetes.default:443/api/v1/namespaces/${NAMESPACE}/pods/$pod
+    fi
+    fi
+    done
+---
+# Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: operator
+spec:
+  serviceAccountName: operatorsa
+  containers:
+  - image: erkules/kubectl:v1.16.2
+    name: haha
+    command: 
+    - sleep
+    - "5000"
+    volumeMounts:
+    - name: operator
+      mountPath: /srv
+  volumes:
+  - name: operator
+    configMap:
+      name: linsenraum-operator
+
+---
