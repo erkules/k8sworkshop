@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-and-internal-traffic
+  namespace: netz
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+  - to:
+    - podSelector: {}
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except: 
+        - 192.0.0.0/8
+        - 10.96.0.0/16
+# Netze sauberer machen
+  
