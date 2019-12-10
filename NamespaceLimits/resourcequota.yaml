@@ -15,9 +15,9 @@ spec:
     services: 2
     count/deployments.apps: 2
     limits.cpu: 1
-    limits.memory: 1Gi
+    limits.memory: 2Gi
     requests.cpu: 1
-    requests.memory: 2Gi
+    requests.memory: 1Gi
     persistentvolumeclaims: 2
     default.storageclass.storage.k8s.io/requests.storage: 500Gi
 ---
