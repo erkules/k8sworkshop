@@ -34,7 +34,7 @@ spec:
       name: node-exporter
     spec:
       containers:
-      - image: prom/node-exporter
+      - image: prom/node-exporter:v0.18.1
         name: node-exporter
         args:
         - --path.procfs 
