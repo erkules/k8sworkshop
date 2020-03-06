@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ping
+  name: pod-as-user
 spec:
   containers:
   - name: ping
