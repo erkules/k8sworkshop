@@ -40,4 +40,4 @@ data:
     - name: default
       webhook_configs:
       - send_resolved: false
-        url: https://chat.reisenden.info/hooks/xwwfGXfgS6JD4qM3i/2EByxqvFmk3uFtbH2CxtiWArzvq3oiJQvg7oyvcHYLhESbWR
+        url: https://chat.hallohallo.info/hooks/...
