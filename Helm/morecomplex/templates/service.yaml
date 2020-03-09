@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "morecomplex.fullname" . }}
   labels:
-    {{- include "morecomplex.labels" . | nindent 4 }}
+    {{- include "morecomplex.selectorLabels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "morecomplex.fullname" . }}
   labels:
-    {{- include "morecomplex.labels" . | nindent 4 }}
+    {{- include "morecomplex.selectorLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -13,7 +13,6 @@ spec:
     metadata:
       labels:
         {{- include "morecomplex.selectorLabels" . | nindent 8 }}
-        {{- include "morecomplex.labels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "morecomplex.serviceAccountName" . }}
       containers:
