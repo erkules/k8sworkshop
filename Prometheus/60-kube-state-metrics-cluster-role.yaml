@@ -1,10 +1,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
-# kubernetes versions before 1.8.0 should use rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/version: 1.9.5
   name: kube-state-metrics
 rules:
-- apiGroups: [""]
+- apiGroups:
+  - ""
   resources:
   - configmaps
   - secrets
@@ -18,43 +21,97 @@ rules:
   - persistentvolumes
   - namespaces
   - endpoints
-  verbs: ["list", "watch"]
-- apiGroups: ["extensions"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - extensions
   resources:
   - daemonsets
   - deployments
   - replicasets
   - ingresses
-  verbs: ["list", "watch"]
-- apiGroups: ["apps"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - apps
   resources:
+  - statefulsets
   - daemonsets
   - deployments
   - replicasets
-  - statefulsets
-  verbs: ["list", "watch"]
-- apiGroups: ["batch"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - batch
   resources:
   - cronjobs
   - jobs
-  verbs: ["list", "watch"]
-- apiGroups: ["autoscaling"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - autoscaling
   resources:
   - horizontalpodautoscalers
-  verbs: ["list", "watch"]
-- apiGroups: ["policy"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+- apiGroups:
+  - policy
   resources:
   - poddisruptionbudgets
-  verbs: ["list", "watch"]
-- apiGroups: ["certificates.k8s.io"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - certificates.k8s.io
   resources:
   - certificatesigningrequests
-  verbs: ["list", "watch"]
-- apiGroups: ["storage.k8s.io"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
   resources:
   - storageclasses
-  verbs: ["list", "watch"]
-- apiGroups: ["autoscaling.k8s.io"]
+  - volumeattachments
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - admissionregistration.k8s.io
   resources:
-  - verticalpodautoscalers
-  verbs: ["list", "watch"]
+  - mutatingwebhookconfigurations
+  - validatingwebhookconfigurations
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - networkpolicies
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - list
+  - watch
