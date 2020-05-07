@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: extendedexampld
+spec:
+  privileged: [false,true]                 --privileged
+  allowPrivilegeEscalation: [false,true]   --security-opt=no-new-privileges
+  requiredDropCapabilities:                --cap-drop
+    - ALL
+  DefaultAddCapabilities:                  --cap-add
+  # Allow core volume types.
+  volumes:                                  ¯\_(ツ)_/¯
+    - 'configMap'
+    - 'emptyDir'
+    - 'secret'
+    - 'persistentVolumeClaim'
+    - 'hostPath'
+  allowedHostPaths:                        ¯\_(ツ)_/¯ aber goil
+  - pathPrefix: "/srv"
+  hostNetwork: [false,true]                --net host
+  hostIPC:     [false,true]                --ipc host
+  hostPID:     [false,true]                --pid host
+  hostPorts:                               -p 
+  runAsUser:                               ¯\_(ツ)_/¯
+    rule: 'RunAsUser,MustRunAsNonRoot,MustRunAS(range:)'
+  seLinux:                                <- Muss gesetzt sein :/
+    rule: 'RunAsAny'                       
+  supplementalGroups:
+    rule: 'MustRunAs s.o.'
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:                                  ¯\_(ツ)_/¯
+    rule: 'MustRunAs s.o'
+    ranges:
+      # Forbid adding the root group.
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: [false,true]      --read-only
+
