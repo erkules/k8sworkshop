@@ -93,8 +93,6 @@ spec:
             path: prometheus.yml
           - key:  rules.yml
             path: rules.yml
-          - key:  crystal.yml
-            path: crystal.yml
         name: config-volume
       - configMap:
           name: prometheus-reloader

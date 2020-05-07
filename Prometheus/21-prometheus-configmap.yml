@@ -118,6 +118,246 @@ data:
       - source_labels: [__meta_kubernetes_pod_name]
         action: replace
         target_label: kubernetes_pod_name
+    - job_name: istio-mesh
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - istio-system
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        separator: ;
+        regex: istio-telemetry;prometheus
+        replacement: $1
+        action: keep
+    - job_name: envoy-stats
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /stats/prometheus
+      scheme: http
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        separator: ;
+        regex: .*-envoy-prom
+        replacement: $1
+        action: keep
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        separator: ;
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        target_label: __address__
+        replacement: $1:15090
+        action: replace
+      - separator: ;
+        regex: __meta_kubernetes_pod_label_(.+)
+        replacement: $1
+        action: labelmap
+      - source_labels: [__meta_kubernetes_namespace]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        separator: ;
+        regex: (.*)
+        target_label: pod_name
+        replacement: $1
+        action: replace
+    - job_name: istio-policy
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - istio-system
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        separator: ;
+        regex: istio-policy;http-monitoring
+        replacement: $1
+        action: keep
+    - job_name: istio-telemetry
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - istio-system
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        separator: ;
+        regex: istio-telemetry;http-monitoring
+        replacement: $1
+        action: keep
+    - job_name: pilot
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - istio-system
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        separator: ;
+        regex: istio-pilot;http-monitoring
+        replacement: $1
+        action: keep
+    - job_name: galley
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - istio-system
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        separator: ;
+        regex: istio-galley;http-monitoring
+        replacement: $1
+        action: keep
+    - job_name: citadel
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - istio-system
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        separator: ;
+        regex: istio-citadel;http-monitoring
+        replacement: $1
+        action: keep
+    - job_name: kubernetes-apiservers
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: https
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - default
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: false
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        separator: ;
+        regex: kubernetes;https
+        replacement: $1
+        action: keep
+    - job_name: kubernetes-nodes
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: https
+      kubernetes_sd_configs:
+      - role: node
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: false
+      relabel_configs:
+      - separator: ;
+        regex: __meta_kubernetes_node_label_(.+)
+        replacement: $1
+        action: labelmap
+      - separator: ;
+        regex: (.*)
+        target_label: __address__
+        replacement: kubernetes.default.svc:443
+        action: replace
+      - source_labels: [__meta_kubernetes_node_name]
+        separator: ;
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics
+        action: replace
+    - job_name: kubernetes-pods-istio
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        separator: ;
+        regex: "true"
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_sidecar_istio_io_status, __meta_kubernetes_pod_annotation_prometheus_io_scheme]
+        separator: ;
+        regex: ((;.*)|(.*;http))
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_annotation_istio_mtls]
+        separator: ;
+        regex: (true)
+        replacement: $1
+        action: drop
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        separator: ;
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: $1
+        action: replace
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        separator: ;
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        target_label: __address__
+        replacement: $1:$2
+        action: replace
+      - separator: ;
+        regex: __meta_kubernetes_pod_label_(.+)
+        replacement: $1
+        action: labelmap
+      - source_labels: [__meta_kubernetes_namespace]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [__meta_kubernetes_pod_name]
+        separator: ;
+        regex: (.*)
+        target_label: pod_name
+        replacement: $1
+        action: replace
+
     alerting:
       alertmanagers:
       - static_configs:
@@ -138,6 +378,15 @@ data:
         labels:
           severity: pipapolopo
     
+      - alert: Pending Pods
+        expr: kube_deployment_status_replicas_unavailable>0
+        for:  1m
+        annotations:
+          summary:    "Deployment {{ $labels.deployment }} in Namespace {{ $labels.namespace }} has  {{ $value }} pending Pods"
+          description:    "Deployment {{ $labels.deployment }} in Namespace {{ $labels.namespace }} has  {{ $value }} pending Pods"
+        labels:
+          severity: pipapolopo
+
       - alert: ImAlive
         expr:  vector(1)
         for:   1m
@@ -225,16 +474,5 @@ data:
           description: Kubelet {{$labels.instance}} is running {{$value}} pods, close
             to the limit of 110
           summary: Kubelet is close to pod limit
-  crystal.yml: |-
-    groups:
-    - name: crystal.rules
-      rules:
-      - alert: CertCheck
-        expr:  crystalmon_pxr_devops_cert_check < 100
-        for:   5m
-        annotations:
-          summary:     "Cert on Node {{ $labels.instance }} is valid {{ $value }} days"
-          description: "Cert on Node {{ $labels.instance }} is valid {{ $value }} days"
-        labels:
-          severity: pipapo
+
      
