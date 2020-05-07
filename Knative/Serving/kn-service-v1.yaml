@@ -5,7 +5,7 @@
 #  name: serverless
 ---
 kind: Service
-apiVersion: serving.knative.dev/v1alpha1
+apiVersion: serving.knative.dev/v1
 metadata:
   name: www
 spec:

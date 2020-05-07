@@ -6,7 +6,6 @@ metadata:
   name: hallo-prometheus-adapter
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
 data:
@@ -91,7 +90,6 @@ kind: ServiceAccount
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: hallo-prometheus-adapter
@@ -102,7 +100,6 @@ kind: ClusterRole
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: prometheus-adapter-server-resources
@@ -118,7 +115,6 @@ kind: ClusterRole
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: prometheus-adapter-resource-reader
@@ -140,7 +136,6 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: prometheus-adapter:system:auth-delegator
@@ -159,7 +154,6 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: prometheus-adapter-resource-reader
@@ -178,7 +172,6 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: prometheus-adapter-hpa-controller
@@ -197,7 +190,6 @@ kind: RoleBinding
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: prometheus-adapter-auth-reader
@@ -219,7 +211,6 @@ metadata:
     
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: hallo-prometheus-adapter
@@ -241,7 +232,6 @@ kind: Deployment
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: hallo-prometheus-adapter
@@ -255,7 +245,6 @@ spec:
     metadata:
       labels:
         app: prometheus-adapter
-        chart: prometheus-adapter-v0.2.0
         release: hallo
         heritage: Tiller
       name: prometheus-adapter
@@ -265,7 +254,7 @@ spec:
       serviceAccountName: hallo-prometheus-adapter
       containers:
       - name: prometheus-adapter
-        image: "directxman12/k8s-prometheus-adapter-amd64:v0.2.1"
+        image: "directxman12/k8s-prometheus-adapter-amd64:v0.7.0"
         imagePullPolicy: IfNotPresent
         args:
         - /adapter
@@ -307,7 +296,6 @@ kind: APIService
 metadata:
   labels:
     app: prometheus-adapter
-    chart: prometheus-adapter-v0.2.0
     release: hallo
     heritage: Tiller
   name: v1beta1.custom.metrics.k8s.io

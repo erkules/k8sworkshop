@@ -32,7 +32,7 @@ subjects:
 # Enable Broker by 
 # kubectl label namespace <namespace> knative-eventing-injection=enabled
 #
-apiVersion: sources.eventing.knative.dev/v1alpha1
+apiVersion: sources.knative.dev/v1alpha1
 kind: ApiServerSource
 metadata:
   name: testevents
@@ -61,10 +61,9 @@ kind: Trigger
 metadata:
   name: testevents-trigger
 spec:
-  broker: default
   subscriber:
     ref:
-      apiVersion: serving.knative.dev/v1alpha1
+      apiVersion: serving.knative.dev/v1
       kind: Service
       name: k8s-display
 
