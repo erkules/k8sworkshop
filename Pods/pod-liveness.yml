@@ -13,4 +13,5 @@ spec:
         - /etc/issue
       timeoutSeconds: 1
       initialDelaySeconds: 5
+      failureThreshold: 3
 
