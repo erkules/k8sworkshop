@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name:  hostname
+spec:
+  hostname: hello
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname
+

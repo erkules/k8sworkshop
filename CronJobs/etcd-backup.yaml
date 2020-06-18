@@ -5,6 +5,8 @@ metadata:
   namespace: kube-system
 spec:
   schedule: "* * * * *"
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 0   
   jobTemplate:
     spec:
       template:
