@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hallo
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+    name: hallo
+    namespace: hallo
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: hallo
+subjects:
+- kind: ServiceAccount
+  name: hallo
+  namespace: hallo
+roleRef:
+  kind: ClusterRole
+  name: admin 
+  apiGroup: rbac.authorization.k8s.io
+
