@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: remotedb
+spec:
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Endpoints
+metadata: 
+  name: remotedb
+subsets:
+- addresses:
+  - ip: 193.99.144.20
+  ports:
+  - port: 3306
+
+    
+
