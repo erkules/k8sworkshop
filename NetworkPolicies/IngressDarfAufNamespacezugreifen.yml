@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-own-name-space
+  namespace: netz
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          irgendwas: aufingressnamespace
+    - podSelector: {}
+        matchLabels:
+          k8s-app: traefik-ingress-lb
