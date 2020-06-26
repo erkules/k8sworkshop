@@ -5,4 +5,4 @@ metadata:
   namespace: "mesh"
 spec:
   mtls:
-  mode: STRICT
+    mode: STRICT
