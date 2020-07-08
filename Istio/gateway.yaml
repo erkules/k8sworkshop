@@ -14,3 +14,4 @@ spec:
         - 'test.hallo'
         - 'pest.hallo'
         - 'cola.hallo'
+        - 'bookinfo.hallo'

@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginxdefault
+data:
+  default.conf: |
+    server {
+        listen       80;
+        server_name  multi;
+        location / {
+            proxy_pass   http://mutti/;
+        }
+    
+    }
+
+
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: multi
+spec:
+  hosts:
+# Ziel vom curl
+    - 'pest.hallo'
+  gateways:
+    - gateway
+  http:
+    - route:
+      - destination:
+          host: multi
+          port:
+            number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi
+spec:
+  selector:
+    app: multi
+  ports:
+  - port: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 1
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: multi
+  template:
+    metadata:
+      name: multi
+      labels:
+        app: multi
+        version: v1
+    spec:
+      containers:
+      - name: image1
+        image: erkules/nginxhostname
+        volumeMounts:
+        - name: nginxdefault
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: nginxdefault
+        configMap:
+          name: nginxdefault
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mutti
+spec:
+  selector:
+    app: mutti
+  ports:
+  - port: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mutti
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: mutti
+  template:
+    metadata:
+      name: mutti
+      labels:
+        app: mutti
+        version: v1
+    spec:
+      containers:
+      - name: image1
+        image: erkules/nginxhostname

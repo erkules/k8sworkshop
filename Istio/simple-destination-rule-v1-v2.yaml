@@ -1,9 +1,14 @@
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
   name: www
 spec:
   host: www
+    #trafficPolicy:
+  #  loadBalancer: 
+  #    simple: LEAST_CONN|ROUND_ROBIN
+  # tls:
+      mode: SIMPLE
   subsets:
     - name:  hallo
       labels:
