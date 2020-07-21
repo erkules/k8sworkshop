@@ -2,6 +2,7 @@
 FIX node-exporter
 It does not do any mounting to the system at all!
 
+# Elastic (deprecated wie use Loki/promtail)
 We switched to CRI
 filebeat will not work!!!
 multi-line with filebeat and promtail

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hook
+spec:
+  selector:
+    app: hooktester
+  ports:
+  - port: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-hook
+  labels:
+    app: hooktester
+spec:
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname
+    lifecycle:
+      postStart:
+        exec:
+          command: ["sh","-c","echo postart; ps ax" ]
+      preStop:
+        exec:
+          command: ["sh","-c","echo prestrop; sleep 20 " ]
+
+
+
+

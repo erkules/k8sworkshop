@@ -15,10 +15,12 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: hallo
+  namespace: hallo
 subjects:
 - kind: ServiceAccount
   name: hallo
-  namespace: hallo
+- kind: User
+  name: hallo
 roleRef:
   kind: ClusterRole
   name: admin 

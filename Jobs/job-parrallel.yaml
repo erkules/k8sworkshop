@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: pi
 spec:
-  backoffLimit: 4                    
+  backoffLimit: 4
   parallelism: 3
   completions: 7
   template:

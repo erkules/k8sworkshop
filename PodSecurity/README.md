@@ -1,3 +1,9 @@
+# API-Server konifgurieren
+
+--enable-admission-plugins=PodSecurityPolicy
+
+# Sonstige
+
 Die Files zu PodSecurity
 Gesehen auf dem Vortrag der containerconf 2018
 

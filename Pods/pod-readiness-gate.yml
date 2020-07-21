@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readinessgate
+spec:
+  readinessGates:
+  - conditionType: "linsenraum.de"
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname
+
