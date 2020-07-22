@@ -1,0 +1,60 @@
+# Example of initContainers and Hooks
+# initContainers run serial before containers: fires
+# So initContainers must end.
+#
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hook
+spec:
+  selector:
+    app: hooktester
+  ports:
+  - port: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-init-hook
+  labels:
+    app: hooktester
+spec:
+  initContainers:
+  - name: getauthtoken
+    image: alpine
+    command:
+    - sh 
+    - -c
+    - "echo I create a token and vanish before containers start"
+  - name: recovery
+    image: alpine
+    command:
+    - sleep
+    - "10"
+  - name: getsomethings
+    image: alpine
+    command: ["wget","http://linsenraum.de","-O","/srv/info.html"]
+    volumeMounts:
+    - name: shared
+      mountPath: /srv
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname
+    volumeMounts:
+    - name: shared
+      mountPath: /usr/share/nginx/html
+    lifecycle:
+      postStart:
+        exec:
+          command: ["sh","-c","echo postart; ps ax" ]
+      preStop:
+        exec:
+          command: ["sh","-c","echo prestrop; sleep 20 " ]
+  volumes:
+  - name: shared
+    emptyDir: {}
+
+
+
+
