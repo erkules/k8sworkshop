@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  index.html: |
+    <h1>hallo</h1>
+    <loetkolben>
+    aua
+    </loetkolben>
+  mama.html: |
+    eine
+    schoene
+    neue
+    welt
+
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server
+  labels:
+    hallo: welt
+spec:
+  containers:
+  - name: www
+    image: erkules/nginxhostname
+    volumeMounts:
+    - name: website
+      mountPath: /usr/share/nginx/html
+    imagePullPolicy: IfNotPresent
+  volumes:
+  - name: website
+    configMap:
+      name: config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: www
+spec:
+  ports:
+    - port: 80
+  selector:
+    hallo: welt
+
+
