@@ -5,3 +5,4 @@ configMapGenerator:
   - mama.html
 resources:
 - www-configmap-svc.yml
+- deployment.yaml

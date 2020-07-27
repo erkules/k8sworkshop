@@ -1,0 +1,37 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 4
+  minReadySeconds: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      name: web
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: image1
+        image: erkules/nginxhostname
+        ports:
+        - containerPort: 80
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: website
+          mountPath: /usr/share/nginx/html
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - name: website
+        configMap:
+          name: index
+
