@@ -610,12 +610,17 @@ spec:
         control-plane: audit-controller
         gatekeeper.sh/operation: audit
         gatekeeper.sh/system: "yes"
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8888'
+        prometheus.io/path: '/metrics'
     spec:
       containers:
       - args:
         - --operation=audit
         - --operation=status
         - --logtostderr
+        - --log-denies
         command:
         - /manager
         env:
