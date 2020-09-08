@@ -1,4 +1,5 @@
-apiVersion: networking.k8s.io/v1beta1
+# Ab K8s 1.19
+apiVersion: networking.k8s.io/v1
 kind:       Ingress
 metadata:
   name: lalaal
@@ -9,7 +10,10 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName:  www
-          servicePort:  80
+          service:  
+            name: www
+            port:
+              number: 80
 

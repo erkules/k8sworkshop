@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-privileged
+spec:
+  containers:
+  - name: ping
+    image: alpine
+    securityContext:
+      privileged: true
+    command:
+    - sleep
+    - "5000"
+
