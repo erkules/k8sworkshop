@@ -1,3 +1,8 @@
-script.sh baut und deployt istio.
-Wenn das Repo nicht da ist, dann einfach das 
-deploy.sh
+Installation via Istio-Operator
+
+~~~
+istioctl operator init
+kubectl apply -f istiooperator.yaml
+kubectl -n istio-system patch  svc istio-ingressgateway --patch '{"spec": {"type": "NodePort"}}'
+~~~
+
