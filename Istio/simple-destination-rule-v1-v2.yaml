@@ -8,7 +8,7 @@ spec:
   #  loadBalancer: 
   #    simple: LEAST_CONN|ROUND_ROBIN
   # tls:
-      mode: SIMPLE
+  #   mode: SIMPLE
   subsets:
     - name:  hallo
       labels:

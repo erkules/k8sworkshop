@@ -1,4 +1,4 @@
-kubectl apply -f https://github.com/knative/operator/releases/download/v0.15.0/operator.yaml
+kubectl apply -f https://github.com/knative/operator/releases/download/v0.17.0/operator.yaml
 cat <<-EOF | kubectl apply -f -
 apiVersion: v1
 kind: Namespace
@@ -21,4 +21,11 @@ kind: KnativeEventing
 metadata:
   name: knative-eventing
   namespace: knative-eventing
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: knative-monitoring
+---
 EOF
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.17.0/monitoring-metrics-prometheus.yaml

@@ -1,0 +1,10 @@
+kubectl create sa podwatcher
+
+kubectl create rolebinding podwatch  --clusterrole=view --serviceaccount=eventing:podwatcher
+
+kn service create edisplay --image gcr.io/knative-releases/knative.dev/eventing-contrib/cmd/event_display --autoscale-window 10s
+
+kn trigger create podadd --filter type=dev.knative.apiserver.ref.add --inject-broker --sink svc:edisplay 
+
+ kn source apiserver create getapipods --resource "pod:v1" --service-account podwatcher --sink broker:default
+

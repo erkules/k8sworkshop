@@ -15,3 +15,12 @@ spec:
     egressGateways:
      - name: istio-egressgateway
        enabled: true
+  addonComponents:
+    grafana:
+      enabled: true
+    prometheus:
+      enabled: true
+    kiali:
+      enabled: true
+    tracing:
+      enabled: true
