@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: www
+  name: wwwuser
 spec:
   strategy:
     type: RollingUpdate
@@ -11,12 +11,12 @@ spec:
   minReadySeconds: 4
   selector:
     matchLabels:
-      app: www
+      app: wwwuser
   template:
     metadata:
-      name: www
+      name: wwwuser
       labels:
-        app: www
+        app: wwwuser
     spec:
       containers:
       - name: image1
