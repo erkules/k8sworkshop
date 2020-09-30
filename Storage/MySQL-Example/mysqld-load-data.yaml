@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: loaddata
+spec:
+  backoffLimit: 4
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: loaddata
+    spec:
+      containers:
+      - name: hallo
+        image: mariadb
+          #command: ["/bin/sh" , "-c" ]
+        command: 
+        - /bin/sh
+        - -c
+        - |
+          /bin/bash <<'EOF'
+          mysql -h mysql -e 'create schema infos;'
+          mysql -h mysql -e 'create table infos.daten (id int);'
+          mysql -h mysql -e 'insert into infos.daten values(1),(2),(45),(8),(51),(22),(435),(88);'
+          EOF
+      restartPolicy: OnFailure  

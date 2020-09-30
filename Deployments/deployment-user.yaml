@@ -45,18 +45,22 @@ spec:
 
 ---
 
-# Bis K8s 1.18
-apiVersion: networking.k8s.io/v1beta1
+
+# Ab K8s 1.19
+apiVersion: networking.k8s.io/v1
 kind:       Ingress
 metadata:
-  name: lalaal
+  name: wwuser
 spec:
   rules:
-  - host: YOURNAMESPACE.erkmerk.de
+  - host: deployment.bahn.zwerk.org
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName:  wwwuser
-          servicePort:  8080
+          service:  
+            name: wwwuser
+            port:
+              number: 8080
 

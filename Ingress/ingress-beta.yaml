@@ -1,14 +1,16 @@
+# Bis K8s 1.18
 apiVersion: networking.k8s.io/v1beta1
 kind:       Ingress
 metadata:
-  name: mysqlclient
+  name: lalaal
 spec:
   rules:
-  - host: data.erkmerk.de
+  - host: YOURNAMESPACE.erkmerk.de
+    DELETETHISLINE
     http:
       paths:
       - path: /
         backend:
-          serviceName:  mysqlclient
-          servicePort:  8080
+          serviceName:  www
+          servicePort:  80
 

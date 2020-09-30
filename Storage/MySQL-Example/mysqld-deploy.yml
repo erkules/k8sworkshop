@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysqld
 spec:
   strategy:
     type: RollingUpdate
@@ -11,16 +11,24 @@ spec:
   minReadySeconds: 4
   selector:
     matchLabels:
-      app: mysql
+      app: mysqld
   template:
     metadata:
-      name: mysql
+      name: mysqld
       labels:
-        app: mysql
+        app: mysqld
     spec:
+      #nodeSelector:
+      #  kubernetes.io/hostname: <hostname>
       containers:
       - name: datenbank
         image: mariadb
+        readinessProbe:
+          tcpSocket: 
+            port: 3306
+        livenessProbe:
+          tcpSocket: 
+            port: 3306
         volumeMounts:
         - name: mysqldata
           mountPath: /var/lib/mysql
@@ -31,6 +39,6 @@ spec:
       volumes:
       - name: mysqldata
         persistentVolumeClaim:
-          claimName: mysql
+          claimName: mysqld
 
 
