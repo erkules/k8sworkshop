@@ -1,0 +1,15 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: musthavesomelabels
+spec:
+  #enforcementAction: dryrun
+  match:
+    scope: "Namespaced"
+    kinds:
+    - apiGroups: [""]
+      kinds: ["Pod"]
+    namespaces:
+    - 'devopscon'
+  parameters:
+    labels: ["devopscon","jax"]

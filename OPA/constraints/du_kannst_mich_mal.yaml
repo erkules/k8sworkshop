@@ -1,0 +1,10 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDuKannstMichMal
+metadata:
+  name: keinelust
+spec:
+  match:
+    namespaces:
+    - "nofuture" 
+    scope: "Namespaced"
+
