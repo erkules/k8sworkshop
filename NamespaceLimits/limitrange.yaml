@@ -25,4 +25,7 @@ spec:
     min:
       cpu: 100m
       memory: 3Mi 
+    maxLimitRequestRatio:
+      cpu: "10"
+      memory: "3"
 
