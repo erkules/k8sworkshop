@@ -34,7 +34,7 @@ spec:
     - "10"
   - name: getsomethings
     image: alpine
-    command: ["wget","http://linsenraum.de","-O","/srv/info.html"]
+    command: ["wget","https://www.heise.de/","-O","/srv/info.html"]
     volumeMounts:
     - name: shared
       mountPath: /srv
