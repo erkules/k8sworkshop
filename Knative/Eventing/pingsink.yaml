@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-display
+spec:
+  replicas: 1
+  selector:
+    matchLabels: &labels
+      app: event-display
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - name: event-display
+          image: gcr.io/knative-releases/knative.dev/eventing-contrib/cmd/event_display
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: event-display
+spec:
+  selector:
+    app: event-display
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+--- 
+apiVersion: sources.knative.dev/v1beta1
+kind: PingSource
+metadata:
+  name: test2-ping-source
+spec:
+  schedule: "*/1 * * * *"
+  jsonData: '{"message": "Hello world!"}'
+  sink:
+    ref:
+      apiVersion: v1
+      kind: Service
+      name: event-display

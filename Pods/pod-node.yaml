@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: www
+spec:
+  nodeSelector:
+    storage: ssd
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname
+
