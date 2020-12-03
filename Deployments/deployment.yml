@@ -18,6 +18,7 @@ spec:
       labels:
         app: www
     spec:
+      terminationGracePeriodSeconds: 2
       containers:
       - name: image1
         image: erkules/nginxhostname

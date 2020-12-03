@@ -10,16 +10,16 @@ metadata:
   namespace: donquota
 spec:
   hard:
-    pods: 4
+    pods: 20
     configmaps: 5
-    services: 2
-    count/deployments.apps: 2
+    services: 4
+    count/deployments.apps: 4
     requests.cpu: 1
     requests.memory: 1Gi
     requests.ephemeral-storage: 100Mi
-    limits.cpu: 1
+    limits.cpu: 2
     limits.memory: 2Gi
-    limits.ephemeral-storage: 200Mi
+    limits.ephemeral-storage: 2000Mi
     persistentvolumeclaims: 2
     default.storageclass.storage.k8s.io/requests.storage: 500Gi
 ---
