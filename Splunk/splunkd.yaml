@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: splunk
+  name: splunk
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: splunk
+  template:
+    metadata:
+      labels:
+        app: splunk
+    spec:
+      containers:
+        - image: splunk/splunk:latest
+          name: splunk
+          env:
+            - name: SPLUNK_START_ARGS
+              value: "--accept-license"
+            - name: SPLUNK_PASSWORD
+              value: "k8sworkshop"
+          ports:
+            -  containerPort: 8000   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: splunk
+spec: 
+  selector:
+    app: splunk
+  ports:
+  - port: 8000
+    name: http
+  - port: 8088
+    name: hec
+
