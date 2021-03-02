@@ -1,0 +1,11 @@
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: simplests-pdb
+spec:
+  minAvailable: 3
+  #  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app=simple
