@@ -10,7 +10,7 @@ metadata:
   namespace: donquota
 spec:
   hard:
-    pods: 20
+    pods: 10
     configmaps: 5
     services: 4
     count/deployments.apps: 4
