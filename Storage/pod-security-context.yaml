@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: storageandgroup
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 2000
+    # fsGroup fügt den Prozess zur Gruppe hinzu und chowned alle Dateien des Volumes zu der Gruppe
+    fsGroup: 3000
+    # Ab K8s-1.20
+    fsGroupChangePolicy: "OnRootMismatch" 
+  #nodeSelector:
+  #  kubernetes.io/hostname: <hostname>
+  containers:
+  - name: storage
+    image: alpine
+    command:
+    - sleep
+    - "5000"
+    volumeMounts:
+    - name: website
+      mountPath: /srv
+    imagePullPolicy: IfNotPresent
+  terminationGracePeriodSeconds: 5
+  volumes:
+  - name: website
+    persistentVolumeClaim:
+      claimName: mio
+
