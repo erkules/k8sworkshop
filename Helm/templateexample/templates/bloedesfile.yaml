@@ -1,0 +1,19 @@
+a1: Mit Templating bauen wir Dateien.
+a2: Würden wir hier auf das Templating verzichten,
+a3: dann würde die Datei unverändert ausgerollt werden.
+frage: Warum hat die Datei diese doofe Syntax
+antwort: weil helm ein Yaml erwartet
+
+a: Nutzen wir nun Templating müssen wir gerade bei Yaml/K8s auf Einrückung und Newlines achten.
+
+text: |
+  {{ "hallo" }}
+  xxxxxxxxxxxxx
+  {{- "welt" }}
+  xxxxxxxxxxxxx
+  {{ "oh" }}
+  xxxxxxxxxxxxx
+  {{- "du" -}}
+  xxxxxxxxxxxxx
+{{ indent 2 "einrückung" }}
+
