@@ -1,0 +1,11 @@
+# Von https://github.com/kubernetes/ingress-nginx/issues/5593#issuecomment-647538272
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  # this name must match the --ingress-class flag
+  name: nginx
+  annotations:
+    # optional: flag this as default ingclass
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  controller: "k8s.io/ingress-nginx" # this is a hard-coded into nginx-ingress
