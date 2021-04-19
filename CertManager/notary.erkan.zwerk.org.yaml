@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: harbor-tls
+spec:
+  secretName: harborerkanzwerkorg
+  dnsNames:
+  - "harbor.erkan.zwerk.org"
+  issuerRef:
+    name: le-clusterissuer
+    kind: ClusterIssuer

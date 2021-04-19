@@ -1,0 +1,25 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-deletes
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: block-deletes-for-kyverno-resources
+    match:
+      resources:
+        selector:
+          matchLabels:
+            app.kubernetes.io/managed-by: kyverno
+    exclude:
+      clusterRoles:
+      - cluster-admin
+    validate:
+      message: "Deleting {{request.oldObject.kind}}/{{request.oldObject.metadata.name}} is not allowed"
+      deny:
+        conditions:
+        - key: "{{request.operation}}"
+          operator: In
+          value:
+          - DELETE

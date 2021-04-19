@@ -1,0 +1,37 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: simplests-pdb
+spec:
+  minAvailable: 3
+  #  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: simple
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 3
+  minReadySeconds: 30
+  selector:
+    matchLabels:
+      app: simple
+  template:
+    metadata:
+      name: simple
+      labels:
+        app: simple
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: image1
+        image: erkules/nginxhostname

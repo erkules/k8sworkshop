@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: validate-pod-label-app
+spec:
+  # enforce oder audit
+  validationFailureAction: "enforce"
+  rules:
+  - name: validate-pod-label-app
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Pod muss ein app Label haben!"
+      pattern:
+        metadata:
+          labels:
+            app: "?"

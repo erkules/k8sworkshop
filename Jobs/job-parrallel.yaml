@@ -1,14 +1,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pi
+  generateName: pi-job-
+  # generateName sorgt für eindeutige Namen
+  # Zum einmaligen Gebrauch
+  # Apply ist hier nicht erlaubt
+  # also kubectl create 
 spec:
   backoffLimit: 4
   parallelism: 3
   completions: 7
   template:
     metadata:
-      name: pi
+      generateName: pi-job-
     spec:
       containers:
       - name: hallo

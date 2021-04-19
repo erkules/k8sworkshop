@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-tls
+spec:
+  secretName: my-tls
+  dnsNames:
+  - "*.harbour.svc.cluster.local"
+  - "*.harbour"
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
