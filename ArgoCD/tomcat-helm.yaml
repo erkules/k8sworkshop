@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tomcat
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.helm.sh/stable
+    targetRevision: 0.4.3
+    path: ''
+    chart: tomcat
+    helm:
+      releaseName: feuerbote
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: feuerbote
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

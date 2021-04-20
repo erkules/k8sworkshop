@@ -81,6 +81,9 @@ spec:
         - name: http
           containerPort: 80
           hostPort: 80
+        - name: https
+          containerPort: 443
+          hostPort: 443
         - name: admin
           containerPort: 8080
           hostPort: 8080
@@ -90,6 +93,8 @@ spec:
         - --api
         - --api.insecure
         - --api.dashboard
+        - --entrypoints.websecure.address=:443
+        - --entrypoints.websecure.http.tls
           #        - --api
           #        - --kubernetes
           #        - --logLevel=INFO
