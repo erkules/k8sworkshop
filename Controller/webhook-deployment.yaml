@@ -5,6 +5,7 @@ metadata:
   namespace: webhook
 data:
   index.html: |
+    #!/bin/bash 
     echo Status: 200 OK
     echo Content-Type: application/json
     echo        
