@@ -1,0 +1,20 @@
+{
+    "hosts": [
+        "check.webhook",
+        "check.webhook.svc",
+        "check.webhook.svc.cluster.local"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+  "names": [
+  {
+    "C": "GER",
+    "L": "Frankfurt",
+    "O": "KubernetesCamp",
+    "OU": "KubernetesCamp",
+    "ST": "NoBorders"
+  }
+ ]
+}

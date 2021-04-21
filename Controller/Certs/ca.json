@@ -1,0 +1,16 @@
+{
+  "CN": "K8s Webhook Root CA",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+  {
+    "C": "GER",
+    "L": "Frankfurt",
+    "O": "KubernetesCamp",
+    "OU": "KubernetesCamp",
+    "ST": "NoBorders"
+  }
+ ]
+}

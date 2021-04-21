@@ -1,0 +1,8 @@
+kind: Erkan
+apiVersion: linsenraum.de/v1
+metadata:
+  name: hallihallo
+spec:
+  botschaft: 5
+  hiob: "juhuu"
+    #  ich: "auch"

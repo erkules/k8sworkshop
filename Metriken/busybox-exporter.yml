@@ -6,7 +6,8 @@ metadata:
 data:
   metrics: |-
     #!/bin/ash
-    echo HTTP/1.1 200 OK
+    #echo HTTP/1.1 200 OK
+    echo Status: 200 OK
     echo Content-Type: text/plain
     echo
     echo

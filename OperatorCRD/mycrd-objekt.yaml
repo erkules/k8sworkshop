@@ -1,6 +1,0 @@
-kind: Erkan
-apiVersion: linsenraum.de/v1alpha1
-metadata:
-  name: hallihallo
-spec:
-  blabla: "jawohl"
