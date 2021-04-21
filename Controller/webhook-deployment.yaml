@@ -44,7 +44,7 @@ spec:
         image: erkules/webhookimg:v1
         volumeMounts:
         - name: checkscript
-          mountPath: /usr/share/nginx/html
+          mountPath: /usr/local/apache2/htdocs
         imagePullPolicy: IfNotPresent
       volumes:
       - name: checkscript
