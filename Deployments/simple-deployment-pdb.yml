@@ -8,30 +8,40 @@ spec:
   #  maxUnavailable: 1
   selector:
     matchLabels:
-      app: simple
+      app: wwwanti
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple
+  name: wwwanti
 spec:
+  replicas: 3
+  minReadySeconds: 4
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-  replicas: 3
-  minReadySeconds: 30
   selector:
     matchLabels:
-      app: simple
+      app: wwwanti
   template:
     metadata:
-      name: simple
+      name: wwwanti
       labels:
-        app: simple
+        app: wwwanti
     spec:
-      terminationGracePeriodSeconds: 2
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #     - labelSelector:
+      #         matchExpressions:
+      #         - key: app
+      #           operator: In
+      #           values:
+      #           - wwwanti
+      #       topologyKey: kubernetes.io/hostname
       containers:
       - name: image1
         image: erkules/nginxhostname
+

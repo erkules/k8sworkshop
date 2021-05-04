@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: netz2
+  labels:
+    name: netzname
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blau
+  namespace: netz
+  labels:
+    pods: blau
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pods: blau
+  template:
+    metadata:
+      labels:
+        pods: blau
+    spec:
+      containers:
+      - name: lala
+        image: erkules/nginxhostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blau
+  namespace: netz
+spec:
+  selector:
+    pods: blau
+  ports:
+  - port: 80
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lila
+  namespace: netz
+  labels:
+    pods: lila
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pods: lila
+  template:
+    metadata:
+      labels:
+        pods: lila
+    spec:
+      containers:
+      - name: lala
+        image: erkules/nginxhostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lila
+  namespace: netz
+spec:
+  selector:
+    pods: lila
+  ports:
+  - port: 80
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rot
+  namespace: netz
+  labels:
+    pods: rot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pods: rot
+  template:
+    metadata:
+      labels:
+        pods: rot
+    spec:
+      containers:
+      - name: lala
+        image: erkules/nginxhostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rot
+  namespace: netz
+spec:
+  selector:
+    pods: rot
+  ports:
+  - port: 80
+---

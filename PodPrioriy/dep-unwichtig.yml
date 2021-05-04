@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unwichtig
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: unwichtig
+  template:
+    metadata:
+      name: unwichtig
+      labels:
+        app: unwichtig
+    spec:
+      priorityClassName: unwichtigworkload
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: lala
+        image: erkules/nginxhostname
+        resources:
+          requests:
+            memory: 500Mi

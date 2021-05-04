@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: besteffort
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: besteffort
+  template:
+    metadata:
+      name: besteffort
+      labels:
+        app: besteffort
+    spec:
+      terminationGracePeriodSeconds: 2
+      nodeSelector:
+        kubernetes.io/hostname: erkan1
+      containers:
+      - name: bench
+        image: jess/stress
+        args: ["--vm","1","--vm-bytes","200m","--vm-hang","0"]
+          #resources:
+          #  requests:
+          #    memory: 250Mi

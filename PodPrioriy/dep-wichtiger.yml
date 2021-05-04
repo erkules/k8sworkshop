@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wichtiger
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: wichtiger
+  template:
+    metadata:
+      name: wichtiger
+      labels:
+        app: wichtiger
+    spec:
+      priorityClassName: wichtiger
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: lala
+        image: erkules/nginxhostname
+        resources:
+          requests:
+            memory: 500Mi

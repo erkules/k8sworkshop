@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spieler
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spieler
+  template:
+    metadata:
+      name: spieler
+      labels:
+        app: spieler
+    spec:
+      terminationGracePeriodSeconds: 2
+      nodeSelector:
+        kubernetes.io/hostname: erkan1
+      containers:
+      - name: bench
+        image: jess/stress
+        args: ["--vm","1","--vm-bytes","200m","--vm-hang","0"]
+        resources:
+          requests:
+            memory: 150Mi
