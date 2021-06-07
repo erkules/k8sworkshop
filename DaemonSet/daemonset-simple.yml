@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: wwwds
   updateStrategy:
-    type: RollingUpdate
+    type: RollingUpdate #OnDelete
   template:
     metadata:
       name: wwwds
