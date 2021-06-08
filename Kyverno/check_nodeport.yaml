@@ -1,0 +1,19 @@
+apiVersion : kyverno.io/v1
+kind: Policy    
+metadata:       
+  name: check-node-port
+spec:           
+  validationFailureAction: enforce
+  rules:        
+  - name: check-node-port
+    match:      
+      resources:
+        kinds:  
+        - Service
+    validate:   
+      # Pattern muss erfüllt sein 
+      message: "NodePort type is not allowed"
+      pattern:  
+        spec:   
+          type: "!NodePort"
+

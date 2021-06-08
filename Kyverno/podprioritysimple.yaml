@@ -1,0 +1,29 @@
+---
+# Achtung example nur für Pods 
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: allowed-pod-priorities
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: validate-pod-priority-pods
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaces:
+        - "kunde*"
+
+    validate:
+      message: >-
+        The Pod PriorityClass {{ request.object.spec.priorityClassName }}
+        ist weder unwichtigworkload or wichtiger
+      deny:
+        conditions:
+        - key: "{{ request.object.spec.priorityClassName }}"
+          operator: NotIn
+          value: 
+          - unwichtigworkload
+          - wichtiger
