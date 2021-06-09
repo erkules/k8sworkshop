@@ -12,6 +12,9 @@ spec:
     chart: tomcat
     helm:
       releaseName: feuerbote
+      values: |
+        services:
+          type: NodePort
   destination:
     server: https://kubernetes.default.svc
     namespace: feuerbote
