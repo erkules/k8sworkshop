@@ -64,25 +64,25 @@ spec:
           limits:
             cpu: 500m
             memory: 2500Mi
-      - image: tutum/curl
-        name: reloader
-        args:
-        - /bin/sh 
-        - /srv/run.sh
-        volumeMounts:
-        - mountPath: "/srv"
-          name:      prometheus-reloader
-          readOnly:  true
-        - mountPath: "/etc/prometheus"
-          name:      config-volume
-          readOnly:  true
-        resources:
-          requests:
-            cpu: 1m
-            memory: 5Mi
-          limits:
-            cpu: 10m
-            memory: 20Mi
+              #- image: tutum/curl
+              #  name: reloader
+              #  args:
+              #  - /bin/sh 
+              #  - /srv/run.sh
+              #  volumeMounts:
+              #  - mountPath: "/srv"
+              #    name:      prometheus-reloader
+              #    readOnly:  true
+              #  - mountPath: "/etc/prometheus"
+              #    name:      config-volume
+              #    readOnly:  true
+              #  resources:
+              #    requests:
+              #      cpu: 1m
+              #      memory: 5Mi
+              #    limits:
+              #      cpu: 10m
+              #      memory: 20Mi
       volumes:
       - emptyDir: {}
         name: data
