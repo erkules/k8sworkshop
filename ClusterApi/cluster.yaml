@@ -74,7 +74,7 @@ metadata:
   name: cluster-api-md-0
 spec:
   clusterName: cluster-api
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels: null
   template:
