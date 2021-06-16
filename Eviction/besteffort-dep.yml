@@ -17,7 +17,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 2
       nodeSelector:
-        kubernetes.io/hostname: erkan1
+        kubernetes.io/hostname: 
       containers:
       - name: bench
         image: jess/stress

@@ -1,0 +1,116 @@
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: Cluster
+metadata:
+  labels:
+    cni: calico
+    infra: argocd
+  name: cluster-api
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+    kind: KubeadmControlPlane
+    name: cluster-api-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: AWSCluster
+    name: cluster-api
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: AWSCluster
+metadata:
+  name: cluster-api
+spec:
+  region: eu-west-1
+  sshKeyName: erkan
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: KubeadmControlPlane
+metadata:
+  name: cluster-api-control-plane
+spec:
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: AWSMachineTemplate
+    name: cluster-api-control-plane
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      apiServer:
+        extraArgs:
+          cloud-provider: aws
+      controllerManager:
+        extraArgs:
+          cloud-provider: aws
+    initConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: aws
+        name: '{{ ds.meta_data.local_hostname }}'
+    joinConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-provider: aws
+        name: '{{ ds.meta_data.local_hostname }}'
+  replicas: 1
+  version: v1.20.1
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: AWSMachineTemplate
+metadata:
+  name: cluster-api-control-plane
+spec:
+  template:
+    spec:
+      iamInstanceProfile: control-plane.cluster-api-provider-aws.sigs.k8s.io
+      instanceType: t3.medium
+      sshKeyName: erkan
+---
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: MachineDeployment
+metadata:
+  name: cluster-api-md-0
+spec:
+  clusterName: cluster-api
+  replicas: 2
+  selector:
+    matchLabels: null
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+          kind: KubeadmConfigTemplate
+          name: cluster-api-md-0
+      clusterName: cluster-api
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        kind: AWSMachineTemplate
+        name: cluster-api-md-0
+      version: v1.20.1
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: AWSMachineTemplate
+metadata:
+  name: cluster-api-md-0
+spec:
+  template:
+    spec:
+      iamInstanceProfile: nodes.cluster-api-provider-aws.sigs.k8s.io
+      instanceType: t3.medium
+      sshKeyName: erkan
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: KubeadmConfigTemplate
+metadata:
+  name: cluster-api-md-0
+spec:
+  template:
+    spec:
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            cloud-provider: aws
+          name: '{{ ds.meta_data.local_hostname }}'
