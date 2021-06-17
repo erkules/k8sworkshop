@@ -30,5 +30,5 @@ spec:
             topologyKey: kubernetes.io/hostname
       containers:
       - name: image1
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
 

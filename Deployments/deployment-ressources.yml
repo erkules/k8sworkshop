@@ -21,7 +21,7 @@ spec:
       terminationGracePeriodSeconds: 2
       containers:
       - name: image1
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
         resources:
           requests:
             cpu: 10m

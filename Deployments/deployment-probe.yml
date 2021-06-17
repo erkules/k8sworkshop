@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: image1
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
         #readinessProbe:
         #  exec:
         #    command:

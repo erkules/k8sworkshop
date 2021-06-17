@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
         readinessProbe:
           exec:
             command:

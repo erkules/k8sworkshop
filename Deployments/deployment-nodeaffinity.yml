@@ -29,5 +29,5 @@ spec:
                 - red
       containers:
       - name: image1
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
 
