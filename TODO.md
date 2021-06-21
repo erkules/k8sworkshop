@@ -1,5 +1,6 @@
 
 FIX node-exporter
+FIX tutum/curl in Prometheus
 It does not do any mounting to the system at all!
 
 # Elastic (deprecated wie use Loki/promtail)

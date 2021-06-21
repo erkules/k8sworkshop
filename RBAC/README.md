@@ -12,12 +12,12 @@ kubectl get pods --as ichbineinuser
 ~~~
 
 
-hallo-ns-sa-rb.yml: Namespace/ServiceAccount und RBAC für User hallo in Namespace hallo
+hallo-ns-sa-rb.yaml: Namespace/ServiceAccount und RBAC für User hallo in Namespace hallo
 
 rolebinding-namespaceadmin.yaml: User kunde wird Admin in dem genutzten/definieren Namespace
 
 rolebinding.yaml: Alle authentifizierten Nutzer dürfen was. (Schau selber nach)
 
-role-pods-list.yml: Einfache Rolle um Pods zu listen
+role-pods-list.yaml: Einfache Rolle um Pods zu listen
 
 serviceaccount.yaml
