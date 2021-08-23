@@ -19,10 +19,6 @@ metadata:
 data:
   promtail.yaml: |
     client:
-      backoff_config:
-        maxbackoff: 5s
-        maxretries: 20
-        minbackoff: 100ms
       batchsize: 102400
       batchwait: 1s
       external_labels: {}
@@ -453,7 +449,7 @@ spec:
       serviceAccountName: promtail
       containers:
         - name: promtail
-          image: "grafana/promtail:v1.3.0"
+          image: "grafana/promtail:master"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/promtail/promtail.yaml"
@@ -556,7 +552,7 @@ spec:
         runAsUser: 10001
       containers:
         - name: loki
-          image: "grafana/loki:v1.3.0"
+          image: "grafana/loki:master"
           imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
