@@ -1,11 +1,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: erkan-prod-tls
+  name: erkan-staging-tls
 spec:
   secretName: erkanzwerkorg
   dnsNames:
   - "erkan.zwerk.org"
   issuerRef:
-    name: le-clusterissuer-prod
+    name: le-clusterissuer-staging
     kind: ClusterIssuer
