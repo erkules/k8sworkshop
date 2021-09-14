@@ -3,6 +3,7 @@ kind: Certificate
 metadata:
   name: harbor-tls-staging
 spec:
+  DELETEME
   secretName: harborerkanzwerkorgstaging
   dnsNames:
   - "harbor.erkan.zwerk.org"

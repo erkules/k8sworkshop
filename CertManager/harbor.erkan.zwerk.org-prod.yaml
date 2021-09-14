@@ -3,6 +3,7 @@ kind: Certificate
 metadata:
   name: harbor-tls-prod
 spec:
+  DELETEME
   secretName: harborerkanzwerkorgprod
   dnsNames:
   - "harbor.erkan.zwerk.org"

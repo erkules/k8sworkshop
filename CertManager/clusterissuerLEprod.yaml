@@ -16,5 +16,4 @@ spec:
     - http01:
         ingress:
           serviceType: ClusterIP
-          class: haproxy
       selector: {}

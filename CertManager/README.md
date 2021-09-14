@@ -8,13 +8,13 @@
    cert-manager jetstack/cert-manager \
      --namespace cert-manager \
        --create-namespace \
-         --version v1.3.0 \
+         --version v1.5.3 \
             --set installCRDs=true
 ~~~
 
 # NoHelm
 
 ~~~
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3.0/cert-manager.yaml
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.3/cert-manager.yaml
 ~~~
 

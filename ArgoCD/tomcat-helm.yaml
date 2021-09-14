@@ -13,7 +13,7 @@ spec:
     helm:
       releaseName: feuerbote
       values: |
-        services:
+        service:
           type: NodePort
   destination:
     server: https://kubernetes.default.svc

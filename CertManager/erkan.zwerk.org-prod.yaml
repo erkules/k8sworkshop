@@ -3,6 +3,7 @@ kind: Certificate
 metadata:
   name: erkan-prod-tls
 spec:
+  DELETEME
   secretName: erkanzwerkorg
   dnsNames:
   - "erkan.zwerk.org"

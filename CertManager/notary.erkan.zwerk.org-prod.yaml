@@ -3,6 +3,7 @@ kind: Certificate
 metadata:
   name: notary-tls-prod
 spec:
+  DELETEME
   secretName: notaryerkanzwerkorgprod
   dnsNames:
   - "notary.erkan.zwerk.org"
