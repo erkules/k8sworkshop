@@ -1,11 +1,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: notary-tls-prod
+  name: notary-tls-staging
 spec:
-  secretName: notaryerkanzwerkorgprod
+  secretName: notaryerkanzwerkorgstaging
   dnsNames:
   - "notary.erkan.zwerk.org"
   issuerRef:
-    name: le-clusterissuer-prod
+    name: le-clusterissuer-staging
     kind: ClusterIssuer
