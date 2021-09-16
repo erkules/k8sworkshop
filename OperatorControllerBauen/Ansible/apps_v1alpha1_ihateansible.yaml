@@ -1,0 +1,7 @@
+apiVersion: apps.linsenraum.de/v1alpha1
+kind: Ihateansible
+metadata:
+  name: ihateansible-sample
+spec:
+  # Add fields here
+  size: 3
