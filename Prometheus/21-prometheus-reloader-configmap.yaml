@@ -7,6 +7,7 @@ metadata:
 data:
   run.sh:  |-
     #!/bin/sh
+    set -v
     while true
     do
     echo starting check

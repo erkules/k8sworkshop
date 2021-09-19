@@ -5,7 +5,6 @@ metadata:
   name: alertmanager
   namespace: monitoring
 spec:
-spec:
   updateStrategy:
     type: RollingUpdate
   replicas: 3
@@ -31,7 +30,7 @@ spec:
             topologyKey: kubernetes.io/hostname
       containers:
       - name: alertmanager
-        image: prom/alertmanager:v0.22.2
+        image: prom/alertmanager:v0.23.0
         args:
           - --config.file=/etc/alertmanager/alertmanager.yml
           - --storage.path=/alertmanager

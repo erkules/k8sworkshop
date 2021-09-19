@@ -17,7 +17,7 @@ spec:
       containers:
       - name: kube-state-metrics
         #image: quay.io/coreos/kube-state-metrics:v2.1.1
-        image: bitnami/kube-state-metrics:2.1.1
+        image: bitnami/kube-state-metrics:2.2.0
         ports:
         - name: http-metrics
           containerPort: 8080

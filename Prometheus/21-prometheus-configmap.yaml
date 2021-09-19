@@ -29,6 +29,14 @@ data:
       static_configs:
       - targets:
         - alertmanager:9093
+    - job_name: kubestate
+      scrape_interval: 5s
+      scrape_timeout: 5s
+      metrics_path: /metrics
+      scheme: http
+      static_configs:
+      - targets:
+        - kube-state-metrics:8080
     - job_name: 'kubelet'
       scheme: https
       tls_config:
