@@ -1,0 +1,12 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: oidc
+subjects:
+- kind: User
+  name: erkan@linsenraum.de
+roleRef:
+  kind: ClusterRole
+  name: admin 
+  apiGroup: rbac.authorization.k8s.io
+
