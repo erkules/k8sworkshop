@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple
+spec:
+  ports:
+  - port: 80
+    name: lal
+  clusterIP: None
+  selector:
+    app: simple
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: simple
+  labels:
+    app: simple
+spec:
+  serviceName: "simple"
+  selector:
+    matchLabels:
+      app: simple
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: simple
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          -  labelSelector:
+               matchExpressions:
+               - key:      app
+                 operator: In
+                 values:
+                 - simple
+             topologyKey: kubernetes.io/hostname
+      containers:
+      - name: simpledb
+        image: erkules/nginxhostname:v1
+        volumeMounts:
+        - name: simple
+          mountPath: /srv
+  volumeClaimTemplates:
+  - metadata:
+      name: simple
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
