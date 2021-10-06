@@ -11,7 +11,7 @@ metadata:
 
 spec:
   rules:
-  - host: prometheus.k8s.zwerk.org
+  - host: prometheus.deinname.zwerk.org
     http:
       paths:
       - path: /
@@ -22,7 +22,7 @@ spec:
             port: 
               number: 9090
 
-  - host: alertmanager.k8s.zwerk.org
+  - host: alertmanager.deinname.zwerk.org
     http:
       paths:
       - path: /
@@ -32,7 +32,7 @@ spec:
             name: alertmanager
             port: 
               number: 9093
-  - host: grafana.k8s.zwerk.org
+  - host: grafana.deinname.zwerk.org
     http:
       paths:
       - path: /
