@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: www
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: www
+  template:
+    metadata:
+      name: www
+      labels:
+        app: www
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: image1
+        image: erkules/nginxhostname:v2
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/nixda
+  
