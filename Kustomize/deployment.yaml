@@ -25,11 +25,9 @@ spec:
         image: erkules/nginxhostname
         ports:
         - containerPort: 80
-        imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: website
           mountPath: /usr/share/nginx/html
-        imagePullPolicy: IfNotPresent
       volumes:
       - name: website
         configMap:

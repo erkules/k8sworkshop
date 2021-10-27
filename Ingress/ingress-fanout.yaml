@@ -4,6 +4,7 @@ metadata:
   name: fanout
   annotations:
     traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
