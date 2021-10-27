@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: psql
+  namespace: pg1
+  annotations:
+    do: apk add postgresql-client
+spec:
+  containers:
+  - name: ping
+    image: alpine
+    env:
+    - name: PGHOST
+      valueFrom: 
+        secretKeyRef:
+          name: pg1-pguser-pg1
+          key: host
+    - name: PGDATABASE
+      valueFrom: 
+        secretKeyRef:
+          name: pg1-pguser-pg1
+          key: dbname
+    - name: PGUSER
+      valueFrom: 
+        secretKeyRef:
+          name: pg1-pguser-pg1
+          key: user
+    - name: PGPASSWORD
+      valueFrom: 
+        secretKeyRef:
+          name: pg1-pguser-pg1
+          key: password
+
+    command:
+    - sleep
+    - "5000"
+
