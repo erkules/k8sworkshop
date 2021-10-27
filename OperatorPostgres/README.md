@@ -29,11 +29,6 @@ Check:
 ~~~
 kubectl -n pg1 get secret pg1-pguser-pg1 -o json | jq -r .data
 ~~~
-
-## Scale the cluster
-
-Check for replicas in pg1.yaml :)
-
 ##  psql
 
 ~~~
@@ -43,9 +38,15 @@ kubectl apply -f psql.yamll
 ~~~
 kubectl -n pg1 exec -ti psql --sh 
 > apk add postgresql-client
+> psql
 > CREATE TABLE a (id int);
 > insert into a(id) values(1);
 ~~~
+
+## Scale the cluster
+
+Check for replicas in pg1.yaml :)
+
 
 ## HA Check
 
