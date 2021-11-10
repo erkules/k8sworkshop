@@ -1,0 +1,22 @@
+apiVersion : kyverno.io/v1
+kind: Policy    
+metadata:       
+  name: check-pvc-storageclass
+spec:           
+  validationFailureAction: enforce
+  rules:        
+  - name: check-pvc-storageclass
+    match:      
+      resources:
+        kinds:  
+        - PersistentVolumeClaim
+    validate:   
+      message: "StorageClass {{ request.object.spec.storageClassName }} is not allowed"
+      deny:
+        conditions:
+        - key: "{{ request.object.spec.storageClassName }}"
+          operator: In
+          value:
+          - doof
+          - nein
+
