@@ -9,7 +9,7 @@ spec :
         resources:
           kinds:
           - Deployment
-          - StatefuleSet
+          - StatefulSet
           - DaemonSet
       validate:
         message: "Root user is not allowed"
