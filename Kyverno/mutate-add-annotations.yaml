@@ -1,0 +1,17 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: policy-add-annoations
+spec:
+  rules:
+  - name: "add annoatations"
+    match:
+      resources:
+        kinds:
+        - Pod
+    mutate:   #<--- Jaja MUTATION
+      patchStrategicMerge:
+        metadata:
+          annotations:
+            iwas: here
+    

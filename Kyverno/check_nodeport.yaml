@@ -11,7 +11,7 @@ spec:
         kinds:  
         - Service
     validate:   
-      # Pattern muss erfüllt sein 
+      # Pattern muss erfüllt sein  <-- WICHTIG!eins11
       message: "NodePort type is not allowed"
       pattern:  
         spec:   

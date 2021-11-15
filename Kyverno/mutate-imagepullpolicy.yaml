@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: policy-image-pull
+spec:
+  rules:
+  - name: "Set pullpolicy"
+    match:
+      resources:
+        kinds:
+          - Pod
+    mutate:   #<--- Jaja MUTATION
+      patchStrategicMerge:
+        spec:
+          containers:
+            # match images which end with :latest
+            - (image): "*:latest"
+              # set the imagePullPolicy to "Allways"
+              imagePullPolicy: "Never"
+    
