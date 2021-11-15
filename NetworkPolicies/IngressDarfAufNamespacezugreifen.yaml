@@ -12,6 +12,6 @@ spec:
     - namespaceSelector:
         matchLabels:
           irgendwas: aufingressnamespace
-    - podSelector: {}
+    - podSelector:
         matchLabels:
           k8s-app: traefik-ingress-lb
