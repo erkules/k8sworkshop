@@ -5,3 +5,6 @@ metadata:
 data:
   index.html: |-
 {{ .Files.Get "files/index.html" | indent 4 }}
+  templated.html: |-
+{{- /* eigentlich werden nur Dateien unter template getamplated. via tpl templaten wir Dateien von "ausserhalb" (Danke Robin) */}}
+{{ tpl (.Files.Get "files/templated.tpl") . | indent 4 }}
