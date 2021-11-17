@@ -38,7 +38,7 @@ data:
     then
     # Checken ob 
     echo "$pod got a wrong name: TERMINATE IT (if it is running)"
-    PHASE=$(curl -s -N  --cacert $CACRT -H "Authorization: Bearer $TOKEN" https://kubernetes.default:443/api/v1/namespaces/${NAMESPACE}/pods/$pod | jq -r -n .status.phase )
+    PHASE=$(curl -s -N  --cacert $CACRT -H "Authorization: Bearer $TOKEN" https://kubernetes.default:443/api/v1/namespaces/${NAMESPACE}/pods/$pod | jq -r  .status.phase )
     if [ $PHASE == Running ]
     then
     echo $pod is running so we kill it
