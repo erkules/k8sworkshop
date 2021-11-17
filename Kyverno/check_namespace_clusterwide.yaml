@@ -1,0 +1,37 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-ing-not-using-namespace
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: block-deletes-for-kyverno-resources
+    match:
+      resources:
+        kinds:
+        - Ingress
+    exclude:
+      resources:
+        namespaces:
+        - kube-system
+    preconditions:
+    - key: "{{request.operation}}"
+      operator: In
+      value:
+      - CREATE
+      - UPDATE
+
+    # "{{ request.object.spec.rules[].host | length(@) }}"    
+    validate:
+      message: "Host-Entry needs to fullfill *.{{ request.object.metadata.namespace }}.erkmerk.de"
+      foreach:
+      - list:  "request.object.spec.rules"
+        deny:
+          conditions:
+          - key: "{{ element.host  }}"
+            operator: NotEquals
+            value: "{{ request.object.metadata.namespace }}.erkmerk.de"
+          - key: "{{ element.host |  contains(@, '.{{ request.object.metadata.namespace }}.erkmerk.de') }}"
+            operator: Equals
+            value: false

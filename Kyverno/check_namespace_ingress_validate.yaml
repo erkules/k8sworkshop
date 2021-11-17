@@ -1,0 +1,21 @@
+apiVersion : kyverno.io/v1
+kind: Policy    
+metadata:       
+  name: check-ns-ingress-pattern
+  annotations:
+    policies.kyverno.io/description: Only allow hostentries for ingress using own namespace
+spec:           
+  validationFailureAction: enforce
+  rules:        
+  - name:  check-ns-ingress-pattern
+    match:      
+      resources:
+        kinds:  
+        - Ingress 
+    validate:   
+      message: "host Schema needs to fit to *.default.erkmerk.de "
+      pattern:
+        spec:
+          rules:
+          - =(host): "*.default.erkmerk.de"
+
