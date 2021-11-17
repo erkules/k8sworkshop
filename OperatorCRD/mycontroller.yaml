@@ -33,7 +33,7 @@ data:
     do
     # Wir checken ob der name doof ist (ja hätten wir auch im jq machen können
     echo Found running Pod $pod
-    eval echo $pod | grep doof
+    echo $pod | grep doof
     if [ $? -eq  0 ]
     then
     # Checken ob 
