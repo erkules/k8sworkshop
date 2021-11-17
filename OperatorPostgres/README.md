@@ -29,10 +29,11 @@ Check:
 ~~~
 kubectl -n pg1 get secret pg1-pguser-pg1 -o json | jq -r .data
 ~~~
+
 ##  psql
 
 ~~~
-kubectl apply -f psql.yamll
+kubectl apply -f psql.yaml
 ~~~
 
 ~~~
