@@ -31,6 +31,6 @@ spec:
       pattern:
         spec:
           containers:
-          - securityContext:
-              allowPrivilegeEscalation: false
+          - =(securityContext):
+              =(allowPrivilegeEscalation): false
 
