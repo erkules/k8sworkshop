@@ -5,6 +5,7 @@ frage: Warum hat die Datei diese doofe Syntax
 antwort: weil helm ein Yaml erwartet
 
 a: Nutzen wir nun Templating müssen wir gerade bei Yaml/K8s auf Einrückung und Newlines achten.
+aa: der - löscht alles (space/newline) bis zum vorherigen { {- oder folgendem -} } Objekt
 
 text: |
   {{ "hallo" }}
@@ -16,4 +17,5 @@ text: |
   {{- "du" -}}
   xxxxxxxxxxxxx
 {{ indent 2 "einrückung" }}
+
 
