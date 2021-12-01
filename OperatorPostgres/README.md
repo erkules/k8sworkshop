@@ -37,7 +37,7 @@ kubectl apply -f psql.yaml
 ~~~
 
 ~~~
-kubectl -n pg1 exec -ti psql --sh 
+kubectl -n pg1 exec -ti psql -- sh 
 > apk add postgresql-client
 > psql
 > CREATE TABLE a (id int);
