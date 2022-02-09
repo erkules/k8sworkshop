@@ -5,7 +5,7 @@ metadata:
   name: lalaal
 spec:
   rules:
-  - host: YOURNAMESPACE.erkmerk.de
+  - host: YOURNAMESETC.zwerk.org
     DELETETHISLINE
     http:
       paths:
