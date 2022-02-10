@@ -1,0 +1,13 @@
+{{ if .Values.greetings }}
+greetings: {{ .Values.greetings | quote | upper  }}
+{{ else }}
+greetings: "hmpf"
+{{ end }}
+
+friends: 
+{{- range .Values.friends }}
+- {{ . }}
+{{- end }}
+
+
+

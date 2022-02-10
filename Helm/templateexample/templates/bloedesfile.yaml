@@ -13,9 +13,10 @@ text: |
   {{- "welt" }}
   xxxxxxxxxxxxx
   {{ "oh" }}
-  xxxxxxxxxxxxx
+  xxxxxxxxxxxxx                                  
   {{- "du" -}}
   xxxxxxxxxxxxx
 {{ indent 2 "einrückung" }}
+          {{ indent 2 "einrückung" }}
 
 
