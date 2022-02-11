@@ -19,4 +19,6 @@ text: |
 {{ indent 2 "einrückung" }}
           {{ indent 2 "einrückung" }}
 
-
+{{/* functions vs pipelines    */}}  
+  {{ quote .Release.Name }}
+{{ .Release.Name | quote  |   indent 2  }}
