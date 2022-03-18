@@ -35,10 +35,17 @@ creation_rules:
   - kms: "MY ARN"
 ~~~
 
+
 Ruhig eine existierenede Datei nehmen
 
 ~~~
 sops -e -i datei.yaml
+~~~
+
+oder 
+
+~~~
+sops -e -i --kms arn:......:  datei.yaml
 ~~~
 
 Ups kauderwelsch
@@ -72,4 +79,19 @@ creation_rules:
   - pgp: <gpg-key>
 ~~~
 
+~~~
 sops geheime-datei.yaml
+~~~
+
+oder ohne Config
+
+~~~
+pgp --list-keys
+sops --pgp FINGERPRINT -e ...
+~~~
+
+
+# AGE
+
+TODO
+

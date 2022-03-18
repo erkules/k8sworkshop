@@ -1,0 +1,31 @@
+# Dieser Eintrag ist nur für die GUI /settings/repo
+# Brauchen wir eigentlich nicht
+# Es sei denn es geht um Credentials
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: erkan-gitlab 
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: https://gitlab.com/erkules/kubi.git
+  name: haha 
+  type: git
+# usernme:
+# password:
+# sshPrivateKey: |
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: helm-tomcat
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url: https://charts.helm.sh/stable
+  name: hoho 
+  type: helm

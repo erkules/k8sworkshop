@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-min-priv
+spec:
+  terminationGracePeriodSeconds: 2
+  containers:
+  - name: ping
+    image: alpine
+    securityContext:
+      runAsUser: 1000
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+    command:
+    - sleep
+    - "5000"
+
