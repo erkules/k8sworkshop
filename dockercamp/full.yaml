@@ -6,10 +6,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - docker0.docker.zwerk.org
+    - DOCKERNAME.docker.zwerk.org
     secretName: docker
   rules:
-  - host: docker0.docker.zwerk.org
+  - host: DOCKERNAME.docker.zwerk.org
     http:
       paths:
       - path: /
