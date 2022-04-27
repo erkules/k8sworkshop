@@ -19,7 +19,7 @@ kind: Deployment
 metadata:
   name: busyboxexporter
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: busyboxexporter
@@ -34,6 +34,11 @@ spec:
     spec:
       containers:
         - name: meinexporter
+          ports:
+          - name: app
+            containerPort: 8888
+          - name: web
+            containerPort: 80
           image: busybox
           args:
             - busybox

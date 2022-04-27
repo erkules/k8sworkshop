@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: busyboxexporter
+  labels:
+    team: example
+spec:
+  selector:
+    matchLabels:
+      app: busyboxexporter
+  podMetricsEndpoints:
+  - port: app
+    path: '/cgi-bin/metrics' 

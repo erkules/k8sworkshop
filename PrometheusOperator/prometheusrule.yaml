@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+  name: prometheus-example-rules
+spec:
+  groups:
+  - name: PodsNotRunning
+    rules:
+    - alert: PodsNotRunning
+      expr: kube_deployment_status_replicas_unavailable>0
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary:    "Deployment {{ $labels.deployment }} in Namespace {{ $labels.namespace }} has  {{ $value }} pending Pods"

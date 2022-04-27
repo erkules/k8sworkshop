@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: busyboxexporter
+  labels:
+    team: example
+spec:
+  selector:
+    matchLabels:
+      app: busyboxexporter
+  endpoints:
+  - port: app
+    path: '/cgi-bin/metrics' 
