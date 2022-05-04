@@ -1,13 +1,20 @@
 # Sealed Secrets
 
+~~~
+helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm repo update
+helm upgrade --install sealed sealed-secrets/sealed-secrets
+~~~
+
 * Die Un/Sealing Applikation läuft im Cluster
-* CLI zum seaelen
+* CLI zum sealen
 * SealedSecret.bitnami.com/v1alpha1
 
 Schauen:
 
 Das SealedSecret landet im GIT
 
+ kubeseal  --controller-name=sealed-sealed-secrets --controller-namespace=default
 ~~~
 cat ../secret.yaml | kubeseal -o yaml -
 ~~~

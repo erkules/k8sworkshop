@@ -36,7 +36,7 @@ creation_rules:
 ~~~
 
 
-Ruhig eine existierenede Datei nehmen
+Ruhig eine existierende Datei nehmen
 
 ~~~
 sops -e -i datei.yaml

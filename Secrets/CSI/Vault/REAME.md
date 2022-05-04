@@ -1,5 +1,15 @@
 # CSI@Vault oder Vault@CSI? 
 
+Was immer ich mit der Überschrift meine /o\
+
+# Vs. Injector 
+https://www.vaultproject.io/docs/platform/k8s/injector-csi
+Also CSI (i.e. wegen ISTIO/sidecarpaddern issues)
+
+## Injector
+
+* Sidecar
+* Mutating Webhook
 
 ## Install Vault&CSI
 
