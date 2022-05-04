@@ -25,3 +25,4 @@ spec:
       containers:
       - name: image1
         image: harbor.infra.zwerk.org/bdr/erkules/nginxhostname@sha256:ca1a770a47789e753b5cc61d898ce8a188a6cb3ed2f83ec3d73f4c544923cb0f
+        imagePullPolicy: Always
