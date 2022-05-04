@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harbor
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: harbor
+  template:
+    metadata:
+      name: harbor
+      labels:
+        app: harbor
+    spec:
+      terminationGracePeriodSeconds: 2
+        #imagePullSecrets:
+        #- name: pullman
+      containers:
+      - name: image1
+        image: harbor.infra.zwerk.org/bdr/erkules/nginxhostname@sha256:ca1a770a47789e753b5cc61d898ce8a188a6cb3ed2f83ec3d73f4c544923cb0f

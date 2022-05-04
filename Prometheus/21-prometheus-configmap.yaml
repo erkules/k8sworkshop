@@ -29,20 +29,6 @@ data:
       static_configs:
       - targets:
         - alertmanager:9093
-    - job_name: kubestate
-      scrape_interval: 5s
-      scrape_timeout: 5s
-      metrics_path: /metrics
-      scheme: http
-      static_configs:
-      - targets:
-        - kube-state-metrics:8080
-    - job_name: 'kubelet'
-      scheme: https
-      tls_config:
-        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-      kubernetes_sd_configs:
     - job_name: 'kubernetes-cadvisor'
       scheme: https
       tls_config:
