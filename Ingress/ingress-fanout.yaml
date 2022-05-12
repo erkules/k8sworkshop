@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind:       Ingress
 metadata:
   name: fanout
@@ -10,11 +10,17 @@ spec:
   - http:
       paths:
       - path: /www
+        pathType: Prefix
         backend:
-          serviceName:  www
-          servicePort:  80
+          service:
+            name: www
+            port:  
+              number: 80
       - path: /web
+        pathType: Prefix
         backend:
-          serviceName:  web
-          servicePort:  80
+          service: 
+            name: web
+            port:  
+              number: 80
 
