@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: image1
-        image: erkules/webhookimg:v1
+        image: erkules/webhookimg:v2
         volumeMounts:
         - name: checkscript
           mountPath: /usr/local/apache2/htdocs

@@ -1,5 +1,7 @@
 Wir hätten auch den Cert-Manager konfigurieren können
 
+Image unter: ~/Artikel/Docker/Dockerfile/apacheCertCGI
+
 Aber so geht das für die Übung schneller 
 
 Jetzt mal mit cfssl 
