@@ -18,4 +18,4 @@ spec:
       pattern:
         metadata:
           labels:
-            app: "?"
+            app: "?*"

@@ -10,7 +10,9 @@ Hat für classic Prometheus die Annotations im Service gesetzt
 
 Basic Values mit Loki und Prometheus(Annotations)
 ~~~
-policy-reporter-values.yaml
+helm repo add policy-reporter https://kyverno.github.io/policy-reporter
+helm repo update
+helm upgrade --install policy-reporter policy-reporter/policy-reporter --create-namespace -n policy-reporter -f policy-reporter-values.yaml
 ~~~
 
 # Dasboards

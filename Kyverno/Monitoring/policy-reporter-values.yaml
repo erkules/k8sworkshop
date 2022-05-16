@@ -120,13 +120,13 @@ kyvernoPlugin:
 
 # Settings for the monitoring subchart
 monitoring:
-  enabled: false
+  enabled: true
 
 global:
   # available plugins
   plugins:
     # enable kyverno for Policy Reporter UI and monitoring
-    kyverno: false
+    kyverno: true
   # The name of service policy-report. Defaults to ReleaseName.
   backend: ""
   # Service Port number
