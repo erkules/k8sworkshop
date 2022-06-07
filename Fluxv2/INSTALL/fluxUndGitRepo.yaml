@@ -1,0 +1,31 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: gitrepo
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/erkules/dufluxdu.git
+  ref:
+    branch: main
+---
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: bigconfig
+  namespace: flux-system
+spec:
+  decryption:
+    provider: sops
+  path: base
+  sourceRef:
+    kind: GitRepository
+    name: gitrepo
+  postBuild:
+    substituteFrom:
+    - kind: ConfigMap
+      name: cluster-vars
+      optional: true
+  interval: 1m
+  prune:    true
