@@ -1,0 +1,13 @@
+namespace: blubberblase
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    iwas: here
+configMapGenerator:
+- name: index
+  files:
+  - index.html
+  - mama.html
+resources:
+- www-configmap-svc.yml
+- namespace.yaml
