@@ -1,0 +1,13 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: flux-kustomize
+  namespace: flux-system
+spec:
+  path: Fluxv2/kustomize
+  sourceRef:
+    kind: GitRepository
+    name: workshoprepo
+  interval: 1m
+  prune:    true

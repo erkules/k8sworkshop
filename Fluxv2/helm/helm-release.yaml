@@ -2,27 +2,21 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: redisonto
+  name: tomcatkitty
   namespace: myflux
 spec:
   chart:
     spec:
-      chart: redis
-      version: 16.9.0
+      chart:   tomcat
+      version: 0.4.3 
       sourceRef:
         kind: HelmRepository
-        name: redisrepo
+        name: tomcatrepo
   interval: 1m0s
   serviceAccountName: myflux
-  releaseName: myredis
+  releaseName: tomcatkitty
   values:
-    serviceMonitor:
-      enabled: true
-    master:
-      persitence:
-        enabled: false
-    replica:
-      replicaCount: 0
-      persitence:
-        enabled: false
+    replicaCount: 3
+    service:
+      type: NodePort
 

@@ -2,9 +2,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name:      redisrepo
+  name:      tomcatrepo
   namespace: myflux
 spec:
   interval: 5m0s
   timeout: 1m0s
-  url:     https://charts.bitnami.com/bitnami
+  url:     https://charts.helm.sh/stable
