@@ -36,4 +36,21 @@ spec:
     targetPort: 8080
   selector:
     app: promi
+---
+apiVersion: networking.k8s.io/v1
+kind:       Ingress
+metadata:
+  name: foo
+spec:
+  rules:
+  - host: DOCKERNAMElast.docker.zwerk.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:  
+            name: promi
+            port:
+              number: 80
 
