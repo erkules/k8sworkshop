@@ -1,0 +1,199 @@
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: Cluster
+metadata:
+  labels:
+    cni: calico
+  name: azure-cluster
+  namespace: default
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+    kind: KubeadmControlPlane
+    name: azure-cluster-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: AzureCluster
+    name: azure-cluster
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: AzureCluster
+metadata:
+  name: azure-cluster
+  namespace: default
+spec:
+  location: westeurope
+  networkSpec:
+    vnet:
+      name: azure-cluster-vnet
+  resourceGroup: k8s
+  subscriptionID: "c1418e06-daeb-4eac-abee-963263a2d505" 
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: KubeadmControlPlane
+metadata:
+  name: azure-cluster-control-plane
+  namespace: default
+spec:
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+    kind: AzureMachineTemplate
+    name: azure-cluster-control-plane
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      apiServer:
+        extraArgs:
+          cloud-config: /etc/kubernetes/azure.json
+          cloud-provider: azure
+        extraVolumes:
+        - hostPath: /etc/kubernetes/azure.json
+          mountPath: /etc/kubernetes/azure.json
+          name: cloud-config
+          readOnly: true
+        timeoutForControlPlane: 20m
+      controllerManager:
+        extraArgs:
+          allocate-node-cidrs: "false"
+          cloud-config: /etc/kubernetes/azure.json
+          cloud-provider: azure
+          cluster-name: azure-cluster
+        extraVolumes:
+        - hostPath: /etc/kubernetes/azure.json
+          mountPath: /etc/kubernetes/azure.json
+          name: cloud-config
+          readOnly: true
+      etcd:
+        local:
+          dataDir: /var/lib/etcddisk/etcd
+    diskSetup:
+      filesystems:
+      - device: /dev/disk/azure/scsi1/lun0
+        extraOpts:
+        - -E
+        - lazy_itable_init=1,lazy_journal_init=1
+        filesystem: ext4
+        label: etcd_disk
+      - device: ephemeral0.1
+        filesystem: ext4
+        label: ephemeral0
+        replaceFS: ntfs
+      partitions:
+      - device: /dev/disk/azure/scsi1/lun0
+        layout: true
+        overwrite: false
+        tableType: gpt
+    files:
+    - contentFrom:
+        secret:
+          key: control-plane-azure.json
+          name: azure-cluster-control-plane-azure-json
+      owner: root:root
+      path: /etc/kubernetes/azure.json
+      permissions: "0644"
+    initConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-config: /etc/kubernetes/azure.json
+          cloud-provider: azure
+        name: '{{ ds.meta_data["local_hostname"] }}'
+    joinConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          cloud-config: /etc/kubernetes/azure.json
+          cloud-provider: azure
+        name: '{{ ds.meta_data["local_hostname"] }}'
+    mounts:
+    - - LABEL=etcd_disk
+      - /var/lib/etcddisk
+    useExperimentalRetryJoin: true
+  replicas: 1
+  version: 1.24.0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: AzureMachineTemplate
+metadata:
+  name: azure-cluster-control-plane
+  namespace: default
+spec:
+  template:
+    spec:
+      dataDisks:
+      - diskSizeGB: 256
+        lun: 0
+        nameSuffix: etcddisk
+      location: westeurope
+      osDisk:
+        diskSizeGB: 128
+        managedDisk:
+          storageAccountType: Premium_LRS
+        osType: Linux
+      sshPublicKey: "c3NoLXJzYSBBQUFBQjNOemFDMXljMkVBQUFBREFRQUJBQUFCQVFDbEN6M2I0MWVRL0t1YThZZU5JU1ByOXBuWEkzSlAydi9hZ0JmdFNhS01hbXRKR0l2bnN5bXdKUWFBVlJ3V2N4T1JLSnZhWnNYOENBbHhnN3ZLY1BTU3ZRcVg0Z29JR0IrYTBhcjVVUjJzWGNSVFRHSjVwVlZIZldiMVVZTlhWbG1aUlRsaEFpbGdJZ0hlVnBzWjAxV1RacVVZcHptUlpCM1I3Um0rUzQyLzdTT0toL2hXaGVMWHQ0aUd6NlkwMkxvOTZVMlF3cXNDa3lycFk4d0Q1Rm1rL0pQRnU0VVMrZWlPVlFKbVUyeDFyektFd2NRREQ4R1VzNmNmTExnd3ZFMXlqVmpnVDk5UWJWQ2g1TlFKczl2ZXpORW9CalZuZVhrSFZiSUxRN24rbEltaUxLeExtcHJvVnE5M3c1S1E2c1gxQmw4aWhsMlFReFVsY25WdVVteHYgZXJrYW4ueWFuYXJAbGluc2VucmF1bS5kZQo="
+      vmSize: Standard_D4as_v5
+---
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: MachineDeployment
+metadata:
+  name: azure-cluster-md-0
+  namespace: default
+spec:
+  clusterName: azure-cluster
+  replicas: 1
+  selector:
+    matchLabels: null
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+          kind: KubeadmConfigTemplate
+          name: azure-cluster-md-0
+      clusterName: azure-cluster
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        kind: AzureMachineTemplate
+        name: azure-cluster-md-0
+      version: 1.24.0
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: AzureMachineTemplate
+metadata:
+  name: azure-cluster-md-0
+  namespace: default
+spec:
+  template:
+    spec:
+      location: westeurope
+      osDisk:
+        diskSizeGB: 128
+        managedDisk:
+          storageAccountType: Premium_LRS
+        osType: Linux
+      sshPublicKey: "c3NoLXJzYSBBQUFBQjNOemFDMXljMkVBQUFBREFRQUJBQUFCQVFDbEN6M2I0MWVRL0t1YThZZU5JU1ByOXBuWEkzSlAydi9hZ0JmdFNhS01hbXRKR0l2bnN5bXdKUWFBVlJ3V2N4T1JLSnZhWnNYOENBbHhnN3ZLY1BTU3ZRcVg0Z29JR0IrYTBhcjVVUjJzWGNSVFRHSjVwVlZIZldiMVVZTlhWbG1aUlRsaEFpbGdJZ0hlVnBzWjAxV1RacVVZcHptUlpCM1I3Um0rUzQyLzdTT0toL2hXaGVMWHQ0aUd6NlkwMkxvOTZVMlF3cXNDa3lycFk4d0Q1Rm1rL0pQRnU0VVMrZWlPVlFKbVUyeDFyektFd2NRREQ4R1VzNmNmTExnd3ZFMXlqVmpnVDk5UWJWQ2g1TlFKczl2ZXpORW9CalZuZVhrSFZiSUxRN24rbEltaUxLeExtcHJvVnE5M3c1S1E2c1gxQmw4aWhsMlFReFVsY25WdVVteHYgZXJrYW4ueWFuYXJAbGluc2VucmF1bS5kZQo="
+      vmSize: Standard_D4as_v5
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: KubeadmConfigTemplate
+metadata:
+  name: azure-cluster-md-0
+  namespace: default
+spec:
+  template:
+    spec:
+      files:
+      - contentFrom:
+          secret:
+            key: worker-node-azure.json
+            name: azure-cluster-md-0-azure-json
+        owner: root:root
+        path: /etc/kubernetes/azure.json
+        permissions: "0644"
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            cloud-config: /etc/kubernetes/azure.json
+            cloud-provider: azure
+          name: '{{ ds.meta_data["local_hostname"] }}'
+      useExperimentalRetryJoin: true

@@ -1,0 +1,27 @@
+apiVersion: kubernetes.do.crossplane.io/v1alpha1
+kind: DOKubernetesCluster
+metadata:
+  name:      digitalocean-k8s
+  namespace: default
+spec:
+  providerConfigRef:
+    name: digitalocean
+  forProvider:
+    region: nyc1
+    version: 1.22.8-do.1
+    tags:
+      - look-mom
+    nodePools:
+      - size: s-1vcpu-2gb
+        count:    3
+        maxNodes: 5
+        name: worker-pool
+    maintenancePolicy:
+      startTime: "00:00"
+      day: wednesday
+    autoUpgrade: true
+    surgeUpgrade: false
+    highlyAvailable: false
+  writeConnectionSecretToRef:
+    name:      digitalocean-k8s
+    namespace: default

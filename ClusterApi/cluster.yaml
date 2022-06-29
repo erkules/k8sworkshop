@@ -2,8 +2,8 @@ apiVersion: cluster.x-k8s.io/v1alpha3
 kind: Cluster
 metadata:
   labels:
-    cni: calico
-    infra: argocd
+    cni:   calico
+    infra: flux
   name: cluster-api
 spec:
   clusterNetwork:
@@ -54,8 +54,15 @@ spec:
         kubeletExtraArgs:
           cloud-provider: aws
         name: '{{ ds.meta_data.local_hostname }}'
+#   preKubeadmCommands:
+#   - echo hallo
+#   files: 
+#   - path: /haha
+#     content: |
+#       haha
+#       hoho
   replicas: 1
-  version: v1.20.1
+  version: v1.24.1
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: AWSMachineTemplate
@@ -74,6 +81,10 @@ metadata:
   name: cluster-api-md-0
 spec:
   clusterName: cluster-api
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   replicas: 3
   selector:
     matchLabels: null
@@ -89,7 +100,7 @@ spec:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
         kind: AWSMachineTemplate
         name: cluster-api-md-0
-      version: v1.20.1
+      version: v1.24.1
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: AWSMachineTemplate
@@ -109,6 +120,13 @@ metadata:
 spec:
   template:
     spec:
+      preKubeadmCommands:
+      - echo "I was here" >/iwashere
+      files:
+      - path: /iwasauchhere
+        content: |
+          iwasauchhere
+#     initConfiguration:
       joinConfiguration:
         nodeRegistration:
           kubeletExtraArgs:
