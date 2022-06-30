@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    pod-security-standards: https://kubernetes.io/docs/concepts/security/pod-security-standards/
+    provided-by: Pod-Security-Admission
+  labels:
+    kubernetes.io/metadata.name: policiy-standards
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/warn: restricted
+  name: policy-standards
