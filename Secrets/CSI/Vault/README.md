@@ -17,14 +17,15 @@ Repos:
 
 ~~~
 helm repo add hashicorp https://helm.releases.hashicorp.com
-helm repo add secrets-store-csi-driver https://raw.githubusercontent.com/kubernetes-sigs/secrets-store-csi-driver/master/charts
-~~~
-
-
+helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
 
 ~~~
- helm install vault hashicorp/vault --set "server.dev.enabled=true"  --set "injector.enabled=false"  --set "csi.enabled=true"
- helm install csi secrets-store-csi-driver/secrets-store-csi-driver
+
+
+
+~~~
+helm install vault hashicorp/vault --set "server.dev.enabled=true"  --set "injector.enabled=false"  --set "csi.enabled=true"
+helm install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver --namespace kube-system
 ~~~
 
 ## Configure Vault
