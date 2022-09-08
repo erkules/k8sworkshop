@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: promgo
+  labels:
+    team: example
+spec:
+  selector:
+    matchLabels:
+      app: promi
+  podMetricsEndpoints:
+  - port: http

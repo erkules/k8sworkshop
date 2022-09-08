@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+  name: nginxexporter.rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: nginxexporter.rules
+    rules:
+    - alert: NginxConnectionsWaiting
+      annotations: 
+        description: Im Namespace {{ $labels.namespace }} sind im Job {{ $labels.job }} {{ $value }} Connections waiting
+        summary: There are some Pods pending
+      expr: |-
+        nginx_connections_waiting > 0
+      for:  1m
+      labels:
+        serverity: k8sworkshop

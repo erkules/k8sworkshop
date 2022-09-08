@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: nginxwithexporter
+  labels:
+    team: example
+spec:
+  selector:
+    matchLabels:
+      app: nginxwithexporter
+  podMetricsEndpoints:
+  - port: metrics
+  podTargetLabels:
+  - kubernetesday
