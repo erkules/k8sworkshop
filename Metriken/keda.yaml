@@ -25,8 +25,8 @@ spec:
   - type: prometheus
     metadata:
       # Required fields:
-      serverAddress: http://prometheus.monitoring:9090
-      metricName: erkan_queue_legth
+      serverAddress: http://prometheus-operated.monitoring:9090
+      metricName: erkan_queue_length
       query: sum(erkan_queue_length)
       threshold: '5'
 
