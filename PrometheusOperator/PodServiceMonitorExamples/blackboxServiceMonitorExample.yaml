@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: blackbox-example
+  # Change this to the namespace the Prometheus instance is running in
+  namespace: monitoring
+  labels:
+    app: blackboxscraper
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: prometheus-blackbox-exporter
+  #namespaceSelector:
+  #  # matchNames:
+  #  # - default
+  #  any: true
+  endpoints:
+  - port: http
+    interval: 15s
+    path: /probe
+    params:
+      module:
+      - http_2xx
+      target:
+      - "https://linsenraum.de/menno"
+    relabelings:
+    - sourceLabels: [__param_target]
+      regex: (.*)
+      targetLabel: website
+      action: replace
+

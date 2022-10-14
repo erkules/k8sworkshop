@@ -1,0 +1,37 @@
+  "metadata": {
+        "labels": {
+            "k8s-app": "blackbox-exporter"
+        },
+        "name": "blackbox-exporter",
+        "namespace": "tectonic-system"
+    },
+    "spec": {
+        "endpoints": [
+            {
+                "interval": "60s",
+                "port": "http-metrics"
+            },
+            {
+                "interval": "60s",
+                "params": {
+                    "module": [
+                        "http_2xx"
+                    ],
+                    "target": [
+                        "10.10.1.120:9200"
+                    ]
+                },
+                "path": "/probe",
+                "targetPort": 9115
+            }
+        ],
+        "namespaceSelector": {
+            "matchNames": [
+                "legacy"
+            ]
+        },
+        "selector": {
+            "app": "blackbox-exporter"
+        }
+    }
+}
