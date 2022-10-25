@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spread
+spec:
+  replicas: 8
+  minReadySeconds: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: spread
+  template:
+    metadata:
+      name: spread
+      labels:
+        app: spread
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 2
+        minDomains: 3
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: spread
+      containers:
+      - name: image1
+        image: erkules/nginxhostname:v1
+
