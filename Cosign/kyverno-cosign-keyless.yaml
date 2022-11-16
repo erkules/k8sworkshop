@@ -1,0 +1,27 @@
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: cosign-verify-keyless
+spec:
+  background:              true
+  validationFailureAction: enforce
+  webhookTimeoutSeconds:   20
+  failurePolicy:           Fail
+  rules:
+    - name: cosign-verify-keyless
+      match:
+        resources:
+          kinds:
+            - Pod
+          namespaces:
+          - "kunden*"
+      verifyImages:
+      - imageReferences:
+        - "*"
+        attestors:
+        - entries:
+          - keyless:
+              subject: "erkan.yanar@linsenraum.de"
+              issuer: "https://github.com/login/oauth"
+

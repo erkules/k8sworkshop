@@ -1,0 +1,33 @@
+apiVersion: kyverno.io/v1
+
+kind: ClusterPolicy
+metadata:
+  name: cosign-verify
+  annotations:
+    policies.kyverno.io/subject:  Pods
+    policies.kyverno.io/description: >-
+      Image is not proper signed
+spec:
+  background:              true
+  validationFailureAction: audit
+  webhookTimeoutSeconds:   20
+  failurePolicy:           Fail
+  rules: 
+  - name: cosign-verify
+    match:
+      resources:
+        kinds: 
+        - Pod
+        namespaces:
+        - "kunden*"
+    verifyImages:
+    - imageReferences: 
+      - "*"
+      attestors:
+      - entries:
+        - keys:
+            publicKeys: |-
+              -----BEGIN PUBLIC KEY-----
+              MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbW4LB7V7mZejp+J4OCER1j5OIekq
+              CFp628x/vJf5VRIezQtGVkTgXOPSa3Bc9k6unVdSweMpxBm1+UyZIY1ZZw==
+              -----END PUBLIC KEY-----
