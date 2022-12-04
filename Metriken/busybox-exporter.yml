@@ -19,7 +19,7 @@ kind: Deployment
 metadata:
   name: busyboxexporter
 spec:
-  replicas: 4
+  #  replicas: 1  der Trick schlechthin. Keine replicas setzen
   selector:
     matchLabels:
       app: busyboxexporter
