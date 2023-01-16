@@ -1,8 +1,19 @@
-Installation via Istio-Operator
+# KEIN OPERATER mehr jetzt HELM!!!
+
+# Install Prometheus
+
+
+Siehe: https://istio.io/v1.14/docs/ops/integrations/prometheus/
 
 ~~~
-istioctl operator init
-kubectl apply -f istiooperator.yaml
-kubectl -n istio-system patch  svc istio-ingressgateway --patch '{"spec": {"type": "NodePort"}}'
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.14/samples/addons/prometheus.yaml
+
 ~~~
 
+# Kiali 
+
+Siehe https://istio.io/v1.14/docs/ops/integrations/kiali/
+
+~~~
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.14/samples/addons/kiali.yaml
+~~~

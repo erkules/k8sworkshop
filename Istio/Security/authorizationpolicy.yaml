@@ -1,0 +1,16 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: mesh
+spec:
+  selector:
+    matchLabels:
+      app: server
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+       requestPrincipals: ["*"]
+       #requestPrincipals: ["iss/sub"]
+

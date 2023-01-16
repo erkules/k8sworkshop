@@ -1,0 +1,8 @@
+apiVersion: security.isio.io/v1beta1
+kind:       AuthorizationPolicy
+metadata:
+  name:     alleszu
+  namespace: istio-system # damit systemweit
+spec:
+  {}  # Analogie zu Networkpolicies 
+

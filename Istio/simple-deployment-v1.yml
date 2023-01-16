@@ -8,6 +8,8 @@ spec:
     app: www
   ports:
   - port: 80
+    name: www
+    appProtocol: http
 ---
 apiVersion: apps/v1
 kind: Deployment

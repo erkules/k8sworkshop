@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server
+  namespace: mesh
+  labels:
+    app: server 
+spec:
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname:v1
+
