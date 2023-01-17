@@ -6,8 +6,10 @@ spec:
   hosts:
 # Ziel vom curl
     - 'test.hallo'
+    - 'www'
   gateways:
     - gateway
+    - mesh
   http:
     - route:
       - destination:
