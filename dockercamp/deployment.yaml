@@ -24,5 +24,4 @@ spec:
       #- name: pullman
       containers:
       - name: image1
-        image: harbor.infra.zwerk.org/dockercamp/nginxhostname@sha256:80179485f086e15953d4fbc2dbaeb7ac8f5d56dc9f1bfd7f373b967dd9cae920
-        imagePullPolicy: Always
+        image: harbor.infra.zwerk.org/docker/nginxhostname@sha256:ca1a770a47789e753b5cc61d898ce8a188a6cb3ed2f83ec3d73f4c544923cb0f

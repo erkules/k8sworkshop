@@ -1,10 +1,10 @@
 apiVersion: kyverno.io/v1
 kind: Policy
 metadata:
-  name: policy-add-annoations
+  name: policy-add-annotations
 spec:
   rules:
-  - name: "add annoatations"
+  - name: "add annotations"
     match:
       resources:
         kinds:

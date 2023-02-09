@@ -4,12 +4,12 @@ kind:       Ingress
 metadata:
   name: foo
 spec:
-  #tls:
-  #- hosts:
-  #  - DOCKERNAME.docker.zwerk.org
-  #  secretName: docker
+  tls:
+  - hosts:
+    - DOCKERNAME.dockercamp.zwerk.org
+    secretName: docker
   rules:
-  - host: DOCKERNAME.docker.zwerk.org
+  - host: DOCKERNAME.dockercamp.zwerk.org
     http:
       paths:
       - path: /

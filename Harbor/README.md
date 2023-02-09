@@ -1,3 +1,5 @@
+ Schau auch ins Docker-Repo
+
  helm repo add harbor https://helm.goharbor.io
  helm repo update
 
