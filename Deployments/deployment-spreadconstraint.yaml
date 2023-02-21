@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: spread
 spec:
-  replicas: 8
+  replicas: 12
   minReadySeconds: 4
   strategy:
     type: RollingUpdate
@@ -18,14 +18,22 @@ spec:
       labels:
         app: spread
     spec:
+      terminationGracePeriodSeconds: 1
       topologySpreadConstraints:
-      - maxSkew: 2
-        minDomains: 3
+      - maxSkew: 1
+        #minDomains: 3
         topologyKey: kubernetes.io/hostname
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
             app: spread
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key:  node-role.kubernetes.io/control-plane 
+                operator: DoesNotExist
       containers:
       - name: image1
         image: erkules/nginxhostname:v1
