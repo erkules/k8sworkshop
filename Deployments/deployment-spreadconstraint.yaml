@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: spread
 spec:
-  replicas: 12
+  replicas: 8 
   minReadySeconds: 4
   strategy:
     type: RollingUpdate
@@ -21,12 +21,13 @@ spec:
       terminationGracePeriodSeconds: 1
       topologySpreadConstraints:
       - maxSkew: 1
-        #minDomains: 3
+        minDomains: 3
         topologyKey: kubernetes.io/hostname
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
             app: spread
+      # Die affinity brauchts um die Controlplane nicht als Topology  zu haben. Weil sonst maxSkew gegen die ControlPlane (mit 0 Pods) geht
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
