@@ -12,16 +12,16 @@ metadata:
   name: blau
   namespace: netz
   labels:
-    pods: blau
+    farbe: blau
 spec:
   replicas: 1
   selector:
     matchLabels:
-      pods: blau
+      farbe: blau
   template:
     metadata:
       labels:
-        pods: blau
+        farbe: blau
     spec:
       containers:
       - name: lala
@@ -34,7 +34,7 @@ metadata:
   namespace: netz
 spec:
   selector:
-    pods: blau
+    farbe: blau
   ports:
   - port: 80
 ---
@@ -45,16 +45,16 @@ metadata:
   name: lila
   namespace: netz
   labels:
-    pods: lila
+    farbe: lila
 spec:
   replicas: 1
   selector:
     matchLabels:
-      pods: lila
+      farbe: lila
   template:
     metadata:
       labels:
-        pods: lila
+        farbe: lila
     spec:
       containers:
       - name: lala
@@ -67,7 +67,7 @@ metadata:
   namespace: netz
 spec:
   selector:
-    pods: lila
+    farbe: lila
   ports:
   - port: 80
 ---
@@ -78,16 +78,16 @@ metadata:
   name: rot
   namespace: netz
   labels:
-    pods: rot
+    farbe: rot
 spec:
   replicas: 1
   selector:
     matchLabels:
-      pods: rot
+      farbe: rot
   template:
     metadata:
       labels:
-        pods: rot
+        farbe: rot
     spec:
       containers:
       - name: lala
@@ -100,7 +100,7 @@ metadata:
   namespace: netz
 spec:
   selector:
-    pods: rot
+    farbe: rot
   ports:
   - port: 80
 ---

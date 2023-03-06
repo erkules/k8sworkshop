@@ -6,13 +6,13 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      pods: rot
+      farbe: rot
   policyTypes:
   - Ingress
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          pods: blau
+          farbe: blau
     ports: 
     - port: 80
