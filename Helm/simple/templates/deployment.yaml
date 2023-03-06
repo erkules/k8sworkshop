@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  {{/*  mit inculde greifen wir auf das fullname template zu (siehe _helpers.tpl) */}}
+  {{/*  mit include greifen wir auf das fullname template zu (siehe _helpers.tpl) */}}
   name: {{ include "simple.fullname" . }}
 spec:
   {{/* replicaCount bekommen wir aus der values.yaml. Wir haben mal einen Default gesetzt :) */}}

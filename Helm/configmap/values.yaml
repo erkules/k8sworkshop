@@ -1,0 +1,8 @@
+
+replicaCount: 1
+
+image:
+  repository: erkules/nginxhostname
+  tag: "v1"
+
+
