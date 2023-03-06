@@ -16,7 +16,7 @@ spec:
         pathType: Prefix
         backend:
           service:  
-            name: docker
+            name: webservice
             port:
               number: 80
 ---
@@ -24,10 +24,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: docker
+  name: webservice
 spec: 
   selector:
-    app: docker
+    app: pods
   ports:
   - port: 80
 ---
@@ -45,12 +45,12 @@ spec:
   minReadySeconds: 4
   selector:
     matchLabels:
-      app: docker
+      app: pods
   template:
     metadata:
       name: www
       labels:
-        app: docker
+        app: pods
     spec:
       terminationGracePeriodSeconds: 2
       containers:

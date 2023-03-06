@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: pendingpods
+  namespace: monitoring
+spec:
+  route:
+    groupWait: 30s
+    groupInterval: 1s
+    repeatInterval: 1m
+    receiver: 'webhook'
+    matchers:
+      - name: serverity
+        value: k8sworkshop
+
+  receivers:
+    - name: 'webhook'
+      webhookConfigs:
+      - url: 'http://docker2.docker.zwerk.org'

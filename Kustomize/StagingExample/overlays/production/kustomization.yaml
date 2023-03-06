@@ -1,0 +1,6 @@
+namePrefix: prod-
+namespace: production
+bases:
+- ../../base
+patches:
+- patch.yaml

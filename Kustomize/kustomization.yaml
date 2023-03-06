@@ -1,6 +1,8 @@
 namespace: blabla
+commonLabels: 
+  hallo: welt
 generatorOptions:
-  disableNameSuffixHash: true
+  disableNameSuffixHash: true # Wird eigentlich hier nicht gebraucht sondern, wenn eine spezielle Configmap erstellt wird
   annotations:
     iwas: here
 configMapGenerator:
