@@ -1,0 +1,12 @@
+[
+  { "Namespace": "netz",
+    "Labels": {
+       "pods": "blau"
+    }
+  },
+  { "Namespace": "netz",
+    "Labels": {
+       "pods": "rot"
+    }
+  }
+]

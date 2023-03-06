@@ -14,7 +14,6 @@ spec:
     - port: 53
       protocol: TCP
     to:
-    - podSelector: {}
     - ipBlock:
         cidr: 0.0.0.0/0
         except: 
