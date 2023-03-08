@@ -17,3 +17,9 @@ kubectl apply -k overlays/test/  --dry-run=client -o yaml
 kubectl apply -k overlays/production/  --dry-run=client -o yaml
 ~~~
 
+* Wir können es auch ausrollen.
+* Beide Installation gehen in unterschiedliche Verzeichnisse
+* Änderungen in Base werden beiden Umgebungen zu Gute kommen
+
+
+

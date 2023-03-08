@@ -4,3 +4,5 @@ bases:
 - ../../base
 patches:
 - patch.yaml
+resources:
+- namespace.yaml
