@@ -1,2 +1,4 @@
+namespace: base
 resources:
 - deployment-ressources.yaml
+- namespace.yaml
