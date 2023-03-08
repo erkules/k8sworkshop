@@ -1,8 +1,7 @@
 namePrefix: test-
 namespace: test
-bases:
-- ../../base
 patches:
 - patch.yaml
 resources:
+- ../../base
 - namespace.yaml
