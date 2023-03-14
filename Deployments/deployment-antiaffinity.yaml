@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: wwwanti
 spec:
-  replicas: 2
+  replicas: 4
   minReadySeconds: 4
   strategy:
     type: RollingUpdate
