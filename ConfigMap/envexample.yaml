@@ -19,13 +19,13 @@ spec:
   - name: jaja
     image: alpine
     env:
-    - name: ENVI
+    - name: umgebung
       valueFrom: 
         configMapKeyRef:
           name: conni
           key: hallo
     command:
-    - echo
-    - $(ENVI)
-    imagePullPolicy: IfNotPresent
+    - sh
+    - -c 
+    - "echo $(umgebung) ; sleep 3000"
 

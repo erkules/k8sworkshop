@@ -1,0 +1,22 @@
+apiVersion : kyverno.io/v1
+kind: Policy    
+metadata:       
+  name: check-ns
+spec:           
+  validationFailureAction: enforce
+  rules:        
+  - name: check-node-port
+    context:
+    - name: annotation
+      urlPath: "/api/v1/namespaces/{{request.namespace}}"
+    match:      
+      resources:
+        kinds:  
+        - Service
+    validate:   
+      # Pattern muss erfüllt sein  <-- WICHTIG!eins11
+      message: "NodePort type is not allowed"
+      pattern:  
+        spec:   
+          type: "!NodePort"
+
