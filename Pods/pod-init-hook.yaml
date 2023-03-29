@@ -48,7 +48,7 @@ spec:
       postStart:
         exec:
           command: ["sh","-c","echo postart >/proc/1/fd/1; ps ax" ]
-          # Kleine Protip damit die die Ausgabe im Log landet :)
+          # Kleiner Protip damit die die Ausgabe im Log landet :)
       preStop:
         exec:
           command: ["sh","-c","echo prestrop >/proc/1/fd/1; sleep 20 " ]

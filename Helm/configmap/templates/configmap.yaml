@@ -5,4 +5,4 @@ metadata:
 data:
   lyric: |-
 {{ .Files.Get "files/oha.txt" | indent 4 }}
-  character : {{ .Values.character | default "zwerg" }}
+  character: {{ .Values.character | default "zwerg" }}
