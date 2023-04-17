@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: server
+      service.istio.io/canonical-name: www
   jwtRules:
   - issuer: "testing@secure.istio.io"
     jwksUri: "https://raw.githubusercontent.com/istio/istio/release-1.5/security/tools/jwt/samples/jwks.json"
