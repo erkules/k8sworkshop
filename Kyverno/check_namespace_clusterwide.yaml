@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: deny-ing-not-using-namespace
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
   - name: block-deletes-for-kyverno-resources

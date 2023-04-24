@@ -6,7 +6,7 @@ spec:
   terminationGracePeriodSeconds: 2
   containers:
   - name: ping
-    image: alpine
+    image: cgr.dev/chainguard/wolfi-base
     securityContext:
       runAsUser: 1000
       readOnlyRootFilesystem: true

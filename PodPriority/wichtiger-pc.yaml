@@ -3,4 +3,5 @@ apiVersion: scheduling.k8s.io/v1
 metadata:
   name:  wichtiger
 value:   20000
+preemptionPolicy: PreemptLowerPriority  # Default bei Never kommen die Pods an den Anfang der Warteschleife, aber veranlassen keine Preemption
 

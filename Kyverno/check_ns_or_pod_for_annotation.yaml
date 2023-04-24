@@ -3,7 +3,7 @@ kind: Policy
 metadata:       
   name: check-ns
 spec:           
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:        
   - name: check-node-port
     context:

@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: disallow-privileged
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:
   - name: validate-privileged
     match:

@@ -5,7 +5,7 @@ kind: ClusterPolicy
 metadata:
   name: allowed-pod-priorities
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
   - name: validate-pod-priority-pods

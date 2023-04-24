@@ -3,6 +3,7 @@ kind: Policy
 metadata:
   name: policy-add-annotations
 spec:
+  mutateExistingOnPolicyUpdate: true
   rules:
   - name: "add annotations"
     match:

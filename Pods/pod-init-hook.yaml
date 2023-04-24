@@ -22,18 +22,18 @@ metadata:
 spec:
   initContainers:
   - name: getauthtoken
-    image: alpine
+    image: cgr.dev/chainguard/wolfi-base
     command:
     - sh 
     - -c
     - "echo I create a token and vanish before containers start"
   - name: recovery
-    image: alpine
+    image: cgr.dev/chainguard/wolfi-base
     command:
     - sleep
     - "10"
   - name: getsomethings
-    image: alpine
+    image: cgr.dev/chainguard/wolfi-base
     command: ["wget","https://www.heise.de/","-O","/srv/info.html"]
     volumeMounts:
     - name: shared

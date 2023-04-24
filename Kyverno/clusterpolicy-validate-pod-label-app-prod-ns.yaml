@@ -3,8 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: clusterpolicy-validate-pod-label-app-prod-ns
 spec:
-  # enforce oder audit
-  validationFailureAction: "enforce"
+  # Enforce oder Audit
+  validationFailureAction: "Enforce"
   rules:
   - name: clusterpolicy-validate-pod-label-app-prod-ns
     match:

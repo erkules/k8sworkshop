@@ -3,7 +3,7 @@ kind: Policy
 metadata:       
   name: check-pvc-storageclass
 spec:           
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:        
   - name: check-pvc-storageclass
     match:      
