@@ -1,0 +1,185 @@
+containerRegistry: docker.io
+imagePullPolicy: "IfNotPresent"
+operator:
+  image:
+    name: "stackgres/operator"
+    tag: "1.4.3"
+    pullPolicy: "IfNotPresent"
+  annotations: {}
+  affinity: {}
+  nodeSelector: {}
+  serviceAccount:
+    annotations: {}
+  service:
+    annotations: {}
+  tolerations: []
+  resources: {}
+restapi:
+  name: stackgres-restapi
+  image:
+    name: "stackgres/restapi"
+    tag: "1.4.3"
+    pullPolicy: "IfNotPresent"
+  resources: {}
+  affinity: {}
+  annotations: {}
+  nodeSelector: {}
+  serviceAccount:
+    annotations: {}
+  service:
+    annotations: {}
+  tolerations: []
+jobs:
+  name: stackgres-jobs
+  image:
+    name: "stackgres/jobs"
+    tag: "1.4.3"
+    pullPolicy: "IfNotPresent"
+  resources: {}
+  annotations: {}
+  tolerations: []
+  nodeSelector: {}
+  affinity: {}
+adminui:
+  name: stackgres-adminui
+  image:
+    name: "stackgres/admin-ui"
+    tag: "1.4.3"
+    pullPolicy: "IfNotPresent"
+  resources: {}
+  service:
+    exposeHTTP: false
+    # Set to LoadBalancer to expose admin UI with a load balancer
+    # Set to NodePort to expose admin UI from kubernetes nodes
+    type: ClusterIP
+    # LoadBalancer will get created with the IP specified in this field.
+    # This feature depends on whether the underlying cloud-provider supports
+    # specifying the loadBalancerIP when a load balancer is created. This field
+    # will be ignored if the cloud-provider does not support the feature.
+    # loadBalancerIP:
+    # If specified and supported by the platform, this will restrict traffic
+    # through the cloud-provider load-balancer will be restricted to the
+    # specified client IPs. This field will be ignored if the cloud-provider does
+    # not support the feature.
+    # More info: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/
+    # loadBalancerSourceRanges:
+    # The port used to expose the service on kubernetes nodes
+    # nodePort:
+    # nodePortHTTP:
+
+serviceAccount:
+  create: true
+  # repoCredentials:
+  # - <secret name>
+initClusterRole: cluster-admin
+
+rbac:
+  create: true
+
+deploy:
+  operator: true
+  restapi: true
+
+cert:
+  autoapprove: true
+  createForOperator: true
+  createForWebApi: true
+  resetCerts: false
+  # secretName:
+  # webSecretName:
+  # key:
+  # crt:
+  # jwtRsaKey:
+  # jwtRsaPub:
+  # webKey:
+  # webCrt:
+  certManager:
+    autoConfigure: false
+    duration: "2160h"
+    renewBefore: "360h"
+    encoding: PKCS1
+    size: 2048
+
+# Custom credentials for the operator's admin user
+authentication:
+  type: jwt # oidc
+  user: admin
+  resetPassword: false
+#  password: <operator admin password>
+  secretRef:
+    name: ""
+  oidc: {}
+  #  authServerUrl: <string>
+  #  clientId: <string>
+  #  credentialsSecret: <string>
+  #  clientIdSecretRef:
+  #    name: <string>
+  #    key: <string>
+  #  credentialsSecretSecretRef:
+  #    name: <string>
+  #    Key: <string>
+
+prometheus:
+  allowAutobind: true
+
+grafana:
+  #Embed an existing grafana by setting grafana.autoEmbed to true
+  autoEmbed: true
+  user: admin
+  password: zwerk-operator
+  # Set the HTTP scheme used by grafana:
+  schema: http
+  # webHost: "kube-prometheus-stack-grafana.default.svc"
+  #Use follwing fields to indicate a secret where the grafana admin credentials are stored (replace user/password)
+  #secretNamespace:
+  #secretName:
+  #secretUserKey:
+  #secretPasswordKey:
+  datasourceName: Prometheus
+  # dashboardConfigMap:
+  # dashboardId: 9628
+  # Create grafana dashboard for postgres exporter and copy/paste share URL:
+  # - Grafana > Create > Import > Grafana.com Dashboard 9628
+  # Copy/paste grafana dashboard URL for postgres exporter:
+  # - Grafana > Dashboard > Manage > Select postgres exporter dashboard > Copy URL
+  # url: "http://localhost:3000/d/000000039/postgresql-database?orgId=1&refresh=10s"
+  # Create and copy/paste grafana API token:
+  # - Grafana > Configuration > API Keys > Add API key (for viewer) > Copy key value
+  # token: 
+
+#Following options are for developers only, but can also be useful in some cases ;)
+developer: {}
+  # logLevel: trace
+  # showStackTraces: true
+  # enableDebug: false # Show more info when starting operator and restapi
+  # enableJvmDebug: false # Only work with JVM version and allow connect
+  #                       # on port 8000 of operator Pod with jdb or similar
+  # enableJvmDebugSuspend: false
+  # externalOperatorIp: 172.17.0.1
+  # externalOperatorPort: 8080
+  # externalRestApiIp: 172.17.0.1
+  # externalRestApiPort: 8081
+  # allowPullExtensionsFromImageRepository: true
+  # disableArbitraryUser: true
+
+extensions:
+  ## To set a proxy for extensions repository add parameter proxyUrl to the URL:
+  ##  https://extensions.stackgres.io/postgres/repository?proxyUrl=<proxy scheme>%3A%2F%2F<proxy host>[%3A<proxy port>] (URL encoded)
+  repositoryUrls:
+  - https://extensions.stackgres.io/postgres/repository
+  cache:
+    enabled: false # This feature is in beta and may cause failures, please use with caution and report any error to 
+                   #   https://gitlab.com/ongresinc/stackgres/-/issues/new
+    preloadedExtensions:
+    - x86_64/linux/timescaledb-1\.7\.4-pg12
+    persistentVolume:
+      ## Only use whole numbers (e.g. not 1e6) and K/Ki/M/Mi/G/Gi as units
+      size: 1Gi
+      ## If defined, storageClass: <storageClass>
+      ## If set to "-", storageClass: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClass spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      # storageClass: "-"
+    # hostPath: /tmp/extensions-cache
+
