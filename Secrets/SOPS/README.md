@@ -93,5 +93,37 @@ sops --pgp FINGERPRINT -e ...
 
 # AGE
 
-TODO
+Eventuell:
 
+~~~
+apt install -y age
+~~~
+
+~~~
+age-keygen -o age.key 
+sops --age=$(grep publi age.key| sed 's/.* //') --encrypt --in-place cm.yaml
+~~~
+
+Decrypt
+
+
+~~~
+export SOPS_AGE_KEY_FILE=$PWD/age.key
+# Oder $XDG_CONFIG_HOME/sops/age/keys.txt
+sops  --decrypt cm.yaml
+~~~
+
+Sprich wir können jetzt fleißig in GIT verschlüsseln.
+
+
+(Flux kustomizations kennen den sops provider)
+
+~~~
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+...
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+~~~
