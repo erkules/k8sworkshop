@@ -1,6 +1,6 @@
 namePrefix: test-
 namespace: test
 patches:
-- patch.yaml
+- path: patch.yaml
 resources:
 - ../../base
