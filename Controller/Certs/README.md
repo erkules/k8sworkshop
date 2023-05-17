@@ -22,3 +22,12 @@ cfssl gencert \
         -profile=web-servers \
           webhook-csr.json | cfssljson -bare check 
 ~~~
+
+~~~
+cfssl gencert \
+  -ca=ca.pem \
+    -ca-key=ca-key.pem \
+      -config=ca-config.json \
+        -profile=web-servers \
+          webhook-csr.json | cfssljson -bare server
+~~~

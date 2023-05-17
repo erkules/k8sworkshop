@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-api
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://linsenraum.de/helm
+    targetRevision: '*'
+    path: ''
+    chart: clusterapihelm
+    helm:
+      releaseName: releasewagga
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: awshelm
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

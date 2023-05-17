@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: pong
+spec:
+  containers:
+  - name: pong
+    image: alpine
+  - name: www
+    image: erkules/nginxhostname:v2
