@@ -13,6 +13,8 @@ spec:
     pods: 10
     configmaps: 5
     services: 4
+    services.nodeports: 0
+    services.loadbalancers: 0
     count/deployments.apps: 4
     requests.cpu: 1
     requests.memory: 1Gi
