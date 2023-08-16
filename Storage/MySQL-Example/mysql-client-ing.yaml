@@ -1,14 +1,17 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind:       Ingress
 metadata:
   name: mysqlclient
 spec:
   rules:
-  - host: data.bahn.zwerk.org
+  - host: db.erkan.zwerk.org
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName:  mysqlclient
-          servicePort:  8080
+          service:  
+            name: mysqlclient
+            port:  
+              number: 8080
 

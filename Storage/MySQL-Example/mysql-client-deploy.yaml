@@ -19,6 +19,7 @@ data:
     echo Content-Type: text/plain
     echo
     echo
+    echo Abfragender Rechner: $(hostname) 
     mysql -h mysql -e "select id from infos.daten"
 
 ---
@@ -57,6 +58,12 @@ spec:
           command: 
           - /bin/bash 
           - /init/init.sh
+          readinessProbe:
+            exec:
+              command:
+              - sh 
+              - -c 
+              - "mariadb -h mysql -e 'show status'"
           volumeMounts:
             - name: cgi-script
               mountPath: /www/cgi-bin
