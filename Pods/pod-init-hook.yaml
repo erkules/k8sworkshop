@@ -47,11 +47,12 @@ spec:
     lifecycle:
       postStart:
         exec:
-          command: ["sh","-c","echo postart >/proc/1/fd/1; ps ax" ]
+          command: ["sh","-c","echo poststart >/proc/1/fd/1; ps ax" ]
           # Kleiner Protip damit die Ausgabe im Log landet :)
+          # ABER WARUM IST DAS SO?
       preStop:
         exec:
-          command: ["sh","-c","echo prestrop >/proc/1/fd/1; sleep 20 " ]
+          command: ["sh","-c","echo prestop >/proc/1/fd/1; sleep 20 " ]
   volumes:
   - name: shared
     emptyDir: {}

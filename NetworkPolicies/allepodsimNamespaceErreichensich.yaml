@@ -11,5 +11,5 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          name: netzname
+          kubernetes.io/metadata.name: netzname
   
