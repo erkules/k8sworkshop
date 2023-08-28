@@ -1,4 +1,4 @@
-# Nach Lars .. kürzer geht nicht
+# Nach Lars von wegen Eike wars .. kürzer geht nicht
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
