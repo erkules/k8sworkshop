@@ -14,6 +14,7 @@ spec:
     generate:
       synchronize: true
       kind: NetworkPolicy
+      apiVersion: networking.k8s.io/v1
       name: allow-own-name-space
       namespace:  "{{request.object.metadata.name}}"
       data:

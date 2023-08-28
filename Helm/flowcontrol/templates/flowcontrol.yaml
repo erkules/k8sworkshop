@@ -1,3 +1,4 @@
+{{/* eigentlich doof */}}
 {{ if .Values.greetings }}
 greetings: {{ .Values.greetings | quote | upper  }}
 {{ else }}
@@ -10,4 +11,15 @@ friends:
 {{- end }}
 
 
+dictionary:
+  {{- range $key, $val :=.Values.person }}
+  {{ $key }}: {{ $val }}
+  {{ if kindIs "float64"  $val }}
+  {{ if and (eq $key "alter") (gt (int $val)  30) }} alter sack {{ else }} dumm gelaufen {{ end }}
+  {{ else }} {{ typeOf $val }}
+  {{ end }}
+{{- end }}
+
+getting: {{ get .Values.person "name" }}
+nameistindict: {{ if (hasKey .Values.person "name") -}} jo {{- else -}} no {{- end }}
 
