@@ -1,0 +1,7 @@
+# Nach Lars .. kürzer geht nicht
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-pods
+  namespace: netz
+spec:
