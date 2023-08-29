@@ -6,5 +6,5 @@ spec:
   template:
     spec:
       affinity:
-      $patch: delete
+        $patch: delete
 
