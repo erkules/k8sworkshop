@@ -1,0 +1,15 @@
+namespace: jaja
+helmCharts:
+- name: tomcat
+  includeCRDs: false
+  valuesInline:
+    replicaCount: 3
+    service:
+      type: NodePort
+  releaseName: tomcat
+  version: 0.4.2
+  repo: https://charts.helm.sh/stable
+resources:
+- ns.yaml
+patches:
+- patch.yaml
