@@ -1,0 +1,46 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: tomcatkitty
+  namespace: myflux
+spec:
+  chart:
+    spec:
+      chart:   tomcat
+      version: 0.4.3 
+      sourceRef:
+        kind: HelmRepository
+        name: tomcatrepo
+  interval: 1m0s
+  postRenderers:
+  - kustomize:
+      patchesStrategicMerge:
+      - kind:        Deployment
+        apiVersion:  apps/v1
+        metadata:
+          name: tomcatkitty
+        spec:
+          template:
+            spec:
+              tolerations:
+              - key: "jaja"
+                operator: "Exists"
+              containers:
+                - name: tomcat
+                  startupProbe:
+                    httpGet:
+                      path: /sample
+                      port: 8080
+                      scheme: HTTP
+                  livenessProbe:
+                    initialDelaySeconds: 0
+                  readinessProbe:
+                    initialDelaySeconds: 0
+  serviceAccountName: myflux
+  releaseName: tomcatkitty
+  values:
+    replicaCount: 3
+    service:
+      type: NodePort
+
