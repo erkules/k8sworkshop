@@ -9,5 +9,5 @@ configMapGenerator:
   - index.html
   - mama.html
 resources:
-- www-configmap-svc.yml
+- www-configmap-svc.yaml
 - namespace.yaml
