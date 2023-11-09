@@ -1,0 +1,24 @@
+---
+apiVersion: "autoscaling.k8s.io/v1"
+kind: VerticalPodAutoscaler
+metadata:
+  name: wwwlimmited-vpa
+spec:
+  # recommenders:              <<<-- kinda ok
+  #   - name: 'alternative'
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: wwwlimitted
+  updatePolicy:
+    updateMode: Auto  # Default
+  resourcePolicy:
+    containerPolicies:
+      - containerName: '*'
+        minAllowed:
+          memory: 10Mi
+        maxAllowed:
+          memory: 500Mi
+        controlledResources: ["memory"]
+          #controlledResources: ["cpu","memory"]
+        controlledValues: "RequestsAndLimits" # RequestsOnly 

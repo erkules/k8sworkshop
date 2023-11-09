@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-resources
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: ingo3
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100M
+        ephemeral-storage: "1Gi"
+      limits:
+        cpu: 10m
+        memory: 1000M
+        ephemeral-storage: "1Gi"
+       
+

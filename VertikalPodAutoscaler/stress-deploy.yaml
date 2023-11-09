@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stress
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: stress
+  template:
+    metadata:
+      name: stress
+      labels:
+        app: stress
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: image1
+        image: jess/stress
+        args: 
+        - --vm 
+        - "1"
+        - --vm-bytes 
+        - 200m 
+        - --vm-hang 
+        - "0"
+        resources:
+          requests:
+            memory: 100Mi
+        

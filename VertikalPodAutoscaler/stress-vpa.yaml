@@ -1,0 +1,23 @@
+---
+apiVersion: "autoscaling.k8s.io/v1"
+kind: VerticalPodAutoscaler
+metadata:
+  name: stress-vpa
+spec:
+  # recommenders:              <<<-- kinda ok
+  #   - name: 'alternative'
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: stress
+  updatePolicy:
+    updateMode: "Off"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: '*'
+        minAllowed:
+          memory: 10Mi
+        maxAllowed:
+          memory: 500Mi
+        controlledResources: ["memory"]
+          #controlledResources: ["cpu","memory"]
