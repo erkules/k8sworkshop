@@ -14,4 +14,5 @@ spec:
       timeoutSeconds: 1
       initialDelaySeconds: 5
       failureThreshold: 3
+      periodSeconds: 5
 
