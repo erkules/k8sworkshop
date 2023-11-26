@@ -30,15 +30,26 @@ TODO: ist gerade verbuggt
 # Add MetalLB (zu einem laufendem Kind)
 
 ~~~
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/namespace.yaml
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.11.0/manifests/metallb.yaml
-
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
 ~~~
 
 MetalLB konfigurieren (sicher anpassen):
-(Am Besten aus dem Subnetz für die Nodes nehmen (wegen Routing und so)
+(Am dem DockerSubnetz nehmen (wegen Routing und so) 
+
+Hint:
 
 ~~~
+docker network inspect -f '{{.IPAM.Config}}' kind
+~~~
+
+Alte Versionen 0.11.x
+~~~
 kubectl apply -f metallb-cm.yaml
+~~~
+
+Jetze:
+
+~~~
+kubectl apply -f metallb-addresspool.yaml
 ~~~
 
