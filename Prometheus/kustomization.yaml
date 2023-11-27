@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- 10-monitoring-ns.yaml
+- 11-monitoring-ingress.yaml
+- 20-prometheus-rbac.yaml
+- 21-alertmanager-configmap.yaml
+- 21-prometheus-configmap.yaml
+- 21-prometheus-reloader-configmap.yaml
+- 22-prometheus-deploy.yaml
+- 25-alertmanager-ha-stateful.yaml
+- 30-grafana.yaml
+- 50-node-exporter.yaml
+- 60-kube-state-metrics-cluster-role.yaml
+- 61-kube-state-metrics-cluster-role-binding.yaml
+- 62-kube-state-metrics-service-account.yaml
+- 63-kube-state-metrics-deployment.yaml
+- 64-kube-state-metrics-service.yaml
+- 65-goldpinger.yaml
+- 70-node-problem-detector.yaml
+- 80-loki.yaml
+- 81-promtail.yaml

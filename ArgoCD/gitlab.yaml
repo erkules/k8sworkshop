@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: firstgit
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -17,3 +19,4 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
+    - PruneLast=true

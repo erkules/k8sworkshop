@@ -19,6 +19,8 @@ spec:
   - name: jaja
     image: alpine
     env:
+    - name: COLOR
+      value: red
     - name: umgebung
       valueFrom: 
         configMapKeyRef:

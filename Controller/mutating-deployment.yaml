@@ -50,14 +50,14 @@ spec:
       - name: image1
         image: erkules/webhookimg:v2
         volumeMounts:
-        - name: checkscript
+        - name: mutating
           mountPath: /usr/local/apache2/htdocs
         imagePullPolicy: IfNotPresent
       volumes:
-      - name: checkscript
+      - name: mutating
         configMap:
           defaultMode:  0777
-          name: checkscript 
+          name: mutating 
 
 ---
 
