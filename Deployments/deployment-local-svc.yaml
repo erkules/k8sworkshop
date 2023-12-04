@@ -1,0 +1,65 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: wahnsinn
+spec: 
+  selector:
+    app: wahnsinn
+      #  topologyKeys:                  # Wäre besser weil fallback
+      #      - "kubernetes.io/hostname"
+  internalTrafficPolicy: Local
+  ports:
+  - port: 80
+#   Es sind auch Umleitungen möglich 80 -> 8080
+#   targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wahnsinn
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: wahnsinn
+  template:
+    metadata:
+      name: wahnsinn
+      labels:
+        app: wahnsinn
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+      - name: image1
+        image: erkules/nginxhostname:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jumper
+spec:
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname:v1
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - wahnsinn
+        topologyKey: kubernetes.io/hostname
+    
+
+
+
+
