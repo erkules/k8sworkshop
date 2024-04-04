@@ -1,0 +1,8 @@
+suite: hier einen guten Namen hin
+templates:        
+- deployment.yaml 
+tests:
+- it: wieder nen schönen Namen
+  asserts:         
+  - isKind:
+      of: Deployment

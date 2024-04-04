@@ -4,5 +4,5 @@ resources:
 - deployment-antiaffinity.yaml
 - pong.yaml
 patches:
-- path: delete-pod.yml
+- path: delete-pod.yaml
 - path: delete-affinity.yaml
