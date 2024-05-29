@@ -11,7 +11,7 @@ data:
     echo Content-Type: text/plain
     echo
     echo
-    echo erkan_queue_length{mein=\"wert\"} $((3+RANDOM%2))
+    echo erkan_queue_length{mein=\"wert\"} $((1+RANDOM%4))
 
 ---
 apiVersion: apps/v1
