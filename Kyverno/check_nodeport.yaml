@@ -15,5 +15,5 @@ spec:
       message: "NodePort type is not allowed"
       pattern:  
         spec:   
-          type: !NodePort
+          type: "!NodePort"
 
