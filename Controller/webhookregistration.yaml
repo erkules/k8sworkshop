@@ -5,7 +5,7 @@ metadata:
 webhooks:
 - name: "webhook-check-example.linsenraum.de"
   # Fail/Ignore
-  failurePolicy: Ignore
+  failurePolicy: Fail
   namespaceSelector:
     matchExpressions:
     - key: k8scamp
