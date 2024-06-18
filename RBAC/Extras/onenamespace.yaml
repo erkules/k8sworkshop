@@ -1,4 +1,4 @@
-# Funzt nicht, weil resourceNames nicht mit create und deletecollaction geht
+# Funzt nicht, weil resourceNames nicht mit create und deletecollection geht
 # https://kubernetes.io/docs/reference/access-authn-authz/rbac/ Sieh: Note
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

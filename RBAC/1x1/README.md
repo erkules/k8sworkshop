@@ -1,18 +1,18 @@
 # 
 
-Open in another Terminal/Pane:
+Execute in a Terminal/Pane:
 
 ~~~
 watch kubectl get pods
 ~~~
 
-Open in another Terminal/Pane:
+Execute in another Terminal/Pane:
 
 ~~~
 kubectl proxy
 ~~~
 
-Then
+In a third Terminal/Pane:
 
 ~~~
 # Verb: create
@@ -24,6 +24,13 @@ curl localhost:8001/api/v1/namespaces/default/pods/rbacexample
 # Verb: delete
 curl -X DELETE localhost:8001/api/v1/namespaces/default/pods/rbacexample 
 ~~~
+
+# Namespaced Objects
+
+We still need a way to Authorize/Restrict access to a specific `Namespace`
+
+Please enjoy the fileystemlayout :)
+
 
 ~~~
 # kubectl get pods -A 
