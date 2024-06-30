@@ -1,0 +1,28 @@
+# Funzt nicht, weil resourceNames nicht mit create und deletecollection geht
+# https://kubernetes.io/docs/reference/access-authn-authz/rbac/ Sieh: Note
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: haha-ns 
+rules:
+  - apiGroups:
+    - ""
+    resources: 
+    - namespaces
+    verbs: 
+    - '*'
+    resourceNames:
+    - haha
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: uauaua
+subjects:
+- kind: User
+  name: herzog
+roleRef:
+  kind: ClusterRole
+  name: haha-ns
+  apiGroup: rbac.authorization.k8s.io
+

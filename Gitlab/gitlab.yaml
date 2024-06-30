@@ -1,0 +1,16 @@
+apiVersion: apps.gitlab.com/v1beta1
+kind: GitLab
+metadata:
+  name: gitlab
+spec:
+  chart:
+    version: "7.6.1" # https://gitlab.com/gitlab-org/cloud-native/gitlab-operator/-/blob/0.8.1/CHART_VERSIONS
+    values:
+      global:
+        hosts:
+          domain: gilab.zwerk.org # use a real domain here
+        ingress:
+          configureCertmanager: true
+      certmanager-issuer:
+        email: erkmerk@gmx.de # use your real email address here
+

@@ -1,0 +1,10 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole 
+metadata:
+  name: reduced_pod_access
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  resourceNames: ["gitlab"]
+  verbs: 
+  - '*'

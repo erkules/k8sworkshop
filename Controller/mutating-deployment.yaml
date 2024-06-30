@@ -21,7 +21,8 @@ data:
     echo  $post >/tmp/log
     ID=$(echo $post | jq -r .request.uid )
     echo $ID >/tmp/id
-    jq -n --arg id "$ID" '{apiVersion: "admission.k8s.io/v1",kind: "AdmissionReview", response: { uid: $id,allowed: true, "patchType": "JSONPatch", "patch": "ewoibWV0YWRhdGEiOnsKICAgICJhbm5vdGF0aW9ucyI6ewogICAgICAiaGFsbG8iOiAid2VsdCIKICAgIH0KICB9Cn0K" }  } }'
+    jq -n --arg id "$ID" '{ "apiVersion": "admission.k8s.io/v1", kind: "AdmissionReview", "response": { "uid": $id, "allowed": true, "patchType": "JSONPatch", "patch": "Wwp7CiJvcCI6ICJhZGQiLAoicGF0aCI6ICIvbWV0YWRhdGEvYW5ub3RhdGlvbnMvaGFsbG8iLAoidmFsdWUiOiAid2VsdCIKfQpdCg==" }  }'
+
 
 ---
 
@@ -48,16 +49,16 @@ spec:
     spec:
       containers:
       - name: image1
-        image: erkules/webhookimg:v2
+        image: erkules/webhookimg:v3
         volumeMounts:
-        - name: checkscript
+        - name: mutating
           mountPath: /usr/local/apache2/htdocs
         imagePullPolicy: IfNotPresent
       volumes:
-      - name: checkscript
+      - name: mutating
         configMap:
           defaultMode:  0777
-          name: checkscript 
+          name: mutating 
 
 ---
 

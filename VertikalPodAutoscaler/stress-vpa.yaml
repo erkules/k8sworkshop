@@ -11,7 +11,7 @@ spec:
     kind: Deployment
     name: stress
   updatePolicy:
-    updateMode: "Off"
+    updateMode: "Auto"
   resourcePolicy:
     containerPolicies:
       - containerName: '*'

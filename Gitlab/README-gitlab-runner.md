@@ -1,0 +1,1 @@
+ helm upgrade -n gitlab  --install gitlab-privi-runner  gitlab/gitlab-runner -f gitlab-runner-valyes.yaml --set gitlabUrl=https://gitlab.infra.zwerk.org,runnerRegistrationToken=7v0ZvaxQw7glYrOrRc752GW282plOb8FffZwU7lEm6sCXfTYRkFlsJMV2rdvBW6h 

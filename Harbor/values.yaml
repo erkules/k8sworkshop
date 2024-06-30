@@ -5,11 +5,9 @@ expose:
     certSource: secret
     secret:
       secretName: "harborerkanzwerkorgprod"
-      notarySecretName: "notaryerkanzwerkorgprod"
   ingress:
     hosts:
-      core: harbor.erkan.zwerk.org
-      notary: notary.erkan.zwerk.org
+      core: harbor.infra.zwerk.org
   clusterIP:
     # The name of ClusterIP service
     name: harbor
@@ -70,7 +68,7 @@ expose:
 # the IP address of k8s node
 #
 # If Harbor is deployed behind the proxy, set it as the URL of proxy
-externalURL: https://harbor.erkan.zwerk.org
+externalURL: https://harbor.infra.zwerk.org
 
 # The internal TLS used for harbor components secure communicating. In order to enable https
 # in each components tls cert files need to provided in advance.
@@ -555,7 +553,7 @@ trivy:
   podAnnotations: {}
 
 notary:
-  enabled: true
+  enabled: false
   server:
     # set the service account to be used, default if left empty
     serviceAccountName: ""

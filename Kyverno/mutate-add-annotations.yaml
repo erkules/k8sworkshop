@@ -3,7 +3,7 @@ kind: Policy
 metadata:
   name: policy-add-annotations
 spec:
-  mutateExistingOnPolicyUpdate: true
+  #mutateExistingOnPolicyUpdate: true  # Wollen wir existierende updaten brauchts auch .mutate.targets!
   rules:
   - name: "add annotations"
     match:

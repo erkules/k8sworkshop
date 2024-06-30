@@ -1,6 +1,9 @@
-helm repo add wener https://charts.wener.tech/
-helm install my-haproxy-ingress wener/haproxy-ingress --version 0.0.27 
-helm  upgrade --install --set controller.daemonset.useHostPort=true --set controller.kind=DaemonSet --set controller.tolerations="node-role.kubernetes.io/master"  my-haproxy-ingress wener/haproxy-ingress --version 0.0.27 
+helm repo add haproxytech https://haproxytech.github.io/helm-charts
+helm repo update
 
-helm  upgrade --install -f values.yaml  my-haproxy-ingress wener/haproxy-ingress --version 0.0.27
+helm upgrade --install haproxy -f values.yaml --create-namespace -n haproxy haproxytech/kubernetes-ingress 
+# Install the Gatway-API
 
+~~~
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+~~~

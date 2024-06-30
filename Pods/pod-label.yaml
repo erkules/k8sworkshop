@@ -8,5 +8,5 @@ metadata:
 spec:
   containers:
   - name: meinserver
-    image: erkules/nginxhostname
+    image: erkules/nginxhostname:v1
 

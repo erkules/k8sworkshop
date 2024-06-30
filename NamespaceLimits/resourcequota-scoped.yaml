@@ -11,6 +11,14 @@ value: 10000
 globalDefault: false
 description: "nur mal zeigen das scoped geht"
 ---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: scopediduupc
+value: 20000
+globalDefault: false
+description: "nur mal zeigen das scoped geht"
+---
 apiVersion: v1
 kind: ResourceQuota
 metadata:
@@ -19,10 +27,29 @@ metadata:
 spec:
   scopeSelector:
     matchExpressions:
-    - operator: In
-      scopeName: PriorityClass
+    - scopeName: PriorityClass
+      operator: In
       values: 
       - scopedpc
+      - scopediduupc
   hard:
     pods: 10
 ---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: zeroquota
+  namespace: scoped
+spec:
+  hard:
+    pods: 0
+  scopeSelector:
+    matchExpressions:
+    - scopeName: PriorityClass
+      operator: DoesNotExist
+    matchExpressions:
+    - scopeName: PriorityClass
+      operator: NotIn
+      values: 
+      - scopedpc
+      - scopediduupc

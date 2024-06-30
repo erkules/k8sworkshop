@@ -2,7 +2,10 @@ Basically it is about attestation (hier eben mit SBOM)
 
 
 ~~~
-syft packages erkules/cosign:google -o spdx >cosign.spdx
-COSIGN_EXPERIMENTAL=1 cosign attest -predicate ./cosign.spdx --type spdx  erkules/cosign:google
-COSIGN_EXPERIMENTAL=1 cosign verify-attestation --type spdx  erkules/cosign:google
+# SBOM erstellen
+syft scan erkules/nginxhostname:v1 -o spdx >cosign.spdx
+# Achtung lädt die Attestation auch hoch (mit crane herunter laden :)
+# oder gerne mit rekor-cli checken
+cosign attest -predicate ./cosign.spdx --type spdx  erkules/nginxhostname:v1
+cosign verify-attestation --type spdx  erkules/nginxhostname:v1 --certificate-identity 'erkan.yanar@linsenraum.de'  --certificate-oidc-issuer-regexp github.com/login/oauth  
 ~~~

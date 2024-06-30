@@ -21,6 +21,12 @@ spec:
       #nodeSelector:
       #  kubernetes.io/hostname: <hostname>
       containers:
+      - name: exporter 
+        image: prom/mysqld-exporter
+        args:
+        - --collect.auto_increment.columns 
+        - --no-collect.auto_increment.columns
+        - "--mysqld.username=root"
       - name: datenbank
         image: mariadb
         readinessProbe:

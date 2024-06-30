@@ -97,11 +97,7 @@ spec:
     podDisruptionBudget:
       maxUnavailable: 1
     volumeSpec:
-      persistentVolumeClaim:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: "8Gi"
+      emptyDir: {}
     gracePeriod: 600
     readinessProbes:
       failureThreshold: 5

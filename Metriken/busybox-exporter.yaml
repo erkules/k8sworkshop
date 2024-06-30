@@ -13,7 +13,7 @@ data:
     echo
     echo HELP erkan_queue_length nur geblubber
     echo TYPE erkan_queue_length GAUGE
-    echo erkan_queue_length{mein=\"wert\"} $((3+RANDOM%2))
+    echo erkan_queue_length{mein=\"wert\"} $((1+RANDOM%4))
 
 ---
 apiVersion: apps/v1

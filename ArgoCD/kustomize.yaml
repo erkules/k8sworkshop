@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kustomize
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/erkules/k8sworkshop.git
+    targetRevision: HEAD
+    path: Kustomize/simple 
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: red6
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - PruneLast=true
