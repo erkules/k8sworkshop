@@ -11,6 +11,8 @@ data:
     echo Content-Type: text/plain
     echo
     echo
+    echo HELP erkan_queue_length nur geblubber
+    echo TYPE erkan_queue_length GAUGE
     echo erkan_queue_length{mein=\"wert\"} $((1+RANDOM%4))
 
 ---
