@@ -7,7 +7,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: busyboxexporter
+      app: svcbusyboxexporter
   endpoints:
   - port: app
     path: '/cgi-bin/metrics' 
+    relabelings:
+     - action: replace
+       replacement: busyboxexporter
+       targetLabel: deployment

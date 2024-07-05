@@ -3,7 +3,7 @@ kind: PodMonitor
 metadata:
   name: busyboxexporter
   labels:
-    team: example
+    team: honolullu
 spec:
   selector:
     matchLabels:
@@ -11,3 +11,7 @@ spec:
   podMetricsEndpoints:
   - port: app
     path: '/cgi-bin/metrics' 
+    relabelings:
+     - action: replace
+       replacement: busyboxexporter
+       targetLabel: deployment
