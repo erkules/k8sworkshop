@@ -1,15 +1,17 @@
+# Schöner mit "Header"!!
+#kind: Kustomization
+#apiVersion: kustomize.config.k8s.io/v1beta1
 namespace: jaja
 helmCharts:
 - name: tomcat
-  includeCRDs: false
+  releaseName: tomcat
+  repo: https://charts.helm.sh/stable
   valuesInline:
     replicaCount: 3
     service:
       type: NodePort
-  releaseName: tomcat
   version: 0.4.2
-  repo: https://charts.helm.sh/stable
 resources:
 - ns.yaml
 patches:
-- patch.yaml
+- path: patch.yaml
