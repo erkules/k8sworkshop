@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: lala
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
 ---
 apiVersion: v1
 kind: Service
@@ -58,7 +58,7 @@ spec:
     spec:
       containers:
       - name: lala
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
 ---
 apiVersion: v1
 kind: Service
@@ -91,7 +91,7 @@ spec:
     spec:
       containers:
       - name: lala
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
 ---
 apiVersion: v1
 kind: Service
