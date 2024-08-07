@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: zzz
+  namespace: default
+spec:
+  containers:
+  - name: meinserver
+    image: erkules/nginxhostname
+
