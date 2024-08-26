@@ -11,16 +11,21 @@ spec:
     - gateway
     - mesh
   http:
-    - route:
+    - fault:
+        delay:
+          fixedDelay: 3s
+          percentage:
+            value: 100
+      route:
       - destination:
           host: www
           subset: hallo
           port:
             number: 80
-        weight: 10
+        weight: 50
       - destination:
           host: www
           subset: welt
           port:
             number: 80
-        weight: 90
+        weight: 50
