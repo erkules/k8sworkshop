@@ -1,0 +1,35 @@
+# Example of a native Sidecar Container 
+# initContainers don't need to end
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: native-sidecar
+spec:
+  initContainers:
+  - name: haha
+    image: alpine
+    command: 
+    - sh 
+    - -c
+    args: [" while true ; do echo ..  ; sleep 4 ; done  "]
+    restartPolicy: Always
+    lifecycle:
+      preStop:
+        exec:
+          command: ["sh","-c","echo ende initcontainer >/proc/1/fd/2; sleep 2 " ]
+  containers:
+  - name: meinserver
+    image: alpine
+    command: 
+    - sh 
+    - -c
+    args: [" while true ; do echo ..  ; sleep 4 ; done  "]
+    lifecycle:
+      preStop:
+        exec:
+          command: ["sh","-c","echo ende maincontainer >/proc/1/fd/2; sleep 10 " ]
+
+
+
+

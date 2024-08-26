@@ -50,6 +50,7 @@ spec:
           command: ["sh","-c","echo poststart >/proc/1/fd/1; ps ax" ]
           # Kleiner Protip damit die Ausgabe im Log landet :)
           # ABER WARUM IST DAS SO?
+          # Achtung funzt nicht bei geshartem PID-Namespace :)
       preStop:
         exec:
           command: ["sh","-c","echo prestop >/proc/1/fd/1; sleep 20 " ]

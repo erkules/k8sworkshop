@@ -1,0 +1,23 @@
+# Bsp zur Downward API
+# Cotainer bekommen Infor vom Pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: downward-api
+spec:
+  containers:
+  - name: ping
+    image: alpine:3
+    command:
+    - sleep
+    - "5000"
+    env:
+    - name: IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    - name: PODNAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
+
