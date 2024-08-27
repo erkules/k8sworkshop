@@ -8,6 +8,7 @@ spec:
     - 'split.hostname'
   gateways:
     - gateway
+    - mesh
   http:
     - route:
       - destination:
@@ -26,7 +27,7 @@ spec:
 ---
 # DestinationRules are applied after VirtualService
 
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: destination-split
@@ -74,7 +75,7 @@ spec:
     spec:
       containers:
       - name: image1
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
 
 ---
 apiVersion: apps/v1

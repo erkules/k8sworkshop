@@ -1,3 +1,6 @@
+# Ist eine genamespacte Ressource!!
+# nur host, welche hier enthalten sind kommen durch
+
 apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:

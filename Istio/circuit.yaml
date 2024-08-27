@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: circuit
+  labels:
+    istio-injection: enabled
+---
+# Ist eine genamespacte Ressource!!
+# nur host, welche hier enthalten sind kommen durch
+
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: circuit-gateway
+  namespace: circuit
+spec:
+  selector:
+    istio: ingress
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - 'circuit.hallo'
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpbin
+  namespace: circuit
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: httpbin
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpbin
+  namespace: circuit
+  labels:
+    app: httpbin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: httpbin
+  template:
+    metadata:
+      labels:
+        version: v1
+        app: httpbin
+    spec:
+      containers:
+      - image: docker.io/kong/httpbin
+        name: httpbin
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hui
+  namespace: circuit
+spec:
+  containers:
+  - name: ping
+    image: alpine:3
+    command:
+    - sleep
+    - "5000"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: httpbin
+  namespace: circuit
+spec:
+  host: httpbin
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 1
+      http:
+        http1MaxPendingRequests: 1
+        maxRequestsPerConnection: 1
+    outlierDetection:
+      baseEjectionTime: 1m
+      consecutive5xxErrors: 1
+      interval: 1s
+      maxEjectionPercent: 100
