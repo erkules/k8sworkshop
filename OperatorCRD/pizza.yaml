@@ -1,0 +1,8 @@
+kind: Pizza
+apiVersion: linsenraum.de/v1
+metadata:
+  name: hallihallo
+spec:
+  menge: 0
+  pizza: "fungi"
+    #  ich: "auch"
