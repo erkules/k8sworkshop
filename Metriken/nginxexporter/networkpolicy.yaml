@@ -21,3 +21,9 @@ spec:
           kubernetes.io/metadata.name: monitoring
     ports:
     - port: 9113
+  - from:
+    - namespaceSelector:
+        matchLabels: 
+          kubernetes.io/metadata.name:  ingress
+    ports: 
+    - port: 80

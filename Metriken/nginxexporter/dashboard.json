@@ -114,7 +114,7 @@
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "HTTP Anfragen/s",
       "type": "timeseries"
     }
   ],
