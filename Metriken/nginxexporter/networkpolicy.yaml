@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: savemydata
+spec:
+  podSelector:
+    matchLabels:
+      app: nginxwithexporter
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: wrk
+    ports: 
+    - port: 80
+  - from:
+    - namespaceSelector:
+        matchLabels: 
+          kubernetes.io/metadata.name: monitoring
+    ports:
+    - port: 9113

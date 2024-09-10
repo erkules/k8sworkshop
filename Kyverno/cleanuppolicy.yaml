@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v2beta1
+kind: CleanupPolicy
+metadata:
+  name: cleandeploy
+spec:
+  match:
+    any:
+    - resources:
+        kinds:
+          - Deployment
+#        selector:
+#          matchLabels:
+#            canremove: "true"
+  conditions:
+    any:
+    - key: "{{ target.spec.replicas }}"
+      operator: LessThan
+      value: 2
+  schedule: "*/5 * * * *"
+

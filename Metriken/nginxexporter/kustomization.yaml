@@ -7,6 +7,9 @@ resources:
 - podmonitor.yaml 
 - keda.yaml
 - wrk.yaml
+- ingress.yaml
+- networkpolicy.yaml
+- alert.yaml
 configMapGenerator:
 - name: wrk
   files:

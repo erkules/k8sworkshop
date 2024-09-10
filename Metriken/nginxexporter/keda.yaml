@@ -11,12 +11,12 @@ spec:
   cooldownPeriod:  10 
   minReplicaCount: 1 
   maxReplicaCount: 10
-#  advanced:                           
-#    restoreToOriginalReplicaCount: true
-#    horizontalPodAutoscalerConfig:                   # Optional. Section to specify HPA related options
-#      behavior:                                      # Optional. Use to modify HPA's scaling behavior
-#        scaleDown:
-#          stabilizationWindowSeconds: 300
+  advanced:                           
+    restoreToOriginalReplicaCount: true
+    horizontalPodAutoscalerConfig:                   # Optional. Section to specify HPA related options
+      behavior:                                      # Optional. Use to modify HPA's scaling behavior
+        scaleDown:
+          stabilizationWindowSeconds: 30
 #          policies:
 #          - type: Percent
 #            value: 100
@@ -27,6 +27,6 @@ spec:
       # Required fields:
       serverAddress: http://prometheus-operated.monitoring:9090
       metricName: nginxwithexporter
-      query: sum(nginx_connections_waiting{job="default/nginxwithexporter"})
+      query: sum(nginx_connections_waiting{job="hallo/nginxwithexporter"})
       threshold: '1'
 

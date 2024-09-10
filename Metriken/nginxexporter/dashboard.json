@@ -14,7 +14,7 @@
         "target": {
           "limit": 100,
           "matchAny": false,
-          "tags": [],
+          "tags": ["k8sworkshopo"],
           "type": "dashboard"
         },
         "type": "dashboard"
@@ -108,7 +108,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(nginx_http_requests_total{job=\"default/nginxwithexporter\"}[1m])\n",
+          "expr": "rate(nginx_http_requests_total{namespace=\"hallo\"}[1m])\n",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -120,7 +120,7 @@
   ],
   "schemaVersion": 36,
   "style": "dark",
-  "tags": [],
+  "tags": ["k8sworkshop"],
   "templating": {
     "list": []
   },
@@ -130,7 +130,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "nginexampel",
+  "title": "nginxexampel",
   "uid": "lpDwg1G4z",
   "version": 2,
   "weekStart": ""

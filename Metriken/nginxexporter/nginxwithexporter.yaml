@@ -3,10 +3,8 @@ kind: Service
 metadata:
   name: nginxwithexporter
 spec:
-  type: NodePort
   ports:
   - port:     80
-    nodePort: 30080
   selector:
     app: nginxwithexporter
 

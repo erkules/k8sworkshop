@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+  name: k8sworkshop.rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: meineapplikation.rules
+    rules:
+    - alert: windhoff
+      annotations: 
+        description: The Deployment {{ $labels.deployment }} hit the fan in Namespace {{ $labels.namespace }} 
+        summary: Hit the fan ..
+      expr: |-
+        kube_deployment_status_replicas{namespace="hallo"}==10
+      for:  1m
+      labels:
+        serverity: windhoff

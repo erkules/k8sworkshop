@@ -1,21 +1,31 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: wrk
 spec:
-  containers:
-  - name: wrk
-    image: alpine:3
-    command:
-    - sh 
-    - -c
-    - "apk add wrk; sleep 3 ; wrk -d 600s -c 100 -t 12 --latency  -s /wrk/wrk.lua http://nginxwithexporter  ; sleep 5000"
-    volumeMounts:
-    - name: wrk
-      mountPath: /wrk
-  volumes:
-  - name: wrk  
-    configMap:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wrk
+  template:
+    metadata:
       name: wrk
-
-
+      labels:
+        app: wrk
+    spec:
+      containers:
+      - name: wrk
+        image: alpine:3
+        command:
+        - sh 
+        - -c
+        - "apk add wrk; sleep 50 ; wrk -d 500s -c 100 -t 12 --latency  -s /wrk/wrk.lua http://nginxwithexporter  ; sleep 200 ; wrk -d 600s -c 100 -t 12 --latency   http://nginxwithexporter; "
+        volumeMounts:
+        - name: wrk
+          mountPath: /wrk
+      volumes:
+      - name: wrk  
+        configMap:
+          name: wrk
+    
+    

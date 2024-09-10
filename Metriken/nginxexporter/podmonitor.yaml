@@ -10,5 +10,9 @@ spec:
       app: nginxwithexporter
   podMetricsEndpoints:
   - port: metrics
+    relabelings:
+     - action: replace
+       replacement: nginxwithexporter
+       targetLabel: deployment
   podTargetLabels:
   - kubernetesday
