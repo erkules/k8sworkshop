@@ -12,5 +12,8 @@ networking:
   disableDefaultCNI: true
   podSubnet: 192.168.0.0/16
 # Eigenes CNI applyen
-# kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
-# kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
+## CALICO
+#kubectl apply --server-side -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/tigera-operator.yaml
+#kubectl apply --server-side -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/custom-resources.yaml
+
+# NOPE:kubectl -n kube-system set env daemonset/calico-node FELIX_IGNORELOOSERPF=true
