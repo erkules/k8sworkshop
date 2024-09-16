@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio-client
+  template:
+    metadata:
+      name: minio-client
+      labels:
+        app: minio-client
+    spec:
+      containers:
+      - name: minio-client
+        image: alpine:3
+        command:
+        - sh 
+        - -c
+        - "apk add minio-client; sleep 50 ; wrk -d 500s -c 100 -t 12 --latency  -s /wrk/wrk.lua http://nginxwithexporter  ; sleep 200 ; wrk -d 600s -c 100 -t 12 --latency   http://nginxwithexporter; "
+        volumeMounts:
+        - name: minio-client
+          mountPath: /minio-client
+      volumes:
+      - name: minio-client  
+        configMap:
+          name: minio-client
+    
+    
