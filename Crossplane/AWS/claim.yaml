@@ -1,0 +1,14 @@
+apiVersion: database.example.org/v1alpha1
+kind: PostgreSQLInstance
+metadata:
+  name: my-first-love
+  namespace: default
+spec:
+  parameters:
+    storageGB: 10
+  #compositionSelector:
+  #  matchLabels:
+  #    provider: aws
+  writeConnectionSecretToRef:
+    name: db-conn
+

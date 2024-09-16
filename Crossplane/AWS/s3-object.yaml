@@ -1,0 +1,15 @@
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketObject
+metadata:
+  name: object
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    bucketRef:
+      name: test-bucket-jallo
+    contentBase64: d2luZGhvZmYK
+    key: keynote
+    region: eu-central-1
+  providerConfigRef:
+    name: aws
+

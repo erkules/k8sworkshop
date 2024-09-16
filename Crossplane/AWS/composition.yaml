@@ -1,0 +1,95 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: compositepostgresqlinstances.aws.database.example.org
+  labels:
+    provider: aws
+    guide: quickstart
+    vpc: default
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: database.example.org/v1alpha1
+    kind: CompositePostgreSQLInstance
+  resources:
+    - base:
+        apiVersion: database.aws.crossplane.io/v1beta1
+        kind: RDSInstance
+        spec:
+          providerConfigRef:
+            name: aws
+          forProvider:
+            region: eu-central-1
+            dbInstanceClass: db.t2.small
+            masterUsername: masteruser
+            engine: postgres
+            engineVersion: "12"
+            skipFinalSnapshotBeforeDeletion: true
+            publiclyAccessible: true
+          writeConnectionSecretToRef:
+            namespace: crossplane-system
+      patches:
+        - fromFieldPath: "metadata.uid"
+          toFieldPath: "spec.writeConnectionSecretToRef.name"
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-postgresql"
+        - fromFieldPath: "spec.parameters.storageGB"
+          toFieldPath: "spec.forProvider.allocatedStorage"
+      connectionDetails:
+        - fromConnectionSecretKey: username
+        - fromConnectionSecretKey: password
+        - fromConnectionSecretKey: endpoint
+        - fromConnectionSecretKey: port
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1 
+        kind: Object
+        spec:
+          providerConfigRef: 
+            name:  'kubernetes-provider'
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: psql
+                namespace: pg1
+                annotations:
+                  do: apk add postgresql-client
+              spec:
+                containers:
+                - name: psql
+                  image: erkules/psql
+                  env:
+                  - name: PGHOST
+                    valueFrom: 
+                      secretKeyRef:
+                        name: db-conn
+                        key: endpoint
+                  - name: PGPORT
+                    valueFrom: 
+                      secretKeyRef:
+                        name: db-conn
+                        key: port
+                  - name: PGUSER
+                    valueFrom: 
+                      secretKeyRef:
+                        name: db-conn
+                        key: username
+                  - name: PGPASSWORD
+                    valueFrom: 
+                      secretKeyRef:
+                        name: db-conn
+                        key: password
+                  command:
+                  - sleep
+                  - "5000"
+      patches:
+      - fromFieldPath: "metadata.labels[crossplane.io/claim-name]"
+        toFieldPath:   "spec.forProvider.manifest.metadata.name"
+      - fromFieldPath: "metadata.labels[crossplane.io/claim-namespace]"
+        toFieldPath:   "spec.forProvider.manifest.metadata.namespace"
+
+
+

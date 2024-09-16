@@ -1,0 +1,55 @@
+== AWS: Managed Resources
+
+Directory: ./provider-aws
+
+Install the Provider (fyi: "family" exists)
+
+----
+kubectl apply -f provider.yaml
+kubectl get provider.pkg.crossplane.io/provider-aws -w
+----
+
+== Get Credentials
+
+
+----
+kubectl create secret generic aws-provider -n crossplane-system --from-file=creds=$HOME/.aws/credentials
+kubectl apply -f providerconfig.yaml
+----
+
+
+== AWS-CLI
+
+* We use the aws cli to get started
+* No dont do it ..
+
+----
+aws sts get-caller-identity
+aws rds create-db-instance --db-instance-identifier devopscon-rds-mysql --db-instance-class db.t3.micro --engine mysql --master-username devops --master-user-password 47114711 --allocated-storage 5
+...
+aws rds delete-db-instance --db-instance-identifier devopscon-rds-mysql --skip-final-snapshot
+----
+
+== Project
+
+* As a Dev I would like to have a db-instance and a local Client
+
+Check the composition.yaml
+
+----
+kubectl apply -f composition.yaml
+----
+
+Deploy the "API"
+
+----
+kubectl apply -f xrd.yaml
+----
+
+Create you instance/Claim/XR
+
+----
+kubectl apply -f claim.yaml
+----
+
+== fin

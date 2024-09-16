@@ -1,0 +1,11 @@
+apiVersion: s3.aws.upbound.io/v1beta2
+kind: Bucket
+metadata:
+  name: test-bucket-jallo
+spec:
+  forProvider:
+    forceDestroy: true
+    region: eu-central-1
+  providerConfigRef:
+    name: aws
+
