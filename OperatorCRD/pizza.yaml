@@ -3,6 +3,6 @@ apiVersion: linsenraum.de/v1
 metadata:
   name: hallihallo
 spec:
-  menge: 0
+  menge: 1
   pizza: "fungi"
     #  ich: "auch"

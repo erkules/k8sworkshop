@@ -35,7 +35,7 @@ spec:
     additionalPrinterColumns:
     - name: pizza
       type: string
-      jsonPath: .spec.name
+      jsonPath: .spec.pizza
     - name: menge
       type: integer
       jsonPath: .spec.menge
