@@ -17,10 +17,10 @@ spec:
       behavior:                                      # Optional. Use to modify HPA's scaling behavior
         scaleDown:
           stabilizationWindowSeconds: 30
-#          policies:
-#          - type: Percent
-#            value: 100
-#            periodSeconds: 15
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 5
   triggers:
   - type: prometheus
     metadata:
