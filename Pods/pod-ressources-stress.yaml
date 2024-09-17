@@ -1,3 +1,8 @@
+# Wir provozieren einen Restart wegen Memory
+# kubectl exec -ti pod-ressources-stress sh 
+# stress   --vm 1 --vm-bytes 150m --vm-hang 0
+# Container wird abgeschossen
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -16,7 +21,6 @@ spec:
         ephemeral-storage: "1Gi"
       limits:
         cpu: 10m
-        memory: 1000M
+        memory: 100M
         ephemeral-storage: "1Gi"
        
-# stress  -m 128m --name cg jess/stress --vm 1 --vm-bytes 100m --vm-hang 0

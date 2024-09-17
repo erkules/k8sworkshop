@@ -42,7 +42,7 @@ Also
 
 ~~~
 set +o history
-minio-client alias set s3 http://localhost:9443 minio minio123
+minio-client alias set --insecure s3 http://localhost:9443 minio minio123
 set -o history
 ~~~
 	
