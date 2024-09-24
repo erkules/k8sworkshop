@@ -1,0 +1,15 @@
+# kubectl cp . ..:/etc/falco/rules.d
+- rule: zsh_in_container
+  desc: Da ist ne zsh am start
+  condition: >
+    evt.type = execve and 
+    evt.dir = < and 
+    container.id != host and 
+    proc.name = zsh
+  output: >
+    zsh im container
+    (namespace=%k8s.ns.name pod=%k8s.pod.name   container_name=%container.name 
+    shell=%proc.name parent=%proc.pname cmdline=%proc.cmdline)    
+  priority: CRITICAL
+  tags: [heisedevsec,container]
+
