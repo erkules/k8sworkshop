@@ -5,10 +5,10 @@ networking:
 nodes:
 - role: control-plane
   image: kindest/node:v1.31.0
-- role: control-plane
-  image: kindest/node:v1.31.0
-- role: control-plane
-  image: kindest/node:v1.31.0
+#- role: control-plane
+#  image: kindest/node:v1.31.0
+#- role: control-plane
+#  image: kindest/node:v1.31.0
   #extraPortMappings:
   #- containerPort: 80
   #  hostPort: 80
