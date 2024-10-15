@@ -27,10 +27,10 @@ spec:
         namespaces:
         - "dev*"
     validate:
-      message: "Privileged mode is not allowed. Set allowPrivilegeEscalation to false"
+      message: "Set explicit 'allowPrivilegeEscalation: false'"
       pattern:
         spec:
           containers:
-          - =(securityContext):
-              =(allowPrivilegeEscalation): false
+          - securityContext:
+              allowPrivilegeEscalation: false
 
