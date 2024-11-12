@@ -8,7 +8,7 @@ resources:
 - keda.yaml
 - wrk.yaml
 - service.yaml
-- ingress.yaml
+#- ingress.yaml
 - networkpolicy.yaml
 - alert.yaml
 configMapGenerator:

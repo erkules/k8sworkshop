@@ -1,3 +1,3 @@
-FROM ubuntu:20.04
+FROM ubuntu@sha256:77d57fd89366f7d16615794a5b53e124d742404e20f035c22032233f1826bd6a
 COPY promi /app/promi
 ENTRYPOINT ["/app/promi"]
