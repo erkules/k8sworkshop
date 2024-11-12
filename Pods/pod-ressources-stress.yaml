@@ -1,5 +1,5 @@
 # Wir provozieren einen Restart wegen Memory
-# kubectl exec -ti pod-ressources-stress sh 
+# kubectl exec -ti pod-ressources-stress --  sh 
 # stress   --vm 1 --vm-bytes 150m --vm-hang 0
 # Container wird abgeschossen
 
