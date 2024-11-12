@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tomcat
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+  - repoURL: https://charts.helm.sh/stable
+    targetRevision: 0.4.3
+    path: ''
+    chart: tomcat
+    helm:
+      releaseName: feuerbotin
+      valueFiles:     
+      - $values/ArgoCD/helm/values.yaml 
+  - repoURL: https://github.com/erkules/k8sworkshop.git
+    targetRevision: main
+    ref: 'values'
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: feuerbotin
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
