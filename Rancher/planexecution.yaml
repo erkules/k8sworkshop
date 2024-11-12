@@ -1,0 +1,9 @@
+apiVersion: upgrade.cattle.io/v1
+kind: PlanExecution
+metadata:
+  name: rke2-upgrade-execution
+  namespace: system-upgrade
+spec:
+  plan:
+    name: server-plan
+

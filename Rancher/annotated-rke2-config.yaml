@@ -1,0 +1,61 @@
+#  /etc/rancher/rke2/config.yaml 
+#  nicht vergessen gibt auch: /etc/rancher/rke2/config.yaml.d/*.yaml
+
+# Token to join the cluster ./. don't set it on the (first) master
+token: "jajaaj"
+# Taint the master or let User-Workload run on the master
+node-taint:
+- node-role.kubernetes.io/master:NoSchedule
+# Wir wollen nicht auf eventuellen in-tree Code zugreifen
+cloud-provider-name: external
+cni: none,canal,calico,cilium
+# disable HelmCharts
+disable:
+- rke2-cni
+- rke2-coredns
+- rke2-ingress-nginx
+- rke2-metrics-server
+- rke2-snapshot-controller
+- rke2-snapshot-controller-crd
+- rke2-snapshot-validation-webhook
+
+write-kubeconfig-mode: '0644'
+node-external-ip: #{node_ip4},#{node_ip6}
+node-ip: #{node_ip4},#{node_ip6}
+cluster-cidr: 10.42.0.0/16,2001:cafe:42:0::/56
+service-cidr: 10.43.0.0/16,2001:cafe:43:0::/112
+disable-kube-proxy: true
+
+
+write-kubeconfig-mode: "0644"
+advertise-address: 192.168.100.100
+tls-san:
+  - 192.168.100.100
+  - rancher.arman-projects.com
+  - kubernetes.arman-projects.com
+  - rke2.arman-projects.com
+  - k8s.arman-projects.com
+cni: none
+cluster-cidr: 10.100.0.0/16
+service-cidr: 10.110.0.0/16
+cluster-dns: 10.110.0.10
+cluster-domain: arman-projects.com
+etcd-arg: "--quota-backend-bytes 2048000000"
+etcd-snapshot-schedule-cron: "0 3 * * *"
+etcd-snapshot-retention: 10
+disable:
+  - rke2-ingress-nginx
+disable-kube-proxy: true
+kube-apiserver-arg:
+  - '--default-not-ready-toleration-seconds=30'
+  - '--default-unreachable-toleration-seconds=30'
+kube-controller-manager-arg:
+  - '--node-monitor-period=4s'
+kubelet-arg:
+  - '--node-status-update-frequency=4s'
+  - '--max-pods=100'
+egress-selector-mode: disabled
+protect-kernel-defaults: true
+
+
+

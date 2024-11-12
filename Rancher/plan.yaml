@@ -1,0 +1,29 @@
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: rke2-upgrade-plan
+  namespace: system-upgrade
+spec:
+  concurrency: 1  # Upgrade one node at a time
+  version: v1.31.0+rke2r1  # The target RKE2 version
+#  nodeSelector:
+#    matchExpressions:
+#      - key: node-role.kubernetes.io/master
+#        operator: Exists
+  serviceAccountName: system-upgrade
+  cordon: true
+  drain:
+    force: true
+  upgrade:
+    image: rancher/rke2-upgrade  # Image for the RKE2 upgrade
+    command:
+      - rke2
+      - server
+      - upgrade
+  prepare:
+    image: rancher/rke2-upgrade
+    command:
+      - rke2
+      - server
+      - prepare
+
