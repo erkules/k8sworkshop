@@ -1,5 +1,5 @@
 kind: PipelineResource
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 metadata:
   name: dockerfile-git
 spec:    
@@ -11,7 +11,7 @@ spec:
     value: https://github.com/erkules/dockerfiles.git
 ---      
 kind: PipelineResource
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 metadata:
   name: docker-registry
 spec:    
@@ -22,7 +22,7 @@ spec:
 ---
 
 kind: Task
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 metadata:
   name: task-einfach-image-build
 spec:
@@ -46,7 +46,7 @@ spec:
     - --insecure
 ---      
 kind: TaskRun
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 metadata:
   name: image-builder
 spec:    

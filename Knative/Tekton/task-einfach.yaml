@@ -1,5 +1,5 @@
 kind: Task
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 metadata:
   name: task-einfach
 spec:
