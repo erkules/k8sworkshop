@@ -1,0 +1,7 @@
+namespace: falco
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- name: falco-talon-rules
+  files:
+  - rules.yaml

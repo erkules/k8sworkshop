@@ -1,0 +1,16 @@
+- rule: Read from /etc in default namespace
+  desc: Detect reading from /etc and /etc/* in  default namespace
+  condition: >
+    evt.type in (open, openat) and
+    container.id != host  and 
+    k8s.ns.name = "default" and
+    fd.typechar = "f" and
+    (fd.name = "/etc" or fd.name startswith "/etc/") 
+  output: >
+    Container in default namespace accessing /etc
+    container=%container.name 
+    file=%fd.name command=%proc.cmdline
+    ( namespace=%k8s.ns.name pod=%k8s.pod.name  )
+  priority: WARNING
+  tags: [heisedevsec,container]
+

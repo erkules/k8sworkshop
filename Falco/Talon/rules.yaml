@@ -1,0 +1,16 @@
+
+- action: Terminate Pod
+  actionner: kubernetes:terminate
+  parameters:
+    ignore_daemonsets: true
+    ignore_statefulsets: true
+    grace_period_seconds: 2
+
+- rule: what a zsh
+  match:
+    rules:
+      - zsh_in_container
+  actions:
+    - action: Terminate Pod
+#    - action: Label Pod as Suspicious
+

@@ -1,0 +1,38 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicyNamespaced
+metadata:
+  name: "append-etc-issue"
+spec:
+  kprobes:
+  - call: "sys_openat"
+    return: true
+    syscall: true
+    args:
+    - index: 0
+      type: int
+    - index: 1
+      type: "string"
+    - index: 2
+      type: "int"
+    returnArg:
+      index: 0
+      type: int
+    selectors:
+    - matchArgs:
+      - index: 1
+        operator: "Equal"
+        values:
+        - "/etc/issue"
+      - index: 2
+        operator: "Mask"
+        values:
+        - "0"      #0x00	O_RDONLY
+        - "1"	   #0x01	O_WRONLY
+        - "2"	   #0x02	O_RDWR
+        - "64"	   #0x40	O_CREAT
+        - "128"	   #0x80	O_EXCL
+        - "512"	   #0x200	O_TRUNC
+#        - "1024"  #0x400       O_APPEND  <<Das soll durch gehen
+      matchActions:
+      - action: Sigkill
+

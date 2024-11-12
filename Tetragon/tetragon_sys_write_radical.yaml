@@ -1,0 +1,28 @@
+# eigener namspace bitte
+# und nen Pod der nur sleep mach
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicyNamespaced
+metadata:
+  name: "sys-write"
+spec:
+  kprobes:
+  - call: "sys_write"
+    message: "hallo du doofi"
+    syscall: true
+    args:
+    - index: 0
+      type: "fd"
+    - index: 1
+      type: "char_buf"
+      sizeArgIndex: 3
+    - index: 2
+      type: "size_t"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "Prefix"
+        values:
+        - "/a"
+      matchActions:
+      - action: Sigkill
+

@@ -1,0 +1,23 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicyNamespaced
+metadata:
+  name: "append-etc-issue"
+spec:
+  kprobes:
+  - call: "do_syscall_*"
+    return: true
+    args:
+    - index: 0
+      type: int
+    selectors:
+#   - matchPIDs:
+    - matchArgs:
+      - index: 0
+        operator: GreaterThan
+        values:
+        - "-1"
+      matchActions:
+      - action: Override
+        argError: -1
+    #  - action: Sigkill
+

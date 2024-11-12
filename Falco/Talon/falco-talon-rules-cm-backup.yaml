@@ -1,0 +1,33 @@
+apiVersion: v1
+data:
+  rules.yaml: "- action: Terminate Pod\n  actionner: kubernetes:terminate\n\n- action:
+    Disable outbound connections with Calico\n  actionner: calico:networkpolicy\n\n-
+    action: Label Pod as Suspicious\n  actionner: kubernetes:label\n  parameters:\n
+    \   labels:\n      suspicious: \"true\"\n\n- rule: Suspicious outbound connection\n
+    \ match:\n    rules:\n      - Outbound Connection to Suspicious IPs\n  actions:\n
+    \   - action: Disable outbound connections with Calico\n    - action: Terminate
+    Pod\n      parameters:\n        grace_period_seconds: 20\n\n- rule: Terminal shell
+    in container \n  match:\n    rules:\n      - Terminal shell in container\n    output_fields:\n
+    \     - k8s.ns.name!=kube-system, k8s.ns.name!=falco\n  actions:\n    - action:
+    Label Pod as Suspicious\n\n- action: Terminate Pod\n  actionner: kubernetes:terminate\n
+    \ parameters:\n    ignore_daemonsets: true\n    ignore_statefulsets: true\n    grace_period_seconds:
+    2\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"rules.yaml":"- action: Terminate Pod\n  actionner: kubernetes:terminate\n\n- action: Disable outbound connections with Calico\n  actionner: calico:networkpolicy\n\n- action: Label Pod as Suspicious\n  actionner: kubernetes:label\n  parameters:\n    labels:\n      suspicious: \"true\"\n\n- rule: Suspicious outbound connection\n  match:\n    rules:\n      - Outbound Connection to Suspicious IPs\n  actions:\n    - action: Disable outbound connections with Calico\n    - action: Terminate Pod\n      parameters:\n        grace_period_seconds: 20\n\n- rule: Terminal shell in container \n  match:\n    rules:\n      - Terminal shell in container\n    output_fields:\n      - k8s.ns.name!=kube-system, k8s.ns.name!=falco\n  actions:\n    - action: Label Pod as Suspicious\n\n- action: Terminate Pod\n  actionner: kubernetes:terminate\n  parameters:\n    ignore_daemonsets: true\n    ignore_statefulsets: true\n    grace_period_seconds: 2\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"falco-talon-rules","namespace":"falco"}}
+    meta.helm.sh/release-name: falco-talon
+    meta.helm.sh/release-namespace: falco
+  creationTimestamp: "2024-09-22T15:56:24Z"
+  labels:
+    app.kubernetes.io/instance: falco-talon
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: falco-talon
+    app.kubernetes.io/part-of: falco-talon
+    app.kubernetes.io/version: main
+    helm.sh/chart: falco-talon-0.1.0
+  name: falco-talon-rules
+  namespace: falco
+  resourceVersion: "3628813"
+  uid: 97eab14e-8f7b-48dd-9d52-c269e29bd1fa

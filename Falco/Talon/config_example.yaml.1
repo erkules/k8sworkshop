@@ -1,0 +1,52 @@
+listen_address: "0.0.0.0" # default: "0.0.0.0"
+listen_port: "2803" # default: "2803"
+rules_files:
+  - "./rules.yaml" # default: "./rules.yaml"
+# kubeConfig: "~/.kube/config" # only if Falco Talon is running outside Kubernetes
+log_format: "color" # log Format: text, color, json (default: color)
+watch_rules: true # reload if the rules files changes (default: true)
+print_all_events: true # print in logs all received events, not only those which match
+otel:
+  traces_enabled: true
+  metrics_enabled: true
+  collector_port: 4317
+  collector_endpoint: localhost
+  collector_use_insecure_grpc: true
+  timeout: 10
+
+deduplication:
+  leader_election: true # enable the leader election for cluster mode (in k8s only)
+  time_window_seconds: 5 # duration in seconds for the deduplication time window (default: 5)
+
+default_notifiers: # these notifiers will be enabled for all rules
+  - k8sevents
+
+# aws:
+#   role_arn: arn:aws:iam::<account_number>:role/<role_name>
+#   external_id: <external_id>
+#   region: <region> # if not specified, default region from provider credential chain will be used
+#   access_key: <access_key> # if not specified, default access_key from provider credential chain will be used
+#   secret_key: <secret_key> # if not specified, default secret_key from provider credential chain will be used
+
+# minio:
+#   endpoint: <endpoint> # endpoint
+#   access_key: <access_key> # access key
+#   secret_key: <secret_key> # secret key
+#   use_ssl: false # Use SSL
+
+notifiers:
+  slack:
+    webhook_url: "https://hooks.slack.com/services/XXXX"
+    # icon: "" # default: "https://upload.wikimedia.org/wikipedia/commons/2/26/Circaetus_gallicus_claw.jpg"
+    # username: "" # default: "Falco Talon"
+    footer: "" # default: "https://github.com/falco-talon/falco-talon"
+    format: long # default: long
+  # webhook:
+  #   url: ""
+  # smtp:
+  #   host_port: ""
+  #   from: ""
+  #   to: ""
+  #   user: ""
+  #   password: ""
+  #   format: "html"

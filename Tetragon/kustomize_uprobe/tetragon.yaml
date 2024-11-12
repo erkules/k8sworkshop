@@ -1,0 +1,9 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicyNamespaced
+metadata:
+  name: "promiuprobe"
+spec:
+  uprobes:
+  - path: "/app/promi"
+    symbols:
+    - "main:greetings"

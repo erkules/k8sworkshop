@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: forfalco
+  name: forfalco
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forfalco
+  template:
+    metadata:
+      labels:
+        app: forfalco
+    spec:
+       nodeSelector:
+         kubernetes.io/hostname: erkan1
+       containers:
+       - name: ping
+         image: alpine:3
+         command:
+         - sleep
+         - "5000"
+

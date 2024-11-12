@@ -11,7 +11,7 @@ helm upgrade --install --create-namespace  falco falcosecurity/falco --namespace
 
 # Ohne eigene Rules mit weiterleitung an falco-talon
 
-helm upgrade --install --create-namespace  falco falcosecurity/falco --namespace falco --set falcosidekick.enabled=true --set falcosidekick.webui.enabled=true --set ebpf.enabled=true --set falcoctl.artifact.install.enabled=false --set falcoctl.artifact.follow.enabled=false --set "falco.rules_files={/etc/falco/falco_rules.local.yaml,/etc/falco/rules.d}" --set falcosidekick.config.talon.address=http://falco-talon:2803 
+helm upgrade --install --create-namespace  falco falcosecurity/falco --namespace falco --set falcosidekick.enabled=true --set falcosidekick.webui.enabled=true --set ebpf.enabled=true --set falcoctl.artifact.install.enabled=false --set falcoctl.artifact.follow.enabled=false --set "falco.rules_files={/etc/falco/falco_rules.local.yaml,/etc/falco/rules.d}" --set falcosidekick.config.talon.address=http://falco-talon:2803  --values values.yaml
 
 
 

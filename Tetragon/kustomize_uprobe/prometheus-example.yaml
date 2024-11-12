@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promi
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: promi
+  template:
+    metadata:
+      labels:
+        app: promi
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port:   '8080'
+        prometheus.io/path:   '/metrics'
+    spec:
+      containers:
+        - name: meinexporter
+          ports:
+          - name: http
+            containerPort: 8080
+          image: erkules/promi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: promi
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: promi
+---
+
