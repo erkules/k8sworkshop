@@ -1,3 +1,9 @@
+https://linsenraum.de/KubernetesCamp/
+ArgoCD/gitlab.yaml
+Warning: metadata.finalizers: "resources-finalizer.argocd.argoproj.io": prefer a domain-qualified finalizer name to avoid accidental conflicts with other finalizer writers
+application.argoproj.io/firstgit created
+
+
 Die Fluxobjekte müssen geupgraded werden v1beta -> v1 (oder so)
 
 Certs im Mutating-Webhook-Depl sind die vom validation. NUTZE ENDLICH DEN CERT_MANAGER DU HONK
@@ -12,12 +18,8 @@ It does not do any mounting to the system at all!
 
 VPA?
 
-Soll der Node-Detector in Prometheus/ bleiben? 
-Dann müsste er aber auch in das monitoring namespace :/
 
-
-Checken ob ich die Konventionen einhalte
-https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/instrumentation.md
 
 Labels für Loki/Prometheus so setzen, dass Split-Window effektiv eingesetzt werden kann.
 
+SERVICEMONITOR überarbeiten!!

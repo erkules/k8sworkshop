@@ -5,5 +5,6 @@ helm upgrade --install haproxy -f values.yaml --create-namespace -n haproxy hapr
 # Install the Gatway-API
 
 ~~~
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+#kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.1/experimental-install.yaml
 ~~~
