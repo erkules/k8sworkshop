@@ -1,0 +1,28 @@
+# Sinnloses Bsp, aber an sich goil, auf andere Objekte (calls) in der Validierung zuzugreifen
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: validate-hpa-replicas
+spec:
+  rules:
+    - name: validate-replicas
+      match:
+        resources:
+          kinds:
+            - Deployment
+      context:
+        - name: gehtauch
+          configMap:
+            name: conf
+            namespace: vorlage
+        - name: hpa
+          apiCall:
+            urlPath: "/apis/autoscaling/v1/namespaces/{{ request.object.metadata.namespace }}/horizontalpodautoscalers/{{ request.object.metadata.name }}"
+      validate:
+        message: "The Deployment replicas must match the minReplicas of the associated HPA."
+        deny:
+          conditions:
+            - key: "{{ request.object.spec.replicas }}"
+              operator: NotEquals
+              value: "{{ hpa.status.minReplicas }}"
+
