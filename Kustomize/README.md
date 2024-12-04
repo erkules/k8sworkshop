@@ -3,7 +3,7 @@ Beispiel für kubectl kustomize um Configmaps in eignen Dateien zu verwalten.
 
 
 ~~~
-kubectl kustomize .  | kubectl apply -f -
+kubectl apply -k .
 ~~~
 
 kubectl kustomize liest die kustomization.yaml.

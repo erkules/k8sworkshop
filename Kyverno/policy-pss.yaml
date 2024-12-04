@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: Policy    
+metadata:       
+  name: use-pss
+spec:           
+  background: true
+  validationFailureAction: Enforce
+  rules:        
+  - name: rescticted
+    match:      
+      resources:
+        kinds:  
+        - Pod
+        name: "hallo*"
+    validate:   
+      message: "PSS resticted baby"
+      podSecurity:
+        level: restricted
+        version: latest
+        
+

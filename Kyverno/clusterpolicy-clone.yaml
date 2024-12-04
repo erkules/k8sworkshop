@@ -1,0 +1,25 @@
+# Hier wir ein Objekt (CM) in andere Namespaces gesynct
+# Wir brauchen aber auch die Vorlage
+# via https://www.youtube.com/watch?v=EsX0yzNtdLY&list=PLgEqb619wcz_tuBt9K6gRunpnUPqbPQAb
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: clusterpolicy-clone-cm
+spec:
+  rules:
+  - name: clusterpolicy-clone-cm
+    match:
+      resources:
+        kinds:
+        - Namespace
+        namespaces:
+        - "hund*"
+    generate:
+      synchronize: true
+      kind: ConfigMap
+      apiVersion: v1
+      name: fromabove
+      namespace:  "{{request.object.metadata.name}}"
+      clone: 
+        name: tothepeople
+        namespace: vorlage

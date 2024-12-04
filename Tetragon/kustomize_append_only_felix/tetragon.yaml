@@ -27,7 +27,7 @@ spec:
         operator: "Mask"
         values:
         - "0"      #0x00	O_RDONLY
-        - "1"	   #0x01	O_WRONLY
+#        - "1"	   #0x01	O_WRONLY
         - "2"	   #0x02	O_RDWR
         - "64"	   #0x40	O_CREAT
         - "128"	   #0x80	O_EXCL
