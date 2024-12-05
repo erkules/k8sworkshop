@@ -4,6 +4,8 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: allowed-pod-priorities
+  annotations:
+    pod-policies.kyverno.io/autogen-controllers: none
 spec:
   validationFailureAction: Enforce
   background: false
@@ -15,7 +17,6 @@ spec:
         - Pod
         namespaces:
         - "kunde*"
-
     validate:
       message: >-
         The Pod PriorityClass {{ request.object.spec.priorityClassName }}

@@ -1,5 +1,5 @@
 #https://kyverno.io/policies/cleanup/cleanup-bare-pods/cleanup-bare-pods/
-apiVersion: kyverno.io/v2beta1
+apiVersion: kyverno.io/v2
 kind: CleanupPolicy
 metadata:
   name: clean-bare-pods
@@ -8,7 +8,7 @@ spec:
     any:
     - resources:
         kinds:
-          - Pod
+        - Pod
   conditions:
     all:
     - key: "{{ target.metadata.ownerReferences[] || `[]` }}"

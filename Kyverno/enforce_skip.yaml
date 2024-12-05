@@ -4,16 +4,16 @@ metadata:
   name: enfocre-skip
 spec:
   rules:
-    - name: init-containers-check
-      match:
-        resources:
-          kinds:
-            - Pod
-      validate:
-        message: "skippy"
-        pattern:
-          spec:
-            initContainers:
-              - securityContext:
-                  capabilities:
-                    drop: ["ALL"]
+  - name: init-containers-check
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "skippy"
+      pattern:
+        spec:
+          initContainers:
+          - securityContext:
+              capabilities:
+                drop: ["ALL"]
