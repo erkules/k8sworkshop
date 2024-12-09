@@ -10,9 +10,10 @@ spec:
       key: ca.crt
   target:
     configMap:
-      key: selfsigned-ca-trust
+      key: ca-certificates.crt
     namespaceSelector:
       matchLabels:
         kubernetes.io/metadata.name: trustmanager-selfsigned
- 
+
+# namespaceSelector still needs to read the secrets from a 'trusted Namespace' https://github.com/cert-manager/trust-manager/issues/131 to the rescure (namspaced bundles) 
 

@@ -17,7 +17,7 @@ spec:
         image: alpine/curl
         volumeMounts:
         - name: trusted-ca
-          mountPath: /etc/trusted-ca
+          mountPath: /etc/ssl/certs
           readOnly: true
         args:
         - sleep
@@ -25,5 +25,10 @@ spec:
       volumes:
       - name: trusted-ca
         configMap:
-          name: trusted-ca-bundle
+          name: selfsigned-ca-trust
+          defaultMode: 0644
+          optional: false
+          items:
+          - key: ca-certificates.crt
+            path: ca-certificates.crt
 
