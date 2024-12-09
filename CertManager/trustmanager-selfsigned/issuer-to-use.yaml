@@ -1,0 +1,8 @@
+# Only for the root-ca creation (or provide you own secret)
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ca-issuer
+spec:
+  selfSigned: {}
+

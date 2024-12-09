@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: client-cert
+spec:
+  secretName: client-cert-secret
+  duration: 2160h # 90 days
+  renewBefore: 1h
+  commonName: client.client-auth-bsp.svc.cluster.local
+  dnsNames:
+    - client.client-auth-bsp.svc.cluster.local
+  usages:
+    - client auth
+  issuerRef:
+    name: ca-issuer
+

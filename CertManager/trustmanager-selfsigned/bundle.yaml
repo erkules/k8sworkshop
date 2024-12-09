@@ -1,0 +1,18 @@
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: selfsigned-ca-trust
+spec:
+  sources:
+  - useDefaultCAs: true
+  - secret:
+      name: server-cert-secret
+      key: ca.crt
+  target:
+    configMap:
+      key: selfsigned-ca-trust
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: trustmanager-selfsigned
+ 
+

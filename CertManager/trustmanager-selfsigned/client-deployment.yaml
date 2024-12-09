@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: curl-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curl
+  template:
+    metadata:
+      labels:
+        app: curl
+    spec:
+      containers:
+      - name: curl
+        image: alpine/curl
+        volumeMounts:
+        - name: trusted-ca
+          mountPath: /etc/trusted-ca
+          readOnly: true
+        args:
+        - sleep
+        - "5000"
+      volumes:
+      - name: trusted-ca
+        configMap:
+          name: trusted-ca-bundle
+
