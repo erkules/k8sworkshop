@@ -10,7 +10,10 @@ Jetze mit Client-auth
 * Cert für Client
 * Client ausgerollt
 
+Itterationen des Glücks
 
 ~~~
-curl --cacert ./ca.crt --key tls.key --cert  tls.crt  https://server 
+curl  https://server                                                  # :(
+curl --cacert ./ca.crt  https://server                                # :(
+curl --cacert ./ca.crt --key tls.key --cert  tls.crt  https://server  # \o/
 ~~~
