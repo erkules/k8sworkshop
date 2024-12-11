@@ -3,6 +3,8 @@ kind: Kustomization
 namespace: trustmanager-selfsigned
 resources:
 - ns.yaml
+- issuer.yaml
+- root-ca.yaml
 - issuer-to-use.yaml
 - server-cert.yaml
 - bundle.yaml

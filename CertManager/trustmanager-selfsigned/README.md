@@ -1,24 +1,9 @@
 # 
 
-* Sehr simple 
-* Braucht Trust-Manager
+Selbst Bootstrapping :D
+Nutzt selfsigned issuer zum Bootstrappen :D
 
-# Uscase
-
-* Wir haben nur ein Cert
-* Sonst willen wir für dieses selfsigned Cert die CA verteilen
-
-
-#  CA-Issuer
-
-* Bsp. für Clusterintern
-* Namspaced Issuer
-* CA
-* Cert für Server 
-* Server hat SVC
-* Cert für Client
-* Client ausgerollt
-
+Achung auf bundle achten. Wie müssen in den Namespace ein Secret schieben, damit der Trust-Manager den pickt (Trusted Namespace).
 
 ~~~
 curl --cacert /tmp/certs/ca.crt https://server
