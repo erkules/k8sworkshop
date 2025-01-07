@@ -4,20 +4,20 @@ metadata:
   name: fanout
   annotations:
     traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
   - http:
       paths:
-      - path: /www
-        pathType: Prefix
+      - path: /www(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: www
             port:  
               number: 80
-      - path: /web
-        pathType: Prefix
+      - path: /web(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
           service: 
             name: web
