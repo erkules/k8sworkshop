@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: conni
 data:
-  hallo: welt 
+  hallo: mond
   key: |-
    hhhh
    hhhh
