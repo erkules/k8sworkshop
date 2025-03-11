@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+stringData:
+  hcloud: {{ .Values.hetzner.TOKEN }}
+kind: Secret
+metadata:
+  labels:
+    clusterctl.cluster.x-k8s.io/move: ""
+  name: hetzner
+---
+apiVersion: v1
+stringData:
+  token: {{ .Values.hetzner.TOKEN }}
+kind: Secret
+metadata:
+  labels:
+    clusterctl.cluster.x-k8s.io/move: ""
+  name: hcloud
+---
