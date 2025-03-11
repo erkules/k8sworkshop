@@ -20,8 +20,10 @@ export KUBERNETES_VERSION=1.30.9
 export SSH_KEY_NAME=k8s
 ~~~
 
+Secret mit API-Token muss noch ausgerollt werden!eins11!!
+
 ~~~
-clusterctl generate cluster hallo -v 5 --infrastructure hetzner >hallo-cluster.yaml
+clusterctl generate cluster hallo  --infrastructure hetzner >hallo-cluster.yaml
 ~~~
 
 Gerne mal die replicas des MachineDeployments ändern
