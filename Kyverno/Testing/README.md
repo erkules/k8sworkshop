@@ -16,6 +16,11 @@ sudo cp kyverno /usr/local/bin/
 
 # Testing Dry-Run 
 
+~~~
+kubectl kyverno apply ../policy_validate_pod_label.yaml --resource ../../Pods/pod.yaml
+~~~
+
+
 # Testing
 
 * mit einer eigenen Policy checken
