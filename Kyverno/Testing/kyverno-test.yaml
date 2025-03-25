@@ -1,0 +1,26 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kyverno-test
+policies:
+  - ../policy_validate_pod_label.yaml
+resources:
+  - ../../Pods/pod.yaml
+  - ../../Pods/ping.yaml
+results:
+- policy: validate-pod-label-app
+  isValidatingAdmissionPolicy: true # Nervig brauchts bei validation
+  rule:  validate-pod-label-app
+  resources:
+  - www
+  - ping
+  kind: pods
+  result: fail
+#checks:
+#- match:
+#    resource: {} # match results associated with a resource
+#    policy: {} # match results associated with a policy
+#    rule: {} # match results associated with a rule
+#  assert: {} # assertion to validate the content of matched elements
+#  error: {} # negative assertion to validate the content of matched elements
+#

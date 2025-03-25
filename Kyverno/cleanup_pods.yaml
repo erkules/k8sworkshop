@@ -1,4 +1,5 @@
 #https://kyverno.io/policies/cleanup/cleanup-bare-pods/cleanup-bare-pods/
+#Achtung der kyverno:cleanup-controller braucht mehr rechte
 apiVersion: kyverno.io/v2
 kind: CleanupPolicy
 metadata:
