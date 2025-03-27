@@ -1,0 +1,31 @@
+# Sinnloses Bsp, aber an sich goil, auf andere Objekte (calls) in der Validierung zuzugreifen
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: validate-ns-exists4pod
+spec:
+  validationFailureAction: Audit #Enforce
+  rules:
+    - name: validate-ns-exists4pod
+      match:
+        resources:
+          kinds:
+            - Pod
+      context:
+        - name: network
+          apiCall:
+            urlPath: "/apis/networking.k8s.io/v1/namespaces/{{ request.namespace }}/networkpolicies/"
+      preconditions:
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+        - CREATE
+        - UPDATE
+      validate:
+        message: "NetworkPolicy default-deny missing"
+        deny: 
+          conditions:
+            - key: "default-deny"
+              operator: AnyNotIn
+              value: "{{ network.items[].metadata.name  }}"
+

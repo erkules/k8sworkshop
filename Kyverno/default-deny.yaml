@@ -1,0 +1,12 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+    #  ingress:                   # Hier steht eigentlich was erlaubt ist
+    #  - from:                    # Da hier nichts steht 
+    #    - podSelector: {}        # ist auch nichts erlaubt und nur das (implizite) Verbot
+                                  # von oben zieht (eingehender Traffic auf alle Pods im Namespace)
