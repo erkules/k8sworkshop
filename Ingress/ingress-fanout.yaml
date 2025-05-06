@@ -4,6 +4,7 @@ metadata:
   name: fanout
   annotations:
     traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
+    # muss nicht nicht für nginx noch ein use-regex rein?
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
