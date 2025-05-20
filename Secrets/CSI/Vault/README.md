@@ -18,7 +18,7 @@ Repos:
 ~~~
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
-
+helm repo update
 ~~~
 
 
@@ -37,9 +37,11 @@ kubectl exec vault-0 -- sh /tmp/kubeauth.txt
 
 ## Legen wir noch ein paar Secrets an
 
+~~~
 kubectl exec -ti vault-0 -- sh 
 / $ vault kv put secret/devops/ich name=erkan  passwort=psst
 / $ exit
+~~~
 
 ## Wir brauchen noch eine (Secret)ProviderClass
 
@@ -59,7 +61,9 @@ kubectl apply -f pod.yaml
 Check for /secret in the Pod gimmesecret \o/
 
 
-
+~~~
+kubectl exec -ti gimmesecret -- sh
+~~~
 
 
 

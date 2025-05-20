@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: clusterpolicy-generate-networkpolicy-ns
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+  - name: clusterpolicy-ns-psa
+    match:
+      resources:
+        kinds:
+        - Namespace
+    validate:   
+      message: "PSS ist not restricted :( {{request.userInfo.username}}"
+      pattern:  
+        metadata:   
+          labels:
+            pod-security.kubernetes.io/enforce: restricted

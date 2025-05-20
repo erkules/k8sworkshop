@@ -23,3 +23,6 @@ VPA?
 Labels für Loki/Prometheus so setzen, dass Split-Window effektiv eingesetzt werden kann.
 
 SERVICEMONITOR überarbeiten!!
+
+
+Secrets/CSI aktualisieren

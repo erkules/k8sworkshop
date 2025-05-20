@@ -6,7 +6,7 @@ metadata:
 spec:
   clusterSelector:
     matchLabels:
-      cilium: enabeld
+      cilium: enabled
   resources:
   - kind: ConfigMap
     name: cilium

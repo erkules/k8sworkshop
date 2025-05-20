@@ -13,3 +13,5 @@
 * only one Report pro Resource
 * Sollten wir kyberno reports in einen eigenen etcd ausrollen?
 * * Noch besser es muss kein etcd sein der API-server kann delegieren und Kyverno macht das schon
+
+validationPolicy ist deprecated -> validate.failurePolicy

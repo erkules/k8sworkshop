@@ -4,6 +4,7 @@ metadata:
   name: nginxwithexporter
   labels:
     team: example
+    prometheus: default
 spec:
   selector:
     matchLabels:

@@ -6,6 +6,14 @@
 * keda
 * wrk
 
+
+
+
+# Hee wir haben ne kustomization
+
+
+
+----------- INGORE -------------
 # Nignx/Exporter ausrollen
 
 Öffnet einen Port 30080
