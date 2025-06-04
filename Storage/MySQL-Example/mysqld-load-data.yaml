@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysqlload
+data:
+  load.sh: |-
+    #!/bin/bash
+    apt update
+    apt install -y mariadb-client
+    mariadb -h mysql   -e 'create schema infos;'
+    mariadb -h mysql   -e 'create table infos.daten (id int);'
+    mariadb -h mysql   -e 'insert into infos.daten values(1),(2),(45),(8),(51),(22),(435),(88);'
+
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -12,15 +26,16 @@ spec:
     spec:
       containers:
       - name: hallo
-        image: mariadb
-          #command: ["/bin/sh" , "-c" ]
-        command: 
-        - /bin/sh
-        - -c
-        - |
-          /bin/bash <<'EOF'
-          mariadb -h mysql -e 'create schema infos;'
-          mariadb -h mysql -e 'create table infos.daten (id int);'
-          mariadb -h mysql -e 'insert into infos.daten values(1),(2),(45),(8),(51),(22),(435),(88);'
-          EOF
+        image: ubuntu
+        command: ["/init/load.sh" ]
+        volumeMounts:
+        - name: load
+          mountPath: /init
       restartPolicy: OnFailure  
+      volumes:
+      - name: load
+        configMap:
+          name: mysqlload
+          defaultMode: 0555
+
+

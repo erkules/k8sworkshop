@@ -25,9 +25,21 @@ kubectl apply -f mysql-client-ing.yaml
 
 # Abruf
 
+Bitte in den mysql-client hüpfen
+
+und curl installieren
+
 ~~~
-curl localhost:8080/cgi-bin/select
+apt-get update
+apt-get install -y curl 
 ~~~
+
+Und nun das CGI-aufrufen
+
+~~~
+watch curl -s localhost:8080/cgi-bin/select
+~~~
+
 Fertig
 
 
