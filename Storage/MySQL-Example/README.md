@@ -5,7 +5,7 @@
 
 
 ~~~
-kubeclt apply -f mysqld-pvc.yaml 
+kubectl apply -f mysqld-pvc.yaml 
 kubectl apply -f mysqld-deploy.yaml
 kubectl apply -f mysqld-svc.yaml
 ~~~
