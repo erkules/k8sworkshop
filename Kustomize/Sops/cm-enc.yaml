@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: index
+data:
+    index.html: ENC[AES256_GCM,data:xEYzXrIAlfoABZept5vv9QrRKmmBFOzubw+uzBK3U386wXOEr3ftwFo8ZN4Vfw==,iv:zWDKOwHiIegrNxWePQFWVFMLcmSAoDCHnblIRHgeS4g=,tag:5uEH7LRSWDBvaGHBirKG7Q==,type:str]
+    mama.html: ENC[AES256_GCM,data:ONrM3UyjYpdnxWahlXxbVDjbtnkq5dU=,iv:2vVxXeQEs315TnmDBk11AdLs5rzS/+EEjxtXYtk1EF0=,tag:LGqikJVvf0cFFrLP9lCGLQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age13s27rgjakxc3vqqnzpzm0fd0a55z6tyn3sevy8w2xqzde6a0dvtsuvrgmq
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBnTlhVMm41VG1UalBpMDg4
+            NnBDcm1ITDVmK2IxY3k1bnNreG1qNFZWRkZRCktFR0w1enJBZm5LVExMQWJtNDV5
+            UHFhckdhMFc0WUEvb3oxL2tocGVWbWcKLS0tIHc0T1JGb21nUkpNT1FYb2tMM20y
+            TkJIa2k3SUwwdUo1OE5ESmxqVzVLRDAK3Ti+HiZRvcoI7BAL2U7ny7Sqp/9E2aRe
+            yMln1Zb1WJZelkBqbEliSGz442GXn5u339xsthMoVZhawO1FqHDM6w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-12-30T16:10:44Z"
+    mac: ENC[AES256_GCM,data:TVcdxi/Aeh4ncnVNB968/Qjv3Rw0wo5G0tDhDcpvg83BP9uVsg5QuE/LtlnzlBV0E0XFUaO0RA+7BYYUf5GsT7pI1k5XLcjpzGPnzLYSYpfryyqNFgc901+Xv8ovwIlIaWmDkKojTaQvWmnuxfH1r+VNar5jIProsDrZm8KbIA4=,iv:eNdUWWi2PYWES4J1i4V+fvDSUuEhuhwqvyFr0iQrzzk=,tag:7lsXeGeE2/10WQ6whOxzsg==,type:str]
+    pgp: []
+    unencrypted_regex: ^(apiVersion|metadata|kind|type)
+    version: 3.8.1

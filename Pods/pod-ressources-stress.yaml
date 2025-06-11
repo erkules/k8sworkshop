@@ -10,7 +10,7 @@ metadata:
 spec:
   containers:
   - name: stress
-    image: jess/stress
+    image: dockerpinata/stress:2.1
     command:
     - sleep
     - "5000"

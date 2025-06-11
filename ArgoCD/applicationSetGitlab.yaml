@@ -1,5 +1,29 @@
-# Schon geil an ArgoCD
-# TODO
-# generateors=> git
-# Bei MergeRequest ne Application bauen
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps-from-git
+spec:
+  generators :
+    - git:
+        repoURL: https://github.com/your-org/your-repo.git
+        revision: HEAD
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/your-org/your-repo.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+
 

@@ -16,7 +16,13 @@ spec:
     namespace: red6
   syncPolicy:
     automated:
-      selfHeal: true
+      selfHeal:   true # Monitor die Resourcen und fixe wenn was futsch ist
+      prune:      true # Deletes in Git werden "durchgereicht"
+      allowEmpty: false # Darf alles gelöscht werden?
     syncOptions:
-    - CreateNamespace=true
+    - CreateNamespace=true     # 
     - PruneLast=true
+    - Validate=false           # Wenn zu.B. dir CRDs noch installiert werden .. aber auch .. doof
+    - ApplyOutOfSyncOnly=true  # anstatt alles zu applyen nur die objekte mit delta
+    - PrunePropagationPolicy=foreground # Wie gehe ich mit Cacardierenden deltes um? background,foreground,orphan.
+    - RespectIgnoreDifferences=true # When syncing changes, respect fields ignored bythe ignoreDifferences configuration
