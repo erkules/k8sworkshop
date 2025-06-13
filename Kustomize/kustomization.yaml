@@ -1,7 +1,7 @@
 commonLabels: 
   hallo: welt
 generatorOptions:
-  disableNameSuffixHash: true # Wird eigentlich hier nicht gebraucht sondern, wenn eine spezielle Configmap erstellt wird
+  disableNaueSuffixHash: true # Brauchen wir auf jeden Fall (ok eh default) weil volumes idempotent ist)
   annotations:
     iwas: here
 configMapGenerator:
