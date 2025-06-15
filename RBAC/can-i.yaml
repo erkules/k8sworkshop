@@ -1,0 +1,7 @@
+# kubectl apply -f RBAC/can-i.yaml  -o yaml
+apiVersion: authorization.k8s.io/v1
+kind: SelfSubjectRulesReview
+metadata:
+  name: can-i-auch
+spec:
+  namespace: default # Or omit for cluster-wide rules
