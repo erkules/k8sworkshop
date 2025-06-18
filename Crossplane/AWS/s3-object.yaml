@@ -7,7 +7,7 @@ spec:
   forProvider:
     bucketRef:
       name: test-bucket-jallo
-    contentBase64: d2luZGhvZmYK
+    contentBase64: ZGV2b3BzY29uMjAyNQo=
     key: keynote
     region: eu-central-1
   providerConfigRef:
