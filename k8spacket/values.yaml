@@ -1,0 +1,133 @@
+replicaCount: 1
+
+affinity: {}
+
+initContainer:
+  image: busybox:stable
+  pullPolicy: IfNotPresent
+
+image:
+  repository: docker.io/k8spacket/k8spacket
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+
+clusterRole:
+  create: true
+
+nodeSelector: {}
+
+podAnnotations: {}
+
+priorityClassName: ""
+
+podSecurityContext:
+  runAsUser: 0
+
+securityContext:
+  allowPrivilegeEscalation: true
+  capabilities:
+    add:
+    - BPF
+    - NET_ADMIN
+    - SYS_ADMIN
+    - SYS_RESOURCE  # requires on kernels < 5.11 to remove memlock (error: failed to set memlock rlimit: operation not permitted)
+
+service:
+  type: ClusterIP
+  port: 8080
+  nodePort:
+  labels: {}
+  annotations: {}
+
+containerPorts: 
+  - name: metrics
+    containerPort: 6676
+    protocol: TCP
+
+resources:
+  requests:
+    memory: "100Mi"
+    cpu: "50m"
+  limits:
+    memory: "200Mi"
+    cpu: "300m"
+
+tolerations: []
+
+## Prometheus Operator ServiceMonitor configuration
+serviceMonitor:
+  ## Note: .serviceMonitor.enabled activation depends on containerPorts
+  ##
+  enabled: true
+  ## Specify the namespace for the ServiceMonitor
+  ##
+  namespace: ""
+  ## Define the scrape interval for Prometheus
+  ##
+  interval: ""
+  ## Extra labels for the ServiceMonitor
+  ##
+  labels: {}
+  ## Annotations for the ServiceMonitor
+  ##
+  annotations: {}
+  ## Define the port for Prometheus to scrape metrics
+  ##
+  port: "metrics"
+  ## Path that Prometheus will use to pull metrics from the container
+  ##
+  path: "/metrics"
+  ## RelabelConfigs to apply to samples before scraping
+  ##
+  relabelings: []
+  ## MetricRelabelConfigs to apply to samples before ingestion.
+  ##
+  metricRelabelings: []
+
+k8sPacket:
+  api:
+    fieldSelector: status.phase=Running
+    labelSelector: name=k8spacket
+  reverseLookup:
+    ## Reverse lookup db file based on GeoLite2 Free Geolocation Data
+    ## See: https://dev.maxmind.com/geoip/geolite2-free-geolocation-data?lang=en
+    geoipDBPath: "/home/k8spacket/GeoLite2-City.mmdb"
+    ## Whois result match regexp
+    whoisRegexp: "(?:OrgName:|org-name:)\\s*(.*)"
+  tcp:
+    connection:
+      ## When a connection is treated as persistent
+      persistentDuration: 10s
+    listener:
+      port: 6676
+      interfaces:
+        ## Command to achieve containers network interfaces
+        command: "ip address | grep @ | sed -E 's/.* (\\w+)@.*/\\1/' | tr '\\n' ',' | sed 's/.$//'"
+        ## How often refresh the list of network interfaces to listen
+        refreshPeriod: "10s"
+    metrics:
+      ## Enabled/disabled exposing TCP Prometheus metrics
+      enabled: true
+      ## Hide source port when 'true' (set to string value 'dynamic' instead of decimal real source port) for Prometheus metrics cardinality reasons
+      hideSourcePort: true
+  tls:
+    certificate:
+      cache:
+        ## How long scraped TLS certificates are stored in a cache
+        ttl: "24h"
+    metrics:
+      ## Enabled/disabled exposing TLS Prometheus metrics
+      enabled: true
+  logger:
+    ## Logger level. Available values: DEBUG,INFO,WARN,ERROR
+    level: INFO
+  volumes:
+    ## path to kernel tracing folder on an instance
+    ## default to '/sys/kernel/tracing'
+    ## check by command: 'mount -t tracefs'
+    ## f.e. on 'Amazon Linux 2 Kernel 5.10' this should be set to '/sys/kernel/debug/tracing'
+    tracingPath: /sys/kernel/tracing
