@@ -5,17 +5,17 @@ local last_time = os.clock()
 
 -- Function to adjust the rate every N seconds
 function adjust_rate(duration)
-  -- Adjust rate every 5 seconds
-  if duration > 0 and (duration % 5) == 0 then
+  if duration > 0 and (duration % 60) == 0 then
+    query_rate = 1
+    print("New query rate: " .. query_rate .. "and sleeping")
+    os.execute("sleep 500") 
+  elseif duration > 0 and (duration % 5) == 0 then
     query_rate = query_rate + 10
     print("New query rate: " .. query_rate)
   else
-    if duration > 0 and (duration % 60) == 0 then
-      query_rate = 1
-      print("New query rate: " .. query_rate)
-  else
-      query_rate = query_rate +1
-      print("New query rate: " .. query_rate)
+    query_rate = query_rate + 1
+    print("New query rate: " .. query_rate)
+
   end
 end
 
