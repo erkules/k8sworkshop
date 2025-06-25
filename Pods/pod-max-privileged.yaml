@@ -1,23 +1,26 @@
+# docker container run -v /:/host -e SLEEPTIME=5000 --privileged cgr.dev/chainguard/wolfi-base sh -c 'sleep $SLEEPTIME'
 apiVersion: v1
 kind: Pod
 metadata:
   name: pod-max-privileged
 spec:
   hostNetwork: true
-  hostPID: true 
+  hostPID: true
   containers:
-  - name: ping
-    image: cgr.dev/chainguard/wolfi-base
-    securityContext:
-      privileged: true
-    command:
-    - sleep
-    - "5000"
-    volumeMounts:
-    - name: host
-      mountPath: /host
+    - name: ping
+      env:
+        - name: SLEEPTIME
+          value: "5000"
+      image: cgr.dev/chainguard/wolfi-base
+      securityContext:
+        privileged: true
+      command:
+        - sleep
+        - "$SLEEPTIME"
+      volumeMounts:
+        - name: host
+          mountPath: /host
   volumes:
-  - name: host
-    hostPath:
-      path: /
-
+    - name: host
+      hostPath:
+        path: /
