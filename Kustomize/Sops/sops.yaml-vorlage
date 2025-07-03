@@ -1,0 +1,6 @@
+# anpassen und als .sops.yaml speichern
+creation_rules:
+- key: ./key.txt
+  key_file: ./key.txt
+  age: 'age13s27rgjakxc3vqqnzpzm0fd0a55z6tyn3sevy8w2xqzde6a0dvtsuvrgmq'
+  unencrypted_regex: "^(apiVersion|metadata|kind|type)"

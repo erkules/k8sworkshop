@@ -1,5 +1,8 @@
 # Kustomize und Sops
 
+
+
+
 Key erstellen:
 
 ~~~
@@ -7,6 +10,7 @@ age-keygen -o key.txt
 ~~~
 
 Erstelle eine (gerne hier lokal im Verzeichnis) `.sops.yaml`
+Vorlage sops.yaml-vorlage (public key anpassen)
 
 Damit weiß sops was für eine Ver-Schlüssel-ung genommen werden soll.
 

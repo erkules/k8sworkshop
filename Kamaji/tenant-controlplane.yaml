@@ -1,0 +1,66 @@
+apiVersion: kamaji.clastix.io/v1alpha1
+kind: TenantControlPlane
+metadata:
+  name: hallo
+  namespace: kamaji-hallo
+  labels:
+    tenant.clastix.io: hallo
+spec:
+  dataStore: default
+  controlPlane:
+    deployment:
+      replicas: 3
+      additionalMetadata:
+        labels:
+          tenant.clastix.io: hallo
+      extraArgs:
+        apiServer: []
+        controllerManager: []
+        scheduler: []
+      resources:
+        apiServer:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits: {}
+        controllerManager:
+          requests:
+            cpu: 125m
+            memory: 256Mi
+          limits: {}
+        scheduler:
+          requests:
+            cpu: 125m
+            memory: 256Mi
+          limits: {}
+    service:
+      additionalMetadata:
+        labels:
+          tenant.clastix.io: hallo
+      serviceType: NodePort
+  kubernetes:
+    version: v1.26.0
+    kubelet:
+      cgroupfs: systemd
+    admissionControllers:
+      - ResourceQuota
+      - LimitRanger
+  networkProfile:
+    port: 30000
+    certSANs:
+    - hallo.zwerk.org
+    serviceCidr:  10.96.0.0/16
+    podCidr: 10.36.0.0/16
+    dnsServiceIPs:
+    - 10.96.0.10
+  addons:
+    coreDNS: {}
+    kubeProxy: {}
+    konnectivity:
+      server:
+        port: 30000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits: {}

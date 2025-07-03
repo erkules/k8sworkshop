@@ -1,3 +1,7 @@
+# ausrollen 
+# kubectl get pods readinessgate -o wide # Nach READINESS GATES schauen
+# kubectl patch pod readinessgate --type='merge' -p   '{"status":{"conditions":[{"type":"linsenraum.de","status":"True"}]}}' --subresource status
+# kubectl get pods readinessgate -o wide # Nach READINESS GATES schauen
 apiVersion: v1
 kind: Pod
 metadata:
