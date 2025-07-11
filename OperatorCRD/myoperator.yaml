@@ -57,7 +57,7 @@ metadata:
 spec:
   serviceAccountName: controller
   containers:
-  - image: erkules/kubectl:v1.16.2
+  - image: erkules/kubectl:v1.33.2
     name: haha
     command: 
     - sleep

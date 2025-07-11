@@ -30,7 +30,7 @@ spec:
   serviceAccountName: ichdarfdas
   containers:
   - name: kubectl
-    image: erkules/kubectl:v1.30.2
+    image: erkules/kubectl:v1.33.2
     command:
     - sleep
     - "10000"
