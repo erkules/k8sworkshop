@@ -10,7 +10,10 @@ Certs im Mutating-Webhook-Depl sind die vom validation. NUTZE ENDLICH DEN CERT_M
 
 ./Kustomize/Helm/kustomization.yaml wirft auf neuen Clustern einen Fehler. Da muss es ein Formatfehler sein
 
-aus OperatorCRD/myoperator.yaml ne kustomization machen
+
+# Operator
+* aus OperatorCRD/myoperator.yaml ne kustomization machen
+* OperatorCRD/myoperator.yaml als pizza-version umschreiben, auch wenn es nur ein etcd Objekt ist
 
 FIX tutum/curl in Prometheus
 It does not do any mounting to the system at all!
