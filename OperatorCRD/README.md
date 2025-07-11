@@ -10,8 +10,11 @@ myoperator.yaml
 
 # Achtung
 
-Wir nutzen im Skript ein watch call 
-Operatoren initialisieren mit einem list call UND einem watch call
+
+
+Einen Informer erstellen wir in dem Skript mit einem watch call 
+Operatoren initialisieren "sauber" mit einem list call UND einem watch call
+
 
 ca. so:
 
