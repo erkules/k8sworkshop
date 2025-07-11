@@ -1,5 +1,7 @@
 # MySQL
 
+(Achtung bash deploy.sh für ungeduldige s.u.)
+
 * Ausrollen einer MySQL
 * Nicht von Ausserhalb erreichbar
 

@@ -29,9 +29,11 @@ metadata:
 spec:
   serviceAccountName: ichdarfdas
   containers:
-  - name: kubectl
-    image: erkules/kubectl:v1.33.2
-    command:
-    - sleep
-    - "10000"
-
+    - name: kubectl
+      image: erkules/kubectl:v1.33.2
+      securityContext:
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
+      command:
+        - sleep
+        - "10000"
