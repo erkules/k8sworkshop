@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hmm
+  name: hmm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hmm
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hmm
+    spec:
+      containers:
+      - image: erkules/nginxhostname:latest
+        name: www
+      - image: alpine:latest
+        name: sleep
+        command: 
+        - sleep
+        - "5000"

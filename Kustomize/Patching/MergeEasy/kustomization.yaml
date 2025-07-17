@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deploy.yaml
+# images: and labels: 
+# somethimes easier than a patch
+
+images:
+- name: sleep
+  newName: alpine
+  newTag: 3.22.1
+- name: www
+  newName: erkules/nginxhostname
+  newTag: v2
+labels:
+- pairs:
+    hallo: welt 
+  includeSelectors: false # Default
+  includeTemplates: false # Spielt rum <3
+
