@@ -21,6 +21,12 @@ metadata:
     app: hooktester
 spec:
   initContainers:
+  - name: sidecarcontainer
+    image: alpine
+    restartPolicy: Always      #deswegen "echter" sidecarcontainer
+    command:
+    - sleep
+    - "3600"
   - name: getauthtoken
     image: alpine
     command:
