@@ -6,10 +6,10 @@ resources:
 # somethimes easier than a patch
 
 images:
-- name: sleep
+- name: alpine
   newName: alpine
   newTag: 3.22.1
-- name: www
+- name: erkules/nginxhostname
   newName: erkules/nginxhostname
   newTag: v2
 labels:
