@@ -1,5 +1,5 @@
 # Keine Ahnung was ich da gedacht habe
-apiVersion: kyverno.io/v2beta1
+apiVersion: kyverno.io/v1
 kind: CleanupPolicy
 metadata:
   name: cleandeploy
