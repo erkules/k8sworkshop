@@ -1,0 +1,35 @@
+# Hier ein Schnelltest
+# kyverno apply deployment-replicas.yaml --resource ../Deployments/deployment.yaml --policy-report
+#
+# Achtung das ist leicht zu umgehen
+# Rolle ein Deployment <=5 aus und skaliere danach
+# Deployment/scale ist ein eigener kind ;) (gefixt)
+# Wobei, dann stimmen die RBAC-Rechte nicht .... Rabbithole
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: numberofreplicss
+spec:
+  background: false
+  validationFailureAction: Enforce
+  rules:
+    - name: rescticted
+      match:
+        any:
+        - resources:
+            kinds:
+            - Deployment
+            operations: 
+            - "CREATE"
+            - "UPDATE"
+        - resources:
+            kinds:
+            - Deployment/scale
+            operations: 
+            - "UPDATE"
+      validate:
+        message: "maximal 5 replicas"
+        pattern:
+          spec:
+            replicas: "<=5"
