@@ -1,3 +1,6 @@
+# Achtung
+# securityContext kann auf Pod und/oder Container Ebene gesetzt werden
+# Zwar nicht alles überall, aber nicht scope
 apiVersion: v1
 kind: Pod
 metadata:
@@ -9,8 +12,13 @@ spec:
     image: cgr.dev/chainguard/wolfi-base
     securityContext:
       runAsUser: 1000
+      runAsNonRoot: true            
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      seccompProfile:
+        type: RuntimeDefault
     command:
     - sleep
     - "5000"
