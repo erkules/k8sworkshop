@@ -1,0 +1,43 @@
+# Wir haben ja nicht nur containers
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-privileged
+spec:
+  validationFailureAction: Enforce
+  rules:
+    - name: validate-privileged
+      match:
+        resources:
+          kinds:
+            - Pod
+          namespaces:
+            - "spielwiese"
+      validate:
+        message: "Privileged mode is not allowed. Set privileged to false"
+        pattern:
+          spec:
+            containers:
+              - =(securityContext):
+                  =(privileged): false
+            =(ephemeralcontainers):
+              - =(securityContext):
+                  =(privileged): false
+            =(initContainers):
+              - =(securityContext):
+                  =(privileged): false
+    - name: validate-allowPrivilegeEscalation
+      match:
+        resources:
+          kinds:
+            - Pod
+          namespaces:
+            - "dev*"
+      validate:
+        message: "Set explicit 'allowPrivilegeEscalation: false'"
+        pattern:
+          spec:
+            # ja hier müssen auch initContaines und ephemeralcontainers rein
+            containers:
+              - securityContext:
+                  allowPrivilegeEscalation: false

@@ -11,8 +11,10 @@ spec:
   versions:
   - name: v1
     # wenn serve true via API verfügbar
+    # kubectl get apiservices
     served: true  
-    # 
+    #  in dieser Version wird das Objekt im etcd gespeichert
+    #  darf es nur einmal geben
     storage: true
     # Template für die CRD
     schema:

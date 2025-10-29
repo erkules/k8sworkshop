@@ -1,0 +1,20 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+#commonLabels:
+#  hallo: welt
+labels:
+- pairs:
+    hallo: welt
+  # So bekommen alle Objekte in den metadaten das Labels
+  # Folgendendes kann für Deployments mehr
+  #includeSelectors: true 
+  #includeTemplates: true
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+- files:
+  - index.html
+  - mama.html
+  name: index
+resources:
+- deployment.yaml

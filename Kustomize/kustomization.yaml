@@ -1,7 +1,7 @@
 commonLabels: 
   hallo: welt
 generatorOptions:
-  disableNaueSuffixHash: true # Brauchen wir auf jeden Fall (ok eh default) weil volumes idempotent ist)
+  disableNameSuffixHash: true # Brauchen wir auf jeden Fall (ok eh default) weil volumes idempotent ist)
   annotations:
     iwas: here
 configMapGenerator:
