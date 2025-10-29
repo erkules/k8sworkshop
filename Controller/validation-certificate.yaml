@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: validateion
+  name: validation
   namespace: webhook
 spec:
   secretName: validation

@@ -1,0 +1,14 @@
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: webhook-certificate
+  namespace: webhook
+spec:
+  secretName: webhook-certificate
+  dnsNames:
+  - check.webhook
+  - check.webhook.svc
+  - check.webhook.svc.cluster.local
+  issuerRef:
+    name: selfsigned
