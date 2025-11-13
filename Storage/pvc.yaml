@@ -6,6 +6,7 @@ spec:
   #storageClassName: rook-ceph-block
   accessModes:
   - ReadWriteOnce
+  # ReadWriteOnce|ReadWriteOncePod|ReadOnlyMany|ReadWriteMany existieren auch
   resources:
     requests:
       storage: 10Gi
