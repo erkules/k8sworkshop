@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: webzeug
+  name: webzeug    # Namen müssen DNS entprechen also kein _ : . etc.
   labels:
     kostenstelle: ab6
     dienst:      www
