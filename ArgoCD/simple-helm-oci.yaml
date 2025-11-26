@@ -14,7 +14,6 @@ stringData:
   url: docker.io/erkules
 #    enableOCI: true   # from v2.10 replaced by type: helm-oci
 
-
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -23,6 +22,8 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
 spec:
   project: default
   source:
@@ -44,8 +45,8 @@ spec:
       - CreateNamespace=true
       #- ServerSideApply=true
       - PruneLast=true
-      - RespectIgnoreDifferences=true    # sync stage
-  ignoreDifferences:                     # diff calculation
+      - RespectIgnoreDifferences=true # sync stage
+  ignoreDifferences: # diff calculation
     - group: apps
       kind: Deployment
       jsonPointers:

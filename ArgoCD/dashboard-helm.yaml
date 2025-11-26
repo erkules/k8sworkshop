@@ -1,0 +1,57 @@
+# not realy needed
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubernetes-github-io
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repo-creds
+stringData:
+  # no credentials
+  # sshPrivateKey:
+  # or
+  # bearerToken
+  url:  https://kubernetes.github.io/dashboard/
+  type: helm
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubernetes-github-io-2
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repo-creds
+stringData:
+  # no credentials
+  # tlsClientCertData:
+  # tlsClientCertKey:
+  url:  https://kubernetes.github.io/
+  type: helm
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubernetes-dashboard
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes.github.io/dashboard/
+    targetRevision: 7.14.0
+    path: ''
+    chart: kubernetes-dashboard
+    helm:
+      releaseName: kubernetes-dashbard
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dashboard-k8s-argocd
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=false
+    - PruneLast=true
+
