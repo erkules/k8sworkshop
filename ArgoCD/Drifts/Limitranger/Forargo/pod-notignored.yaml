@@ -1,8 +1,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: www
+  name: notignored
   namespace: argo-example-drift
+  labels:
+    fluxde: ahoi
 spec:
   containers:
   - name: meinserver
