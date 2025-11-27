@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: www
+  namespace: argo-example-drift
 spec:
   strategy:
     type: RollingUpdate
