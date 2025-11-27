@@ -4,3 +4,4 @@ namespace: argo-example-drift
 resources:
 - limitrange.yaml
 - namespace.yaml
+- kyverno-add-kyverno.yaml

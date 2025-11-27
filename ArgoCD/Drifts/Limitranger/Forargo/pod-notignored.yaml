@@ -4,16 +4,15 @@ metadata:
   name: notignored
   namespace: argo-example-drift
   labels:
-    fluxde: ahoi
+    fluxcd: ahoi
 spec:
+ timeoutSeconds: 1
   containers:
   - name: meinserver
     image: erkules/nginxhostname:v1
-    ports:
-    - name:          nicht-notwendig
-      containerPort: 80
-    - name:          nerv #prometheus-operator will benamste Ports
-      containerPort: 8080
+    ressources:
+      requests:
+        memorry: "5M"
     
 
 

@@ -4,6 +4,7 @@ metadata:
   name: ignored
   namespace: argo-example-drift
 spec:
+  timeoutSeconds: 1
   containers:
   - name: meinserver
     image: erkules/nginxhostname:v1
