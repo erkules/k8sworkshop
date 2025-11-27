@@ -40,6 +40,7 @@ metadata:
   name: linsenraum-operator
 data:
   script.sh: |
+    #!/bin/bash
     export TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
     export NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
     export CACRT=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -54,7 +55,7 @@ data:
     # Checken ob 
     echo "$pod got a wrong name: TERMINATE IT (if it is running)"
     PHASE=$(curl -s -N  --cacert $CACRT -H "Authorization: Bearer $TOKEN" https://kubernetes.default:443/api/v1/namespaces/${NAMESPACE}/pods/haha | jq -r .status.phase )
-    if [ $PHASE == Running ]
+    if [ $PHASE == "Running" ]
     then
     echo $pod is running so we kill it
     sleep 5
@@ -83,5 +84,5 @@ spec:
   - name: operator
     configMap:
       name: linsenraum-operator
-
+      defaultMode: 0777
 ---

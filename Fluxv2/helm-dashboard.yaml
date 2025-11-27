@@ -17,6 +17,8 @@ metadata:
   name: kubernetes-dashboard
   namespace: flux-system
 spec:
+  driftDetection:
+    mode: enabled
   interval: 5m
   targetNamespace: dashboard-k8s-fluxcd
   releaseName: kubernetes-dashboard

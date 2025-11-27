@@ -1,0 +1,40 @@
+# showing lagacy drafts detection influenced by ignoreDifferences
+# And matching sync Configuration RespectIgnoreDifferences
+# If later one is not set and there is a reason to sync 
+#  -> a drift outside of ignoreDifferences 
+# not setting RespectIgnoreDifferences overwerites the ignoredDiff
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: simple
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: docker.io/erkules
+    targetRevision: 2.1.0
+    #path: ""
+    chart: simple
+    helm:
+      releaseName: genau
+      values: |
+        replicaCount: 2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: helm-simple
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      #- ServerSideApply=true
+      - PruneLast=true
+      - RespectIgnoreDifferences=true    # sync stage
+  ignoreDifferences:                     # diff calculation
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
