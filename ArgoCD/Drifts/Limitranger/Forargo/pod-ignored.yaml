@@ -4,17 +4,7 @@ metadata:
   name: ignored
   namespace: argo-example-drift
 spec:
-  timeoutSeconds: 1
+  terminationGracePeriodSeconds: 1
   containers:
-  - name: meinserver
-    image: erkules/nginxhostname:v1
-    ports:
-    - name:          nicht-notwendig
-      containerPort: 80
-    - name:          nerv #prometheus-operator will benamste Ports
-      containerPort: 8080
-    
-
-
-
-
+    - name: meinserver
+      image: erkules/nginxhostname:v1

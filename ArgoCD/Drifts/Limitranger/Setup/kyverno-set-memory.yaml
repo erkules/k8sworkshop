@@ -1,19 +1,20 @@
 apiVersion: kyverno.io/v1
 kind: Policy
 metadata:
-  name: policy-add-label
+  name: policy-set-memory
 spec:
   #mutateExistingOnPolicyUpdate: true  # Wollen wir existierende updaten brauchts auch .mutate.targets!
   rules:
-  - name: "add label"
+  - name: "set memory"
     match:
       resources:
         kinds:
-        - Deployment
         - Pod
     mutate:   #<--- Jaja MUTATION
       patchStrategicMerge:
-        metadata:
-          labels:
-            iwas: here
-    
+        spec:
+          containers:
+          - (name):  "*"
+            resources: 
+              requests: 
+                memory: "20M"

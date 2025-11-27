@@ -6,15 +6,10 @@ metadata:
   labels:
     fluxcd: ahoi
 spec:
- timeoutSeconds: 1
+  terminationGracePeriodSeconds: 1
   containers:
-  - name: meinserver
-    image: erkules/nginxhostname:v1
-    ressources:
-      requests:
-        memorry: "5M"
-    
-
-
-
-
+    - name: meinserver
+      image: erkules/nginxhostname:v1
+      resources:
+        requests:
+          memorry: "5M"
