@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ignored
+  namespace: argo-example-drift
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: meinserver
+      image: erkules/nginxhostname:v1

@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: policy-set-memory
+spec:
+  #mutateExistingOnPolicyUpdate: true  # Wollen wir existierende updaten brauchts auch .mutate.targets!
+  rules:
+  - name: "set memory"
+    match:
+      resources:
+        kinds:
+        - Pod
+    mutate:   #<--- Jaja MUTATION
+      patchStrategicMerge:
+        spec:
+          containers:
+          - (name):  "*"
+            resources: 
+              requests: 
+                memory: "20M"
