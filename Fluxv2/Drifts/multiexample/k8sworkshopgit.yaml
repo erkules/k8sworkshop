@@ -1,0 +1,13 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: jo
+  namespace: flux-system
+  labels:
+    k8sworkshop: drift
+spec:
+  interval: 1m
+  url: https://github.com/erkules/k8sworkshop.git
+  ref:
+    branch: master
+---
