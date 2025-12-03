@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: policy-add-label
+spec:
+  #mutateExistingOnPolicyUpdate: true  # Wollen wir existierende updaten brauchts auch .mutate.targets!
+  rules:
+  - name: "add label"
+    match:
+      resources:
+        kinds:
+        - Deployment
+        - Pod
+    mutate:   #<--- Jaja MUTATION
+      patchStrategicMerge:
+        metadata:
+          labels:
+            iwas: here
+    

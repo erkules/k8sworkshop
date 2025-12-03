@@ -1,0 +1,84 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: production-services
+  namespace: argocd # AppProjects usually live in the ArgoCD installation namespace
+spec:
+  description: Project for deploying critical production services.
+  # --- 1. Source Repositories (What can be deployed?) ---
+  # Specifies which Git repositories are allowed to deploy applications under this project.
+  sourceRepos:
+    - 'https://github.com/your-org/prod-configs.git'
+    - 'https://github.com/your-org/prod-helm-charts.git'
+    - '*' # '*' means all repos are allowed. It's often better to restrict this list in production.
+
+  # --- 2. Destinations (Where can applications be deployed?) ---
+  # Defines which target Kubernetes clusters and namespaces applications can be synced to.
+  destinations:
+    # Restrict deployment to the 'in-cluster' (where ArgoCD is running) only
+    - server: 'https://kubernetes.default.svc'
+      # Restrict deployment only to the 'production' namespace
+      namespace: 'production'
+
+    # Optionally, allow deployment to an external staging cluster (if defined in ArgoCD)
+    # - server: 'https://staging-cluster-api-url.com'
+    #   namespace: 'staging'
+
+  # --- 3. Resource Whitelists/Blacklists (What resources can be created?) ---
+  # Controls which Kubernetes resources can be managed by applications in this project.
+
+  # Whitelist: Only allow specific kinds of resources. This is more secure for production.
+  clusterResourceWhitelist:
+    # Allows ClusterRoles and ClusterRoleBindings (which are cluster-scoped)
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRole'
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRoleBinding'
+
+  # Blacklist: Prevent creation of dangerous/unneeded resources in the target namespace.
+  # (Note: Whitelist is generally preferred over Blacklist for strong security)
+  namespaceResourceBlacklist:
+    - group: ''
+      kind: 'Secret' # Example: Prevent secrets from being created directly via Git (use Vault/external secret stores)
+    - group: ''
+      kind: 'ServiceAccount'
+
+  # --- 4. Synchronization Windows (When can applications sync?) ---
+  # Defines maintenance windows where automatic synchronization is allowed or denied.
+  syncWindows:
+    - kind: 'deny' # Block all automatic syncs during business hours
+      schedule: '0 9 * * 1-5' # 9 AM UTC, Monday-Friday
+      duration: '8h'
+      # Note: This does not prevent manual syncs triggered by a user with permission.
+
+  # --- 5. Roles (Who can do what?) ---
+  # Defines RBAC roles for users/groups interacting with applications in this project.
+  roles:
+    # Role for developers (can sync but cannot delete or override parameters)
+    - name: dev-viewer
+      description: Read-only access for developers.
+      groups:
+        - 'argocd-dev-group' # Assumes this group is mapped from SSO/LDAP
+      policies:
+        # Policy to allow viewing of all resources in this project
+        - p: 'allow'
+          g: 'argoproj.io/Application'
+          r: 'production-services/*' # Application in this project
+          a: 'get, list, watch'
+
+    # Role for Ops team (can sync, rollback, and manage resources)
+    - name: ops-manager
+      description: Full management capabilities during deployment windows.
+      groups:
+        - 'argocd-ops-group'
+      policies:
+        # Allows reading/viewing of all resources
+        - p: 'allow'
+          g: '*'
+          r: 'production-services/*'
+          a: 'get, list, watch, diff, sync, rollback'
+        # Allows managing the AppProject itself (e.g., updating sync windows)
+        - p: 'allow'
+          g: 'argoproj.io/AppProject'
+          r: 'production-services'
+          a: 'update'

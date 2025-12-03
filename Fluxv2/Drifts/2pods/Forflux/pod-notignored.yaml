@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: notignored
+  labels:
+    fluxcd: ahoi
+spec:
+  terminationGracePeriodSeconds: 1
+  containers:
+    - name: meinserver
+      image: erkules/nginxhostname:v1
+      resources:
+        requests:
+          memory: "5M"
