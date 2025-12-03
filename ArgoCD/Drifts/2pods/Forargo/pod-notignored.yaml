@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: notignored
-  namespace: argo-example-drift
+  namespace: argo-example-drift-2pods
   labels:
     fluxcd: ahoi
 spec:
