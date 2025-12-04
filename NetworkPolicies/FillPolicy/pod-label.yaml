@@ -3,8 +3,7 @@ kind: Pod
 metadata:
   name: webzeug    # Namen müssen DNS entprechen also kein _ : . etc.
   labels:
-    kostenstelle: ab6
-    dienst:      www
+    dienst:   www
 spec:
   containers:
   - name: meinserver
