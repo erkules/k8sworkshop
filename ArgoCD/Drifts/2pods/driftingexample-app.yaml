@@ -1,0 +1,41 @@
+# showing lagacy drafts detection influenced by ignoreDifferences
+# And matching sync Configuration RespectIgnoreDifferences
+# If later one is not set and there is a reason to sync
+#  -> a drift outside of ignoreDifferences
+# not setting RespectIgnoreDifferences overwerites the ignoredDiff
+
+# READ https://github.com/erkules/k8sworkshop/ArgoCD/drifts/limitranger/README.md
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: driftingexample2pods
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/erkules/k8sworkshop
+    path: ArgoCD/Drifts/2pods/Forargo/
+    #kustomize:
+    #  namespace: argo-example-drift
+  destination:
+    server: https://kubernetes.default.svc
+    #namespace: helm-simple
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      #- CreateNamespace=true
+      #- ServerSideApply=true
+      - PruneLast=true
+      - RespectIgnoreDifferences=true    # sync stage
+  ignoreDifferences: # diff calculation
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
