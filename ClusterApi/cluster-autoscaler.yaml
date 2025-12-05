@@ -1,0 +1,198 @@
+# POC
+# Variabels must be: namespace/Secretname?
+# Secret ist hier die Kubeconfig :/
+#
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-autoscaler-workload-{{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-autoscaler-workload-{{ .Release.Namespace }}
+subjects:
+- kind: ServiceAccount
+  name: cluster-autoscaler
+  namespace: {{ .Release.Namespace }}
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-autoscaler-management-{{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-autoscaler-management-{{ .Release.Namespace }}
+subjects:
+- kind: ServiceAccount
+  name: cluster-autoscaler
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cluster-autoscaler
+  namespace: {{ .Release.Namespace }}
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-autoscaler-workload-{{ .Release.Namespace }}
+rules:
+  - apiGroups:
+    - ""
+    resources:
+    - persistentvolumeclaims
+    - persistentvolumes
+    - pods
+    - replicationcontrollers
+    - services
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - ""
+    resources:
+    - nodes
+    verbs:
+    - get
+    - list
+    - update
+    - watch
+  - apiGroups:
+    - ""
+    resources:
+    - pods/eviction
+    verbs:
+    - create
+  - apiGroups:
+    - policy
+    resources:
+    - poddisruptionbudgets
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - storage.k8s.io
+    resources:
+    - csinodes
+    - storageclasses
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - apps
+    resources:
+    - daemonsets
+    - replicasets
+    - statefulsets
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - ""
+    resources:
+    - events
+    verbs:
+    - create
+    - patch
+  - apiGroups:
+    - ""
+    resources:
+    - configmaps
+    verbs:
+    - create
+    - delete
+    - get
+    - update
+  - apiGroups:
+    - coordination.k8s.io
+    resources:
+    - leases
+    verbs:
+    - create
+    - get
+    - update
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-autoscaler-management-{{ .Release.Namespace }}
+rules:
+  - apiGroups:
+    - cluster.x-k8s.io
+    resources:
+    - machinedeployments
+    - machinedeployments/scale
+    - machines
+    - machinesets
+    verbs:
+    - get
+    - list
+    - update
+    - watch
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cluster-autoscaler
+  # Oder lieber ein
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "kubernetes-cluster.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "kubernetes-cluster.selectorLabels" . | nindent 6 }}
+  replicas: {{ .Values.clusterautoscaler.replicas }} 
+  template:
+    metadata:
+      labels:
+        {{- include "kubernetes-cluster.selectorLabels" . | nindent 8 }}
+    spec:
+      volumes:
+      - name: kubeconfig
+        secret:
+          # HelmChart
+          secretName: {{ include "kubernetes-cluster.fullname" . }}-kubeconfig
+      containers:
+        #- image: docker-hub-remote.bahnhub.tech.rz.db.de/bitnami/cluster-autoscaler:1.21.0
+      - image: {{ .Values.clusterautoscaler.image }}
+        name: cluster-autoscaler
+        command:
+          #- /opt/bitnami/cluster-autoscaler/bin/cluster-autoscaler
+        - /cluster-autoscaler
+        args:
+        - --logtostderr 
+        - --v=5 
+        - --cloud-provider=clusterapi
+        - --scale-down-enabled=true 
+        - --scale-down-delay-after-add=10m
+        - --scale-down-delay-after-failure=5m
+        - --scale-down-unneeded-time=10m
+        - --expendable-pods-priority-cutoff=-10 
+        - --max-nodes-total=10
+        - --balance-similar-node-groups 
+        - --max-node-provision-time=15m 
+        - --kubeconfig=/srv/kubeconfig/value
+        - --clusterapi-cloud-config-authoritative
+        - --node-group-auto-discovery=clusterapi:namespace={{ .Release.Namespace }}
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /srv/kubeconfig
+      serviceAccountName: cluster-autoscaler
+      terminationGracePeriodSeconds: 10
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
