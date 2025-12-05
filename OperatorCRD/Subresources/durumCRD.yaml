@@ -1,0 +1,70 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  #https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md
+  # name must match the spec fields below, and be in the form: <plural>.<group>
+  # Pizza CRD ist sooooo der Klassiker
+  # Wer sagt da der Plural heißt pizzen?!!!
+  name: durums.linsenraum.de
+spec:
+  group: linsenraum.de
+  # LIST of versions supported by this CustomResourceDefinition
+  # Sprich hier wäre ein Array mit allen bekannten Versionen!!!eins11
+  versions:
+    - name: v1
+      # wenn serve true via API verfügbar
+      served: true
+      #
+      storage: true
+      subresources:
+        status: {}   # RBAC /status
+      # Template für die CRD
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              required:
+              - durum
+              type: object
+              # Noch mehr validation :)
+              #x-kubernetes-validations:
+              #  - rule: "self.menge > 0"
+              #    message: "get lost"
+              properties:
+                durum:
+                  type: string
+                  enum:
+                    - falaffel
+                    - veggi
+                    - vegan
+                    - muhh
+            status:
+              type: object
+              properties:
+                order:
+                  type: string
+                  enum:
+                    - received
+                    - in_production
+                    - finished
+      additionalPrinterColumns:
+        - name: durum
+          type: string
+          jsonPath: .spec.durum
+        - name: status
+          type: string
+          jsonPath: .status.order
+  # bei mehreren versions kann eine conversion angegeben
+  conversion:
+    strategy: None
+    #strategy: Webhook
+    #webhookClientConfig
+  # either Namespaced or Cluster
+  scope: Namespaced
+  names:
+    plural: durums
+    # singular name to be used as an alias on the CLI and for display
+    singular: durum
+    # kind is normally the CamelCased singular type. Your resource manifests use this.
+    kind: Durum

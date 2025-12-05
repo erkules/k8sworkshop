@@ -12,8 +12,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: baba
 subjects:
-- kind: ServiceAccount
-  name: controller
+  - kind: ServiceAccount
+    name: controller
 roleRef:
   kind: ClusterRole
   name: admin
@@ -40,7 +40,7 @@ data:
     # Checken ob 
     echo "$pod got a wrong name: TERMINATE IT (if it is running)"
     PHASE=$(curl -s -N  --cacert $CACRT -H "Authorization: Bearer $TOKEN" https://kubernetes.default:443/api/v1/namespaces/${NAMESPACE}/pods/$pod | jq -r  .status.phase )
-    if [ $PHASE == "Running" ]
+    if [ "${PHASE}X" == "RunningX" ]
     then
     echo $pod is running so we kill it
     sleep 5
@@ -57,18 +57,19 @@ metadata:
 spec:
   serviceAccountName: controller
   containers:
-  - image: erkules/kubectl:v1.33.2
-    name: haha
-    command: 
-    - sleep
-    - "5000"
-    volumeMounts:
-    - name: operator
-      mountPath: /srv
+    - image: erkules/kubectl:v1.33.2
+      name: haha
+      command:
+        - sleep
+        - "5000"
+      volumeMounts:
+        - name: operator
+          mountPath: /srv
   volumes:
-  - name: operator
-    configMap:
-      name: operator
-      defaultMode: 0777
+    - name: operator
+      configMap:
+        name: operator
+        defaultMode: 0777
 
 ---
+

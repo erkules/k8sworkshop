@@ -1,0 +1,11 @@
+# Idee User can impersonate thats why we call sudo
+# So every user within a ClusterRoleBinding to that Clusterrole is able to impersonate
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sudo-2-cluster-admin
+rules:
+  - apiGroups: [""]
+    resources: ["users"]
+    verbs: ["impersonate"]
+    resourceNames: ["cluster-admin"] # Without resourceNames there would be no limit where to impersonate kinda useless with "cluster-amin" ....

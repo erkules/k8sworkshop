@@ -1,0 +1,6 @@
+kind: Durum
+apiVersion: linsenraum.de/v1
+metadata:
+  name: erkan
+spec:
+  durum: "veggi"
