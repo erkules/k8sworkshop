@@ -10,7 +10,7 @@ spec:
     http:
       paths:
       - path: /
-        pathType: Prefix
+        pathType: Prefix  # ImplementationSpecific Exact
         backend:
           service:  
             name: www
