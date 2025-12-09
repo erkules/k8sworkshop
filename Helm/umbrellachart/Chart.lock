@@ -1,0 +1,6 @@
+dependencies:
+- name: simple
+  repository: oci://docker.io/erkules
+  version: 2.1.0
+digest: sha256:07c3f0d17eafa64bff78fa10765dbc313d208d7ffdd5f0a02b81c6debbe12a6f
+generated: "2025-11-26T06:56:45.600533528+01:00"
