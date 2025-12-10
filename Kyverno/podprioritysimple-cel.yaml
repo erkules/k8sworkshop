@@ -1,0 +1,35 @@
+---
+# Achtung example nur für Pods 
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: allowed-pod-priorities
+  annotations:
+    pod-policies.kyverno.io/autogen-controllers: none
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: validate-pod-priority-pods
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaces:
+        - "kunde*"
+    validate:
+      cel:
+        expressions:
+          # Ausdruck, der WAHR sein muss, um die Validierung zu bestehen
+        - expression: |
+            # Wenn das Feld fehlt, ist die Validierung WAHR (geht durch).
+            !has(object.spec.priorityClassName) ||
+            (
+              # Blöde Syntax. cantains ist ein listenoperator
+              ['unwichtigworkload', 'wichtiger'].contains(object.spec.priorityClassName)
+            )
+          
+          # Hier brauchen wir noch immer JMESPATH
+          message: >-
+            The Pod PriorityClass {{ request.object.spec.priorityClassName }}
+            ist weder unwichtigworkload noch wichtiger.
