@@ -9,9 +9,10 @@ spec:
       resources:
         kinds:
         - Namespace
-        namespaces:
+        names:
         - "mama*"
     generate:
+      generateExisting: true   # Rolle die Policy auch in existierenden Namespaces aus
       synchronize: true
       kind: NetworkPolicy
       apiVersion: networking.k8s.io/v1
