@@ -1,3 +1,24 @@
+---
+# This secret optional because
+# no credentials are needed
+# Nowadays ArgoCD automatically checks if it is an OCI-Repo
+# 
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitlabsecret
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repository
+stringData:
+  url:  https://gitlab.com/erkules/kubi.git 
+  # no credentials
+  # username: 
+  # sshPrivateKey:
+  # or
+  # bearerToken:
+  
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
