@@ -1,0 +1,17 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
+metadata:
+  name: redis-ha
+  namespace: default
+spec:
+  parentRefs:
+    - name: example-gateway
+      sectionName: tcp-redis
+  rules:
+    - backendRefs:
+        - name: redis-a
+          port: 6379
+          weight: 80
+        - name: redis-b
+          port: 6379
+          weight: 20
