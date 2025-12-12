@@ -1,8 +1,8 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: webhook
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: webhook
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -23,9 +23,7 @@ data:
     echo $ID >/tmp/id
     jq -n --arg id "$ID" '{ "apiVersion": "admission.k8s.io/v1", kind: "AdmissionReview", "response": { "uid": $id, "allowed": true, "patchType": "JSONPatch", "patch": "Wwp7CiJvcCI6ICJhZGQiLAoicGF0aCI6ICIvbWV0YWRhdGEvYW5ub3RhdGlvbnMvaGFsbG8iLAoidmFsdWUiOiAid2VsdCIKfQpdCg==" }  }'
 
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,20 +46,32 @@ spec:
         app: mutating
     spec:
       containers:
-      - name: image1
-        image: erkules/webhookimg:v3
-        volumeMounts:
-        - name: mutating
-          mountPath: /usr/local/apache2/htdocs
-        imagePullPolicy: IfNotPresent
+        - name: image1
+          image: erkules/webhookimg:v3
+          volumeMounts:
+            - name: mutating
+              mountPath: /usr/local/apache2/htdocs
+            - name: certs
+              mountPath: /usr/local/apache2/conf/server.crt
+              subPath: server.crt
+            - name: certs
+              mountPath: /usr/local/apache2/conf/server.key
+              subPath: server.key
       volumes:
-      - name: mutating
-        configMap:
-          defaultMode:  0777
-          name: mutating 
+        - name: mutating
+          configMap:
+            defaultMode: 0777
+            name: mutating
+        - name: certs
+          secret:
+            secretName: mutating-certificate
+            items:
+              - key: tls.crt
+                path: server.crt
+              - key: tls.key
+                path: server.key
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -69,7 +79,6 @@ metadata:
   namespace: webhook
 spec:
   ports:
-  - port: 443
+    - port: 443
   selector:
     app: mutating
-

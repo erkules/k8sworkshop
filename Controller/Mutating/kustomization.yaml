@@ -1,0 +1,6 @@
+resources:
+- ns.yaml
+- issuer.yaml
+- certificate.yaml
+- mutatingregistration.yaml
+- mutating-deployment.yaml

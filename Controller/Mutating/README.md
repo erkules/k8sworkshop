@@ -1,0 +1,5 @@
+# 
+
+kubectl apply -k . 
+
+
