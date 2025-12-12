@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-labeln
+spec:
+  selector:
+    matchLabels:
+      app: labeln
+  template:
+    metadata:
+      labels:
+        app: labeln
+    spec:
+      nodeSelector:
+        ceph-osd: "true"
+      containers:
+        - name: labelnlabeln
+          image: alpine:3.23
+          command:
+            - "sh"
+            - "-c"
+            - "mkdir /host/var/lib/osd && sleep 3000"
+          volumeMounts:
+            - mountPath: /host
+              name: host
+          restartPolicy: Never
+      volumes:
+        - name: host
+          hostPath:
+            path: /

@@ -1,0 +1,26 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  dataDirHostPath: /var/lib/rook
+  mon:
+    count: 1  # JA BÖ§E aber /var/lib/rook auch
+    allowMultiplePerNode: false
+  dataDirHostPath: /var/lib/rook
+  cephVersion:
+    image: quay.io/ceph/ceph:v18
+  storage:
+    useAllNodes: yes
+    useAllDevices: false
+  placement:
+    osd:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: ceph-osd
+                  operator: In
+                  values:
+                    - "true"
