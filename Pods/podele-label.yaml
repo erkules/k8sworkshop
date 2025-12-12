@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: podele
+  labels: 
+    app: hallo
+spec:
+  containers:
+  - name: ping
+    image: alpine:3
+    command:
+    - sleep
+    - "5000"
+
