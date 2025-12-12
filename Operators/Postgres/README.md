@@ -31,3 +31,18 @@ Metriken von cnpg fangen mit `cnpg_` an .. wow
 
 Unter `dashboard.json` haben wir ein kleines Dashboard, klar in Zukunft in ne CM packen.
 
+
+# Client
+
+```bash
+kubectl apply -f clustersimple.yaml
+kubectl apply -f psql.yaml
+```
+
+```bash
+kubectl -n pg1 exec -ti psql -- sh
+> apk add postgresql-client
+> psql
+> CREATE TABLE a (id int);
+> insert into a(id) values(1);
+```

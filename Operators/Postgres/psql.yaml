@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: psql
+  annotations:
+    do: apk add postgresql-client
+spec:
+  containers:
+    - name: ping
+      image: alpine
+      env:
+        - name: PGHOST
+          valueFrom:
+            secretKeyRef:
+              name: cluster-tosimple-app
+              key: host
+        - name: PGDATABASE
+          valueFrom:
+            secretKeyRef:
+              name: cluster-tosimple-app
+              key: dbname
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: cluster-tosimple-app
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: cluster-tosimple-app
+              key: password
+
+      command:
+        - sleep
+        - "5000"
