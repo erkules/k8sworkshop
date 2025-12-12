@@ -13,7 +13,7 @@ metadata:
   name: driftingexample2pods
   namespace: argocd
   annotations:
-    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+    argocd.argoproj.io/compare-options: ServerSideDiff=false,IncludeMutationWebhook=false
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
