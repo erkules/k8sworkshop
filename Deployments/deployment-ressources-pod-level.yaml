@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wwwlimitted
+  name: wwwl-pod-limmited
 spec:
   strategy:
     type: RollingUpdate
@@ -11,25 +11,25 @@ spec:
   minReadySeconds: 4
   selector:
     matchLabels:
-      app: wwwlimitted
+      app: wwwl-pod-limmited
   template:
     metadata:
-      name: wwwlimitted
+      name: wwwl-pod-limmited
       labels:
-        app: wwwlimitted
+        app: wwwl-pod-limmited
     spec:
       # Achtung seit v1.34 gehts auch auf Podlevel
       # und damit für alle Pods. Sinnig?
+      resources:
+        requests:
+          cpu: 10m
+          memory: 20Mi
+          #ephemeral-storage: "10Mi"   Das geht nur auf containers ...
+        limits:
+          cpu: 50m
+          memory: 50Mi
+          #ephemeral-storage: "10Mi"   Das geht nur auf containers
       terminationGracePeriodSeconds: 2
       containers:
         - name: image1
           image: erkules/nginxhostname:v1
-          resources:
-            requests:
-              cpu: 10m
-              memory: 20Mi
-              ephemeral-storage: "10Mi"
-            limits:
-              cpu: 50m
-              memory: 50Mi
-              ephemeral-storage: "10Mi"
