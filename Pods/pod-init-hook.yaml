@@ -52,11 +52,12 @@ spec:
       mountPath: /usr/share/nginx/html
     lifecycle:
       postStart:
-        exec:
+        exec:      # or httpGet und ab v1.24 sleep.seconds 
           command: ["sh","-c","echo poststart >/proc/1/fd/1; ps ax" ]
           # Kleiner Protip damit die Ausgabe im Log landet :)
           # ABER WARUM IST DAS SO?
           # Achtung funzt nicht bei geshartem PID-Namespace :)
+       
       preStop:
         exec:
           command: ["sh","-c","echo prestop >/proc/1/fd/1; sleep 20 " ]

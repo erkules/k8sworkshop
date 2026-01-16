@@ -5,14 +5,11 @@ metadata:
   name: example-gateway
   namespace: default
 spec:
-  gatewayClassName: contour
-  addresses:
-    - type: IPAddress
-      value: 91.45.4.3
-    - type: Hostname
-      value: erkan.macht.stress
+  gatewayClassName: eg
+  # addresses:                 # Optional Addresse des LB
   listeners:
     - name: http
+      hostname: erkan.macht.stress   
       protocol: HTTP
       port: 80
       allowedRoutes:

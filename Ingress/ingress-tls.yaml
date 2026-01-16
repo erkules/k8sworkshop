@@ -1,20 +1,23 @@
-# Ab K8s 1.19
 apiVersion: networking.k8s.io/v1
 kind:       Ingress
 metadata:
-  name: foo
+  name: hostde
 spec:
-  #ingressClassName: nginx
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - tls.ix.de
+    secretName: meincert
   rules:
-  - host: YOURNAMESETC.zwerk.org
-    DELETETHISLINE
+  - host: tls.ix.de
     http:
       paths:
       - path: /
-        pathType: Prefix  # ImplementationSpecific Exact
+        pathType: Prefix 
         backend:
           service:  
             name: www
             port:
               number: 80
+
 
