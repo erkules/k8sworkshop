@@ -14,9 +14,10 @@ spec:
       image: cgr.dev/chainguard/wolfi-base
       securityContext:
         privileged: true
-      command:
-        - sleep
-        - "$SLEEPTIME"
+      command: 
+      - sh
+      - -c 
+      - "sleep $SLEEPTIME"
       volumeMounts:
         - name: host
           mountPath: /host
