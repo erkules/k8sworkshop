@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fluxerror-www
+  namespace: default
+spec:
+  container:
+  - name: meinserver
+    image: erkules/nginxhostname:v2
+    ports:
+    - name:          nicht-notwendig
+      containerPort: 80
+    - name:          nerv #prometheus-operator will benamste Ports
+      containerPort: 8080
+
