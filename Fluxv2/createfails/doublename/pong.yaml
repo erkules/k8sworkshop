@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fluxerror-pong
+  namespace: default
+spec:
+  containers:
+  - name: pong
+    image: alpine:3
+    command:
+    - sleep
+    - "5000"
+

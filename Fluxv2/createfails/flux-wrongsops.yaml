@@ -3,7 +3,7 @@ data:
   flux.agekey: IyBjcmVhdGVkOiAyMDIyLTA2LTA3VDIzOjMyOjE0KzAyOjAwCiMgcHVibGljIGtleTogYWdlMXZ6dXpnYTJzYWU4M2ZoamZnaDg4d2xxendkbHZrZThxNWNrbmh1c3Bqa2twMno4cG5keXFwdzJqbnUKQUdFLVNFQ1JFVC1LRVktMVNINzg5MFM2M0U2TjZYOFZQM1dMR0tFTEFTOTdYUVNNU0czRFpGVDg2TkFRMFMzUVpYNlNaVjlUOE0K
 kind: Secret
 metadata:
-  name: sops
+  name: wrong-sops
   namespace: flux-system
 
 ---
@@ -16,7 +16,7 @@ spec:
   decryption:
     provider: sops
     secretRef:
-      name: sops
+      name: wrong-sops
   path: Fluxv2/createfails/sops
   sourceRef:
     kind: GitRepository

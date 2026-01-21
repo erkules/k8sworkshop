@@ -23,6 +23,7 @@ kubectl api-resources | grep cnpg
 
 # [Examples](https://cloudnative-pg.io/documentation/1.23/samples/)
 
+Gerne schauen
 
 # Monitoring
 
@@ -40,9 +41,12 @@ kubectl apply -f psql.yaml
 ```
 
 ```bash
-kubectl -n pg1 exec -ti psql -- sh
+kubectl  exec -ti psql -- sh
 > apk add postgresql-client
 > psql
 > CREATE TABLE a (id int);
-> insert into a(id) values(1);
+> INSERT INTO a (id)
+> SELECT i
+> FROM generate_series(1, 1000) AS i;
+
 ```
