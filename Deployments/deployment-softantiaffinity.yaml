@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wwwanti
+  name: wwantisoft
 spec:
   replicas: 9
   minReadySeconds: 4
@@ -11,12 +11,12 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: wwwanti
+      app: wwantisoft
   template:
     metadata:
-      name: wwwanti
+      name: wwantisoft
       labels:
-        app: wwwanti
+        app: wwantisoft
     spec:
       affinity:
         podAntiAffinity:
@@ -29,7 +29,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - wwwanti
+                  - wwantisoft
               topologyKey: kubernetes.io/hostname
       containers:
       - name: image1
