@@ -5,6 +5,8 @@ metadata:
   name: tomcatkitty
   namespace: myflux
 spec:
+  driftDetection:
+    mode: enabled
   chart:
     spec:
       chart:   tomcat

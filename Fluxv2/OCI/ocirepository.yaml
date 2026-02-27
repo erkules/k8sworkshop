@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: fluxoci
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: oci://docker.io/erkules/fluxoci
+  ref:
+    semver: "1.x"
