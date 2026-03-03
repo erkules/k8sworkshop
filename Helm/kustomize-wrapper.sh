@@ -1,7 +1,7 @@
 #!/bin/bash
 # Billiges Beispiel für post-renderer in Helm
-# helm ... --post-rendere ./kustomize.sh
+# helm ... --post-renderer kustomize-wrapper.sh
 # Aber eigentlich doof.
 cat <&0 >all.yaml
 
-kustomize build . && rm all.yaml
+kubectl kustomize  . && rm all.yaml

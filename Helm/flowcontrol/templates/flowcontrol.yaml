@@ -1,4 +1,4 @@
-{{/* eigentlich doof */}}
+{{/* eigentlich doof mit ungesetzen Werten zu arbeiten */}}
 {{ if .Values.greetings }}
 greetings: {{ .Values.greetings | quote | upper  }}
 {{ else }}
@@ -12,10 +12,10 @@ friends:
 
 
 dictionary:
-  {{- range $key, $val :=.Values.person }}
+{{- range $key, $val :=.Values.person }}
   {{ $key }}: {{ $val }}
-  {{ if kindIs "float64"  $val }}
-  {{ if and (eq $key "alter") (gt (int $val)  30) }} alter sack {{ else }} dumm gelaufen {{ end }}
+  {{- if kindIs "float64"  $val }}
+  {{- if and (eq $key "alter") (gt (int $val)  30) }} {{ "tja: alter sack" | nindent 2 }}  {{- else }} {{ "tja:  dumm gelaufen" | nindent 2 }} {{- end }}
   {{ else }} {{ typeOf $val }}
   {{ end }}
 {{- end }}
