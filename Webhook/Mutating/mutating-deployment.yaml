@@ -21,7 +21,8 @@ data:
     echo  $post >/tmp/log
     ID=$(echo $post | jq -r .request.uid )
     echo $ID >/tmp/id
-    jq -n --arg id "$ID" '{ "apiVersion": "admission.k8s.io/v1", kind: "AdmissionReview", "response": { "uid": $id, "allowed": true, "patchType": "JSONPatch", "patch": "Wwp7CiJvcCI6ICJhZGQiLAoicGF0aCI6ICIvbWV0YWRhdGEvYW5ub3RhdGlvbnMvaGFsbG8iLAoidmFsdWUiOiAid2VsdCIKfQpdCg==" }  }'
+    jq -n --arg id "$ID" '{ "apiVersion": "admission.k8s.io/v1", kind: "AdmissionReview", "response": { "uid": $id, "allowed": true, "patchType": "JSONPatch", "patch": "WwogIHsKICAgICJvcCI6ICJhZGQiLAogICAgInBhdGgiOiAiL21ldGFkYXRhL2Fubm90YXRpb25zIiwKICAgICJ2YWx1ZSI6IHt9CiAgfSwKICB7CiAgICAib3AiOiAiYWRkIiwKICAgICJwYXRoIjogIi9tZXRhZGF0YS9hbm5vdGF0aW9ucy9oYWxsbyIsCiAgICAidmFsdWUiOiAid2VsdCIKICB9Cl0K" }  }'
+    #jq -n --arg id "$ID" '{ "apiVersion": "admission.k8s.io/v1", kind: "AdmissionReview", "response": { "uid": $id, "allowed": true, "patchType": "JSONPatch", "patch": "Wwp7CiJvcCI6ICJhZGQiLAoicGF0aCI6ICIvbWV0YWRhdGEvYW5ub3RhdGlvbnMvaGFsbG8iLAoidmFsdWUiOiAid2VsdCIKfQpdCg==" }  }'
 
 ---
 apiVersion: apps/v1

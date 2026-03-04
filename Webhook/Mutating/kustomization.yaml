@@ -1,3 +1,4 @@
+namespace: webhook
 resources:
 - ns.yaml
 - issuer.yaml
