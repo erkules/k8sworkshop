@@ -48,3 +48,5 @@ spec:
     # shortNames allow shorter string to match your resource on the CLI
     shortNames:
     - er
+    categories:
+    - k8sworkshop
