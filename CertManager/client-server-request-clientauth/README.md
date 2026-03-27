@@ -12,6 +12,13 @@ Jetze mit Client-auth MUSS (sonst gleich öde)
 
 Itterationen des Glücks
 
+Die Idee:
+- Hüpft in den Pod vom Client
+- und führt die folgenden Anweisungen aus
+- das erste wird nicht klappen, welch curl das ServerCert nicht kennt
+- das zweite klappt nicht, weil der Server Client-Auth haben will
+- Aber: Alle guten Dinge sind DREI
+
 ~~~
 curl  https://server                                                  # :(
 curl --cacert ./ca.crt  https://server                                # :(
