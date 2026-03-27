@@ -1,0 +1,24 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: disallow-latest-tag
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods"]
+  validations:
+  #- expression: "!has(object.spec.containers) || object.spec.containers.all(c, !c.image.endsWith(':latest'))"
+  - expression: "object.spec.containers.all(c, !c.image.endsWith(':latest'))"
+    message: "Container images with the ':latest' tag are not allowed."
+--- 
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: disallow-latest-binding
+spec:
+  policyName: disallow-latest
+  validationActions: [Deny]

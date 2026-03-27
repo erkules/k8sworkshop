@@ -1,0 +1,19 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: add-env-label
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources: ["pods"]
+
+  mutations:
+  - expression: "!has(object.metadata.labels.environment)"
+    patchType: ApplyConfiguration
+    patch:
+      metadata:
+        labels:
+          environment: "dev"
