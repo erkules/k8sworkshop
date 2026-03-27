@@ -1,0 +1,53 @@
+# Is simple
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager-caexample
+---
+# Nutzen wir um einr root-CA zu erstellen
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigned4ca
+  namespace: cert-manager-caexample
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: root-ca
+  namespace: cert-manager-caexample
+spec:
+  isCA: true     # machts zur CA/darf signieren
+  commonName: root-ca
+  secretName: root-ca-secret
+  duration: 8760h # 1 year
+  issuerRef:
+    name:  selfsigned4ca
+    kind:  Issuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: meineCA
+  namespace: cert-manager-caexample
+spec:
+  ca:
+    secretName: root-ca-secret  # Bei gegebener CA-Cert schon da ist direkt hier anfangen. Sichern?
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-cert
+  namespace: cert-manager-caexample
+spec:
+  dnsNames:
+    - example.com
+  secretName: selfsigned-cert-tls
+  commonName: "ichauch"
+  issuerRef:
+    name: meineCA
+  duration: 1h
+  renewBefore: 5m

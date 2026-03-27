@@ -1,0 +1,12 @@
+apiVersion: telemetry.istio.io/v1
+kind: Telemetry
+metadata:
+  name: mesh-default
+  namespace: istio-system
+spec:
+  tracing:
+  - providers:
+    - name: "tempo"
+    randomSamplingPercentage: 100.0
+# # Beispiel: 10 Requests pro Sekunde für 5 Minuten
+#kubectl -n circuit  run fortio --image=fortio/fortio -- load -qps 10 -t 300s http://httpbin/get

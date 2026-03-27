@@ -1,6 +1,6 @@
 #  CA-Issuer
 
-Jetze mit Client-auth
+Jetze mit Client-auth MUSS (sonst gleich öde)
 
 * Bsp. für Clusterintern
 * Namspaced Issuer

@@ -1,0 +1,20 @@
+# Example für Debug
+# kubectl debug -ti --image=alpine ephemeral --custom=patched-ephemeral.yaml
+# 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ephemeral
+spec:
+  containers:
+    - name: hallo
+      image: alpine:3
+      command:
+        - sleep
+        - "5000"
+      volumeMounts:
+        - name: hallo
+          mountPath: /srv
+  volumes:
+    - name: hallo
+      emptyDir: {}

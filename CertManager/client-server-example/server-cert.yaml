@@ -9,7 +9,7 @@ spec:
   commonName: server.cert-manager-bsp1.svc.cluster.local
   dnsNames:
     - server.cert-manager-bsp1.svc.cluster.local
-    - server.cert-manager
+    - server.cert-manager-bsp1.svc
     - server
   usages:
     - server auth

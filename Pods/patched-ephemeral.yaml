@@ -1,0 +1,3 @@
+volumeMounts:
+- name: hallo
+  mountPath: /data

@@ -14,6 +14,9 @@ webhooks:
       operator: In
       values: ["spielen"]
   matchPolicy: Equivalent
+  #matchCondition:  # Wir können auch CEL nutzen :) 
+  # - name: ja
+  #   expression: 'CEL'
   rules:
   - apiGroups:   [""]
     apiVersions: ["v1"]

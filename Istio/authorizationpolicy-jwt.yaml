@@ -1,0 +1,12 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: circuit
+spec:
+  action: ALLOW
+  rules:
+  - from:
+    when:
+    - key: request.auth.principal # Es muss ein JWT sein
+      values: ["*"]

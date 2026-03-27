@@ -1,8 +1,9 @@
-apiVersion: security.istio.io/v1beta1
+apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy
 metadata:
   name: in-mesh-is-ok
 spec:
+  action: ALLOW #ist Default sonst DENY
   rules:
   - from:
     - source:

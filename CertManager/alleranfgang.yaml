@@ -1,0 +1,44 @@
+# Is simple
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager-test
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: test-selfsigned
+  namespace: cert-manager-test
+spec:
+  selfSigned: {}
+---
+# Beide folgenden Certs haben nichts miteinander zu tun
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-cert
+  namespace: cert-manager-test
+spec:
+  dnsNames:
+    - example.com
+  secretName: selfsigned-cert
+  commonName: "ichauch"
+  issuerRef:
+    name: test-selfsigned
+  duration: 1h
+  renewBefore: 5m
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-cert2
+  namespace: cert-manager-test
+spec:
+  dnsNames:
+    - example.com
+  secretName: selfsigned-cert2
+  commonName: "ichauch"
+  issuerRef:
+    name: test-selfsigned
+  duration: 1h
+  renewBefore: 5m
