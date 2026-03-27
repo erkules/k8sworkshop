@@ -31,7 +31,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: meineCA
+  name: meineca
   namespace: cert-manager-caexample
 spec:
   ca:
@@ -48,6 +48,6 @@ spec:
   secretName: selfsigned-cert-tls
   commonName: "ichauch"
   issuerRef:
-    name: meineCA
+    name: meineca
   duration: 1h
   renewBefore: 5m
