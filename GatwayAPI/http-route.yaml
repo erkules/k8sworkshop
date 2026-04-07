@@ -27,7 +27,6 @@ spec:
       - name: frontend-svc
         port: 80
         weight: 10
-    backendRefs:
       - name: frontend-svc2
         port: 80
         weight: 90
