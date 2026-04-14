@@ -9,29 +9,30 @@ spec:
   # LIST of versions supported by this CustomResourceDefinition
   # Sprich hier wäre ein Array mit allen bekannten Versionen!!!eins11
   versions:
-  - name: v1
-    # wenn serve true via API verfügbar
-    # kubectl get apiservices
-    served: true  
-    #  in dieser Version wird das Objekt im etcd gespeichert
-    #  darf es nur einmal geben
-    storage: true
-    # Template für die CRD
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          spec:
-            type: object
-            properties:
-              hiob:
-                type: string
-              games:
-                type: integer
-    additionalPrinterColumns:
-    - name: games
-      type: integer
-      jsonPath: .spec.games
+    - name: v1
+      # wenn serve true via API verfügbar
+      # kubectl get apiservices
+      served: true
+      #  served: in dieser Version wird das Objekt im etcd gespeichert
+      #  darf es nur einmal geben
+      storage: true
+      # Template für die CRD
+      schema:
+        openAPIV3Schema:
+          description: "wird in kubectl explain erkan angezeigt"
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                hiob:
+                  type: string
+                games:
+                  type: integer
+      additionalPrinterColumns:
+        - name: games
+          type: integer
+          jsonPath: .spec.games
   # bei mehreren versions kann eine conversion angegeben
   conversion:
     strategy: None
@@ -47,6 +48,6 @@ spec:
     kind: Erkan
     # shortNames allow shorter string to match your resource on the CLI
     shortNames:
-    - er
+      - er
     categories:
-    - k8sworkshop
+      - k8sworkshop

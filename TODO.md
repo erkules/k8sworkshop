@@ -29,3 +29,5 @@ SERVICEMONITOR überarbeiten!!
 
 
 Secrets/CSI aktualisieren
+
+https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/

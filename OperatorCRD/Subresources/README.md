@@ -1,3 +1,8 @@
+# Subresources
+- Disjunkt vom Objekt
+  - Separates RBAC
+- Lasst uns auch finalizer machen
+
 # Ohne subresource: status
 
 kubectl patch pizza hallihallo --type=merge -p='{"status": { "order": "received"}}'

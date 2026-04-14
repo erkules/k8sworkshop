@@ -11,34 +11,35 @@ spec:
   # LIST of versions supported by this CustomResourceDefinition
   # Sprich hier wäre ein Array mit allen bekannten Versionen!!!eins11
   versions:
-  - name: v1
-    # wenn serve true via API verfügbar
-    served: true  
-    # 
-    storage: true
-    # Template für die CRD
-    schema:
-      openAPIV3Schema:
-        type: object
-        properties:
-          spec:
-            type: object
-            # Noch mehr validation :)
-            x-kubernetes-validations:
-            - rule: "self.menge > 0"
-              message: "get lost"
-            properties:
-              pizza:
-                type: string
-              menge:
-                type: integer
-    additionalPrinterColumns:
-    - name: pizza
-      type: string
-      jsonPath: .spec.pizza
-    - name: menge
-      type: integer
-      jsonPath: .spec.menge
+    - name: v1
+      # wenn serve true via API verfügbar
+      served: true
+      #  served:in dieser Version wird das Objekt im etcd gespeichert
+      #  darf es nur einmal geben
+      storage: true
+      # Template für die CRD
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              # Noch mehr validation :)
+              x-kubernetes-validations:
+                - rule: "self.menge > 0"
+                  message: "get lost"
+              properties:
+                pizza:
+                  type: string
+                menge:
+                  type: integer
+      additionalPrinterColumns:
+        - name: pizza
+          type: string
+          jsonPath: .spec.pizza
+        - name: menge
+          type: integer
+          jsonPath: .spec.menge
   # bei mehreren versions kann eine conversion angegeben
   conversion:
     strategy: None
@@ -53,4 +54,4 @@ spec:
     # kind is normally the CamelCased singular type. Your resource manifests use this.
     kind: Pizza
     categories:
-    - k8sworkshop
+      - k8sworkshop
