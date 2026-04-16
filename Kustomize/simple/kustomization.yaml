@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
 - deployment.yaml
 - svc.yaml
-#- ping.yaml
+- ping.yaml
