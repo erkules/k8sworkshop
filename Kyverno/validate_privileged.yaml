@@ -1,0 +1,24 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: validate-disallow-privileged
+spec:
+  #failurePolicy: Fail # Das beschreibt was passiert wenn der Webhook nicht erreichbar iast
+  validationActions:
+    - Deny
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [pods]
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: spielwiese
+  validations:
+    - expression: >-
+        !has(object.spec.containers) || 
+         object.spec.containers.all(c, !has(c.securityContext) || 
+        !has(c.securityContext.privileged) || 
+        c.securityContext.privileged == false)
+      message: Hee mach mir mal kein privileged in containers'

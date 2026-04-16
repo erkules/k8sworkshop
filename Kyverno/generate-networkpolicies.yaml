@@ -1,0 +1,57 @@
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: generate-networkpolicy-for-mama-namespaces
+spec:
+  evaluation:
+    synchronize:          # Sollen gelöschte Objekte wieder angelegt werden ..jajaja
+      enabled: true
+    generateExisting:     # Auch ausführen, wenn das Zielobjekt existert oder auch rückwirkend
+      enabled: true
+    orphanDownstreamOnPolicyDelete:  # Wenn Du gehst dann geht auch der Teil von Dir
+      enabled: false
+
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["namespaces"]
+
+  matchConditions:
+    - name: only-mama-namespaces
+      expression: 'object.metadata.name.startsWith("mama")'
+
+  variables:             # Wir brauchen hier eigentlich keine variables. Sonst gut um Ergebnisse von resource() zu speichern
+    - name: nsName
+      expression: 'object.metadata.name'
+
+    - name: downstream              # dyn() meint Kyverno lass das in Ruhe CEL-Quoting
+      expression: >-
+        [
+          {
+            "kind": dyn("NetworkPolicy"),
+            "apiVersion": dyn("networking.k8s.io/v1"),
+            "metadata": dyn({
+              "name": "allow-own-name-space",
+              "namespace": string(variables.nsName)
+            }),
+            "spec": dyn({
+              "podSelector": dyn({}),
+              "policyTypes": dyn(["Ingress"]),
+              "ingress": dyn([
+                {
+                  "from": [
+                    {
+                      "podSelector": {}
+                    }
+                  ]
+                }
+              ])
+            })
+          }
+        ]
+
+  generate:
+    - expression: 'generator.Apply(variables.nsName, variables.downstream)'
+                  #generator.Apply(namespace, resource) ist eine CEL-function von Kyverno

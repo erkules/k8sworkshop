@@ -1,0 +1,19 @@
+apiVersion: policies.kyverno.io/v1
+kind: NamespacedValidatingPolicy
+metadata:
+  name: validate-node-port
+spec:
+  validationActions:
+    - Deny                    # Wenn Validation failed => verbieten 
+
+  matchConstraints:
+    resourceRules:
+      - apiGroups:   [""]     # RBAC-Style
+        apiVersions: ["v1"]
+        operations:  ["CREATE", "UPDATE"]
+        resources:   ["services"]
+
+  validations:               # [] -> AND/ALL
+    - expression:  "object.spec.type != 'NodePort'"
+      #expression: "!has(object.spec.type) || object.spec.type != 'NodePort'"  # So ganz safe
+      message:     "NodePort type is not allowed"

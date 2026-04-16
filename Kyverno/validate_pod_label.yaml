@@ -1,0 +1,18 @@
+apiVersion: policies.kyverno.io/v1
+kind: NamespacedValidatingPolicy
+metadata:
+  name: validate-pod-label
+spec:
+  validationActions:
+    - Deny                    # Wenn validation failed verbieten 
+
+  matchConstraints:
+    resourceRules:
+      - apiGroups:   [""]     # RBAC-Style
+        apiVersions: ["v1"]
+        operations:  ["CREATE", "UPDATE"]
+        resources:   ["pods"]
+
+  validations:               # [] -> AND/ALL
+    - expression: "has(object.metadata.labels) && has(object.metadata.labels.app) && object.metadata.labels.app.matches('frontend') "  # So ganz safe
+      message:     "Hee labels.app=frontend fehlt!"

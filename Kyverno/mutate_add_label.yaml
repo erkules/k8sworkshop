@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: NamespacedMutatingPolicy
+metadata:
+  name: add-label
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   ['']
+      apiVersions: ['v1']
+      resources:   ['pods']
+      operations:  ['CREATE', 'UPDATE']
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          Object{ metadata: Object.metadata{ labels: Object.metadata.labels {"iwas": "here"} } }

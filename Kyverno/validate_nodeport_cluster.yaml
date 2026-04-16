@@ -1,0 +1,24 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: check-node-port-cluster
+spec:
+  validationActions:
+    - Deny
+
+
+  matchConstraints:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: default
+
+    resourceRules:
+      - apiGroups:   [""]                 # RBAC-Style
+        apiVersions: ["v1"]
+        operations:  ["CREATE", "UPDATE"]
+        resources:   ["services"]
+
+  validations:
+    - expression: "object.spec.type != 'NodePort'"
+      #expression: "!has(object.spec.type) || object.spec.type != 'NodePort'"  # So ganz safe
+      message: "NodePort type is not allowed"

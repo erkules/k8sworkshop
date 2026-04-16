@@ -1,0 +1,21 @@
+apiVersion: policies.kyverno.io/v1
+kind: NamespacedValidatingPolicy
+metadata:
+  name: deny-all
+spec:
+  validationActions:
+  - Warn
+  - Audit
+  auditAnnotations:
+  - key: process
+    valueExpression: "'lockdown'"
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["*"]
+      apiVersions: ["*"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["*"]
+
+  validations:
+  - expression: "false"
+    message: "No body moves nobody gets hurt"
