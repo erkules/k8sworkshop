@@ -7,7 +7,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
+  sources:         # Achtung auf Plural achten
   - repoURL: https://charts.helm.sh/stable
     targetRevision: 0.4.3
     path: ''
