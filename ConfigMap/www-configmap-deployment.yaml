@@ -39,14 +39,12 @@ spec:
     spec:
       containers:
       - name: image1
-        image: erkules/nginxhostname
+        image: erkules/nginxhostname:v1
         ports:
         - containerPort: 80
-        imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: website
           mountPath: /usr/share/nginx/html
-        imagePullPolicy: IfNotPresent
       volumes:
       - name: website
         configMap:

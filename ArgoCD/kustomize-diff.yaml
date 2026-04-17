@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kustomize-diff
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=false,IncludeMutationWebhook=false
+    # Würde hier auch nichts ändern
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/erkules/argocd.git
+    targetRevision: HEAD
+    path: diff
+    kustomize:
+      namespace: testdiff
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: testdiff
+  syncPolicy:
+    automated:
+      selfHeal:   true # Monitor die Resourcen und fixe wenn was futsch ist
+  #  syncOptions:
+  #  - RespectIgnoreDifferences=true
+  #ignoreDifferences:   # was kommt nicht in die  diff calculation und ja bei allen Deployments
+  #  - group: apps
+  #    kind: Deployment
+  #    jsonPointers:
+  #      - /spec/replicas

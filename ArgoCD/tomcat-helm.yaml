@@ -25,6 +25,5 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
-    - ServerSideApply=true
-    - PruneLast=true
+    - ServerSideApply=true   # kubectl apply --server-side
 

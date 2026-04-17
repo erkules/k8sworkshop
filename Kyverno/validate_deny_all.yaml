@@ -4,8 +4,7 @@ metadata:
   name: deny-all
 spec:
   validationActions:
-  - Warn
-  - Audit
+  - Deny
   auditAnnotations:
   - key: process
     valueExpression: "'lockdown'"
