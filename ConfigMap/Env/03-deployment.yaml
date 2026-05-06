@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usesesenv
+  namespace: kurs-cm-env
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: usesesenv
+  template:
+    metadata:
+      name: usesesenv
+      labels:
+        app: usesesenv
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+        - name: image1
+          image: erkules/nginxhostname:goenv
+          env:
+            - name: ECHO_TEXT
+              valueFrom:
+                configMapKeyRef:
+                  name: usesesenv-index
+                  key: ausgabe
+          #readinessProbe: haben wir nicht ist nur ein Binary also muss anders gemacht werden

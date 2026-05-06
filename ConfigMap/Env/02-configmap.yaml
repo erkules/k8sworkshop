@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usesesenv-index
+  namespace: kurs-cm-env
+data:
+  ausgabe: "<h1>HALLO HIER ENV-BEISPIEL</h1>"

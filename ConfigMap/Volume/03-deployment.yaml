@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usesesvolume
+  namespace: kurs-cm-volume
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector:
+    matchLabels:
+      app: usesesvolume
+  template:
+    metadata:
+      name: usesesvolume
+      labels:
+        app: usesesvolume
+    spec:
+      terminationGracePeriodSeconds: 2
+      containers:
+        - name: image1
+          image: erkules/nginxhostname:v1
+          volumeMounts:
+            - name: website
+              mountPath: /usr/share/nginx/html
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /etc/issue
+      volumes:
+        - name: website
+          configMap:
+            name: usesesvolume-index
