@@ -4,7 +4,7 @@ metadata:
   name: validate-pod-label
 spec:
   validationActions:
-    - Deny                    # Wenn validation failed verbieten 
+    - Deny                    # Wenn validation failed verbieten [Audit, Warn]
 
   matchConstraints:
     resourceRules:

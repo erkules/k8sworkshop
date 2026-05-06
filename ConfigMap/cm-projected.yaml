@@ -1,3 +1,5 @@
+# Projected Volumes sind welche die aus verschiedenen Quellen
+# Ein Volume erstellen. Nicht mal nur CMs. So auch Secrets, DownwardAPI. ServiceAccountTokens
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -59,6 +61,11 @@ spec:
           items:
           - key: mama.html
             path: mama.html
+      - downwardAPI:
+          items:
+          - path: "labels" 
+            fieldRef:
+              fieldPath: metadata.labels
   
 
 
