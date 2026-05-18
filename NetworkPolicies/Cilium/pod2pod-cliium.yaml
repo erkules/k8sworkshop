@@ -1,0 +1,23 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: pod2podnachbei
+  namespace: netz
+
+spec:
+  description: |
+    blablabla
+  endpointSelector:
+    matchLabels:
+      farbe: blau
+
+  ingress:
+  - fromEndpoints:
+    - matchLabels: 
+        farbe: blau
+    toPorts:
+    - ports:
+      - port: "80"
+       
+
+  
