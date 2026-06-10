@@ -1,0 +1,28 @@
+# Hier ein kleine kyaml beispiel. Einzig die Kompaktheit (wenn weise[sic] eingesetzt) ist nice
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wwwlimitted
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  replicas: 4
+  minReadySeconds: 4
+  selector: 
+    matchLabels: { app: "wwwlimitted" }
+  template:
+    metadata:    
+      name: "wwwlimitted" 
+      labels:  {  app:  "wwwlimitted"  }
+    spec:
+      # Achtung seit v1.34 gehts auch auf Podlevel
+      # und damit für alle Pods. Sinnig?
+      terminationGracePeriodSeconds: 2
+      containers:
+        - name: image1
+          image: erkules/nginxhostname:v1
+          resources:
+            requests: { cpu: "10m", memory: "20Mi", ephemeral-storage: "10Mi" }
+            limits:   { cpu: "50m", memory: "50Mi", ephemeral-storage: "10Mi" }
