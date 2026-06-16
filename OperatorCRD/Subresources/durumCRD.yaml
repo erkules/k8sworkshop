@@ -47,7 +47,7 @@ spec:
                   enum:
                     - received
                     - in_production
-                    - finished
+                    - feddisch
       additionalPrinterColumns:
         - name: durum
           type: string

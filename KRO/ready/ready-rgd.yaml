@@ -1,0 +1,52 @@
+# Simple example
+# list of Pods
+# Check -> Controller4Pods
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: ready
+spec:
+  # kro uses this simple schema to create your CRD schema and apply it
+  # The schema defines what users can provide when they instantiate the RGD (create an instance).
+  schema:
+    apiVersion: v1alpha1
+    kind: Ready
+    spec:
+      # Spec fields that users can provide.
+      name: string
+      order:
+        durum: string | enum=veggi,vegan
+#FYI the durumCRD offers muhh and falaffel on top
+
+
+  # Define the resources this API will manage.
+  resources:
+    - id: durum
+      template:
+        kind: Durum
+        apiVersion: linsenraum.de/v1
+        metadata:
+          name:  ${schema.spec.name} 
+        spec:
+          durum: ${schema.spec.order.durum}
+      readyWhen:
+      - ${durum.status.order  == "feddisch" }
+# kubectl patch durum hunger --subresource=status --type=merge -p='{"status": { "order": "feddisch"}}'
+        
+    - id: juhu
+      template:
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: ${schema.spec.name}-juhu 
+        spec:
+          containers:
+            - name:  juhuu
+              image: alpine
+              env:
+              - name:  PAROLE 
+                value: ${durum.spec.durum} 
+              args:
+              - sh
+              - -c
+              - "while true; do  echo $PAROLE ist fertig; sleep 1 ; done"

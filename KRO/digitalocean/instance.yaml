@@ -1,0 +1,6 @@
+apiVersion: linsenraum.de/v1alpha1
+kind: MySQL
+metadata:
+  name: rdsalike
+spec:
+  name: rdsalike

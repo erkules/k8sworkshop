@@ -1,0 +1,35 @@
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: mysql
+spec:
+  schema:
+    apiVersion: v1alpha1
+    group: linsenraum.de
+    kind: MySQL
+    spec:
+      name: string
+      numnodes: integer | default=1 minimum=1 maximum=3 
+    status:
+      numnodes: ${mysql.spec.numNodes}
+    #additionalPrinterColumns:
+    #  - name: Replicas
+    #    type: integer
+    #    jsonPath: .status.replicas
+    #  - name: ReplicasRunning
+    #    type: integer
+    #    jsonPath: .status.replicasRunning
+  resources:
+  - id: mysql
+    template:
+      apiVersion: databases.digitalocean.com/v1alpha1
+      kind: DatabaseCluster
+      metadata:
+        name: ${schema.spec.name}
+      spec:
+        engine: mysql
+        name: ${schema.spec.name}
+        version: '8'
+        numNodes: ${schema.spec.numnodes}
+        size: db-s-1vcpu-1gb
+        region: fra1

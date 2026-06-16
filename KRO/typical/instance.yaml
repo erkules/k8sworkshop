@@ -1,0 +1,9 @@
+apiVersion: kro.run/v1alpha1
+kind: Appli
+metadata:
+  name: app
+spec:
+  name: app
+  replicas: 3
+  ingress:
+    enabled: false

@@ -1,0 +1,37 @@
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: landingpage
+spec:
+  schema:
+    apiVersion: v1alpha1
+    kind: Landingpage       
+    spec:
+      name: string
+      tenants: "[]string"
+
+  # Define the resources this API will manage.
+  resources:
+    - id: space
+      forEach:
+      - tenant: ${schema.spec.tenants}
+      template:
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: tenant-${tenant}
+
+    - id: pod2
+      forEach:
+      - tenant: ${schema.spec.tenants}
+      template:
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: ${schema.spec.name}
+          namespace: tenant-${tenant}
+        spec:
+          containers:
+            - name:  egal
+              image: nginx:alpine
+

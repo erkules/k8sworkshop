@@ -1,0 +1,6 @@
+apiVersion: kro.run/v1alpha1
+kind: Boring
+metadata:
+  name: soo-boring
+spec:
+  name: soo-boring

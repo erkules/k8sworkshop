@@ -1,0 +1,11 @@
+apiVersion: kro.run/v1alpha1
+kind: Dependency
+metadata:
+  name: zeitig
+spec:
+  name: zeitig
+  replicas: 4
+  checksum: fey8u98
+
+  
+

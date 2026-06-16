@@ -1,0 +1,8 @@
+apiVersion: kro.run/v1beta1
+kind: External
+metadata:
+  name: einszwei
+spec:
+  name: einszwei
+  external:
+    enabled: false

@@ -1,0 +1,8 @@
+apiVersion: kro.run/v1alpha1
+kind: Ready
+metadata:
+  name: hunger
+spec:
+  name: hunger
+  order:
+    durum: "veggi" #"muhh"

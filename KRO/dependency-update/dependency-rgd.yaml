@@ -1,0 +1,57 @@
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: dependency
+spec:
+  # kro uses this simple schema to create your CRD schema and apply it
+  # The schema defines what users can provide when they instantiate the RGD (create an instance).
+  schema:
+    apiVersion: v1alpha1
+    kind: Dependency
+    spec:
+      # Spec fields that users can provide.
+      name: string
+      image: string | default="nginx:alpine"
+      replicas: integer | default=3  maximum=6 minimum=2
+      checksum: string  | required=true   minLength=5 pattern="^[a-zA-Z-1-9_]+$"
+    status:
+      # Fields the controller will inject into instances status.
+      deploymentConditions: ${deployment.status.conditions}
+      availableReplicas: ${deployment.status.availableReplicas}
+
+  # Define the resources this API will manage.
+  resources:
+    - id: config
+      template:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: werte
+          annotations: 
+            checksum: ${schema.spec.checksum}
+        data:
+          hallo: welt
+    - id: deployment
+      template:
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: ${schema.spec.name} # Use the name provided by user
+        spec:
+          replicas: ${schema.spec.replicas} # Use the replicas provided by user
+          selector:
+            matchLabels:
+              app: ${schema.spec.name}
+          template:
+            metadata:
+              annotations:
+                checksum: ${config.metadata.annotations.checksum}
+              labels:
+                app: ${schema.spec.name}
+            spec:
+              containers:
+                - name: ${schema.spec.name}
+                  image: ${schema.spec.image} # Use the image provided by user
+                  ports:
+                    - containerPort: 80
+

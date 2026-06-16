@@ -1,0 +1,49 @@
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: external
+spec:
+  schema:
+    apiVersion: v1beta1
+    kind: External
+    spec:
+      name: string
+      external:
+        enabled: boolean | default=true
+
+  resources:
+    # Use an instance of the Database RGD
+    - id: external
+      includeWhen:
+        - ${schema.spec.external.enabled}
+      externalRef:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: werte
+    - id: config
+      includeWhen:
+        - ${schema.spec.external.enabled == false }
+      template:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          name: werte
+        data:
+          ja: genau
+    - id: pod1                    # Should be an deployment .. but readability
+      template:
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: ${schema.spec.name}-pod1 # Use the name provided by user
+        spec:
+          containers:
+            - name: ${schema.spec.name}
+              image: nginx:alpine
+              env:
+              - name: wert
+                valueFrom: 
+                  configMapKeyRef:
+                    name: werte
+                    key: ja

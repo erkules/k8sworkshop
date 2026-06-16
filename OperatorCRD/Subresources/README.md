@@ -7,11 +7,13 @@
 
 kubectl patch pizza hallihallo --type=merge -p='{"status": { "order": "received"}}'
 kubectl patch pizza hallihallo --type=merge -p='{"status": { "order": "in_production"}}'
+kubectl patch pizza hallihallo --type=merge -p='{"status": { "order": "feddisch"}}'
 
 # mit subresource: status
 
 kubectl patch durum erkan --subresource=status --type=merge -p='{"status": { "order": "received"}}'
 kubectl patch durum erkan --subresource=status --type=merge -p='{"status": { "order": "in_production"}}'
+kubectl patch durum erkan --subresource=status --type=merge -p='{"status": { "order": "feddisch"}}'
 
 # Patch new objects
 

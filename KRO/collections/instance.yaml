@@ -1,0 +1,13 @@
+apiVersion: kro.run/v1alpha1
+kind: Landingpage
+metadata:
+  name: leute
+spec:
+  name: leute
+  tenants:
+  - hanni
+  - nanni
+  - aishe
+  - thiago
+  - mateo
+  

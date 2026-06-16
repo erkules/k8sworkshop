@@ -1,0 +1,63 @@
+# Simple example
+# list of Pods
+# Check -> Controller4Pods
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: boring2
+spec:
+  # kro uses this simple schema to create your CRD schema and apply it
+  # The schema defines what users can provide when they instantiate the RGD (create an instance).
+  schema:
+    apiVersion: v1alpha1
+    kind: Boring2        # Kinda sucks but == .metadata.name as best practice
+    spec:
+      # Spec fields that users can provide.
+      name: string
+      replicas: integer | default=1
+      image: string     | default="nginx:alpine"
+
+  # Define the resources this API will manage.
+  resources:
+    - id: pod1
+      template:
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: ${schema.spec.name}-pod1 # Use the name provided by user
+        spec:
+          containers:
+            - name: ${schema.spec.name}
+              image: nginx:alpine
+    - id: pod3
+      template:
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          name: ${schema.spec.name}-pod2 # Use the name provided by user
+        spec:
+          containers:
+            - name: ${schema.spec.name}
+              image: nginx:alpine
+
+    - id: deployment
+      template:
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: ${schema.spec.name} # Use the name provided by user
+        spec:
+          replicas: ${schema.spec.replicas} # Use the replicas provided by user
+          selector:
+            matchLabels:
+              app: ${schema.spec.name}
+          template:
+            metadata:
+              labels:
+                app: ${schema.spec.name}
+            spec:
+              containers:
+                - name: ${schema.spec.name}
+                  image: ${schema.spec.image} # Use the image provided by user
+                  ports:
+                    - containerPort: 80
