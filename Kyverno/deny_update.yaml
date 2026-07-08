@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo
+---
+# Genaugenommen sinnlos weil wie die matchConstraints haben aber als Bsp
+# TODO noch buggy schiéße mir selbst ins Knie
+#apiVersion: policies.kyverno.io/v1
+#kind: NamespacedValidatingPolicy
+#metadata:
+#  name: limitit
+#  namespace: demo
+#spec:
+#  validationActions:
+#    - Deny
+#  matchConstraints:
+#    resourceRules:
+#      - apiGroups: ["*"]
+#        apiVersions: ["*"]
+#        operations: ["*"]
+#        resources:
+#          - "*"
+#
+#  validations:
+#    - expression: "request.operation != 'UPDATE'"
+#      message: "Nur ServiceAccounts dürfen Ressourcen aktualisieren."
