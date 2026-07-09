@@ -6,7 +6,7 @@ metadata:
   namespace: myflux
 spec:
   driftDetection:
-    mode: enabled
+    mode: enabled    #Wichtig 
   chart:
     spec:
       chart:   tomcat
