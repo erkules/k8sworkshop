@@ -1,0 +1,31 @@
+apiVersion: v1
+stringData:
+  admin-token: 0844f556d8d74597dd842c4855d55e36e9b35f580d8d4e73a21baf9061247229
+kind: Secret
+metadata:
+  name: garage-admin-token
+---
+apiVersion: garage.rajsingh.info/v1beta2
+kind: GarageCluster
+metadata:
+  name: garage
+spec:
+  zone: default
+  replication:
+    factor: 1
+  storage:
+    replicas: 1
+    metadata:
+      size: 10Gi
+    data:
+      size: 10Gi
+  gateway:
+    replicas: 1
+  network:
+    rpcBindPort: 3901
+    service:
+      type: ClusterIP
+  admin:
+    adminTokenSecretRef:
+      name: garage-admin-token
+      key: admin-token

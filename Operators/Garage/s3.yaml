@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s3cli
+spec:
+  containers:
+    - name: cli
+      image: "erkules/generalcli:20260710"
+      env:
+        - name: AWS_ENDPOINT_URL
+          valueFrom:
+            secretKeyRef: { name: admin-key , key: endpoint }
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef: { name: admin-key , key: access-key-id }
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef: { name: admin-key , key: secret-access-key }
+        - name: AWS_DEFAULT_REGION
+          valueFrom:
+            secretKeyRef: { name: admin-key , key: region }
+      command:
+        - sleep
+        - "50000"

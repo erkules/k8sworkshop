@@ -1,6 +1,6 @@
 #############################################################
 #
-# Einfachte Bsp. wir nutzen kubectl im Pod
+# Einfaches Bsp. wir nutzen kubectl im Pod
 # kubectl greift sich token etc. automatisch
 # Aber damit es klappt brauchts noch das RoleBinding
 #

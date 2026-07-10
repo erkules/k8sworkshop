@@ -1,0 +1,15 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: backup-store
+spec:
+  configuration:
+    destinationPath: s3://cnpg-backup/
+    endpointURL: http://s3-backup:3900
+    s3Credentials:
+      region:           { name: admin-key , key: region }
+      accessKeyId:      { name: admin-key , key: access-key-id }
+      secretAccessKey:  { name: admin-key , key: secret-access-key }
+    wal:  { compression: gzip }
+    data: { compression: gzip }
+  retentionPolicy: "7d"

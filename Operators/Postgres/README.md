@@ -11,7 +11,7 @@ Installation (Helm gibts auch)
 
 
 ~~~
-kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/releases/cnpg-1.24.0.yaml
+kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/releases/cnpg-1.30.0.yaml
 ~~~
 
 CRDs anschauen

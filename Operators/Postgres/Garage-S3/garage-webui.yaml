@@ -1,0 +1,58 @@
+# garage-webui (community web UI for Garage): Deployment + Service + Ingress.
+# https://github.com/khairul169/garage-webui
+#
+# garage-webui tries to read the admin token out of the mounted garage.toml
+# first; since the ConfigMap in garage.yaml uses `admin_token_file` (the
+# token lives in garage-secrets, not inline), the UI falls back to
+# `API_ADMIN_KEY` from its environment, which the Deployment below sources
+# from the same garage-secrets Secret (key: admin-token).
+#
+# Basic auth uses AUTH_USER_PASS = "username:bcrypt-hash". The
+# garage-webui-auth Secret is minted inline by the lab instructions:
+#   kubectl -n s3 create secret generic garage-webui-auth \
+#       --from-literal=AUTH_USER_PASS="$(htpasswd -nbBC 10 admin demo-student${STUDENT_ID})"
+#
+# Placeholders filled by labs/setup-student.sh --render lab13 (or by envsubst
+# at apply time):
+#   ${SUBDOMAIN}  Ingress host
+#   ${VPS_IP}     external-dns A record target
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garage-webui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage-webui
+  template:
+    metadata:
+      labels:
+        app: garage-webui
+    spec:
+      containers:
+        - name: garage-webui
+          image: khairul169/garage-webui:1.1.0
+          ports:
+            - { name: http, containerPort: 3909 }
+          env:
+            - { name: API_BASE_URL,    value: http://garage:3903 }
+            - { name: S3_ENDPOINT_URL, value: http://garage:3900 }
+            - { name: S3_REGION,       value: garage }
+            - name: API_ADMIN_KEY
+              valueFrom:
+                secretKeyRef: { name: garage-admin-token , key: admin-token }
+          resources:
+            requests: { memory: 16Mi, cpu: 10m }
+            limits:   { memory: 64Mi, cpu: 200m }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-webui
+spec:
+  selector:
+    app: garage-webui
+  ports:
+    - { name: http, port: 80, targetPort: 3909 }
+---

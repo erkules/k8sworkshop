@@ -1,0 +1,21 @@
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
+metadata:
+  name: cnpg-backup
+spec:
+  clusterRef:
+    name: s3-backup
+  quotas:
+    maxSize: 1Gi
+---
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageKey
+metadata:
+  name: admin-key
+spec:
+  clusterRef:
+    name: s3-backup
+  allBuckets:
+    read: true
+    write: true
+    owner: true
