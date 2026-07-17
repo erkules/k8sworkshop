@@ -1,0 +1,67 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: appenzeller
+spec:
+  compositeTypeRef:
+    apiVersion: acme.org/v1alpha1
+    kind: XAppenzeller
+
+  resources:
+    - name: deployment
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        spec:
+          providerConfigRef:
+            name: kubernetes-intern
+          forProvider:
+            manifest:
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: appenzeller
+              spec:
+                replicas: 1
+                selector:
+                  matchLabels:
+                    app: appenzeller
+                template:
+                  metadata:
+                    labels:
+                      app: appenzeller
+                  spec:
+                    containers:
+                      - name: appenzeller
+                        image: nginx:latest
+                        ports:
+                          - containerPort: 80
+
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.forProvider.manifest.metadata.name
+        - fromFieldPath: spec.anzahl
+          toFieldPath: spec.forProvider.manifest.spec.replicas
+
+    - name: service
+      base:
+        apiVersion: kubernetes.crossplane.io/v1alpha2
+        kind: Object
+        spec:
+          providerConfigRef:
+            name: kubernetes-intern
+          forProvider:
+            manifest:
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: appenzeller
+              spec:
+                selector:
+                  app: appenzeller
+                ports:
+                  - port: 80
+                    targetPort: 80
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.forProvider.manifest.metadata.name

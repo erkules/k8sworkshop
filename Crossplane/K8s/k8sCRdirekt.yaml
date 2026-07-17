@@ -1,0 +1,15 @@
+# Wir können direkt Objkete erstellen
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: demo
+spec:
+  providerConfigRef:
+    name: kubernetes-intern
+
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: demo

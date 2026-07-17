@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: cli
-      image: "erkules/generalcli:20260710"
+      image: "erkules/generalcli:20260715"
       env:
         - name: AWS_ENDPOINT_URL
           valueFrom:

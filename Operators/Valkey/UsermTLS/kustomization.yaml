@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: projekt-valkey-mtls
+resources:
+- ns.yaml
+- issuer.yaml
+- root-ca.yaml
+- issuer-to-use.yaml
+- server-cert.yaml
+- client-cert.yaml
+- erkan-secret.yaml
+- valkey.yaml
+- client-deployment.yaml 

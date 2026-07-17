@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valkey-cli-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valkey-cli
+  template:
+    metadata:
+      labels:
+        app: valkey-cli
+    spec:
+      containers:
+      - name: valkey-cli
+        image: erkules/generalcli:20260715
+        volumeMounts:
+        - name: cert-volume
+          mountPath: /tmp/certs
+          readOnly: true
+        args:
+        - sleep
+        - "inf"
+      volumes:
+      - name: cert-volume
+        secret:
+          secretName: client-cert-secret
+

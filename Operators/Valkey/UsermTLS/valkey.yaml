@@ -1,0 +1,37 @@
+apiVersion: valkey.io/v1alpha1
+kind: ValkeyCluster
+metadata:
+  name: my-full
+spec:
+  shards: 3
+  replicas: 2
+  config: # {} valkeyspecific config
+  exporter:
+    enabled: true # default
+  persistence: # notwendig füë rdb-snapshotting (backup-recovery) und partial rsyncs (keinen SST eher IST)
+    size: 1Gi
+  #podDisruptionBudget:  Upcomming
+  #  mode: Cluster # Disabled, Sharded von/mit mia <3
+  affinity:
+  #podAntiAffinity:                                      #Total doof, das so zu machen primaries sollen verteile werden und shards
+  #  requiredDuringSchedulingIgnoredDuringExecution:
+  #    - labelSelector:
+  #        matchLabels:
+  #          app.kubernetes.io/name: my-full
+  #      topologyKey: kubernetes.io/hostname
+  #
+  workloadType: StatefulSet # Deployment
+  users:
+  - name: default
+    enabled: false
+  - name: erkan
+    passwordSecret:
+      name: erkan
+      keys: [password]
+    permissions: "+@all ~* &*"
+  - name: wuffi
+    nopass: true
+    commands: 
+      allow: ["@read", "@write", "@connection"]
+    keys:
+      readWrite: ["hallo:*"]

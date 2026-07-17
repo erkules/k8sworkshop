@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: CertificateRequestPolicy
+metadata:
+  name: root-ca
+spec:
+  allowed:
+    isCA: false
+    commonName: 
+      value: "*"
+      required: true
+    dnsNames: 
+      value: "*"
+      required: true
+  constraints:
+    maxDuration: 1h
+  selector:
+    issuerRef:
+      name: root-issuer

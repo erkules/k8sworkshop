@@ -1,0 +1,91 @@
+# Convertiert mit crossplane-migrator new-pipeline-composition  -i composition-resource-mode.yaml-früher -o composition-pipeline-mode.yaml
+# Aber braucht Nacharbeit
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  creationTimestamp: "2026-07-17T00:48:51Z"
+  name: appenzeller
+spec:
+  compositeTypeRef:
+    apiVersion: linsenraum.de/v1alpha1
+    kind: XAppenzeller
+  mode: Pipeline
+  pipeline:
+    - functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        environment: null
+        kind: Resources
+        patchSets: []
+        resources:
+          - base:
+              # Nicht fragen. Brauchen wir weil wir ein namespaced Object erstellen wollen. Keinen Plan
+              apiVersion: kubernetes.m.crossplane.io/v1alpha1
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: apps/v1
+                    kind: Deployment
+                    metadata:
+                      name: appenzeller
+                    spec:
+                      replicas: 1
+                      selector:
+                        matchLabels:
+                          app: appenzeller
+                      template:
+                        metadata:
+                          labels:
+                            app: appenzeller
+                        spec:
+                          containers:
+                            - image: nginx:latest
+                              name: appenzeller
+                              ports:
+                                - containerPort: 80
+                providerConfigRef:
+                  kind: ClusterProviderConfig
+                  name: kubernetes-intern
+            name: deployment
+            patches:
+              - fromFieldPath: metadata.name
+                toFieldPath: spec.forProvider.manifest.metadata.name
+                type: FromCompositeFieldPath
+              - fromFieldPath: spec.anzahl
+                toFieldPath: spec.forProvider.manifest.spec.replicas
+                type: FromCompositeFieldPath
+              - fromFieldPath: metadata.namespace
+                toFieldPath: spec.forProvider.manifest.metadata.namespace
+                type: FromCompositeFieldPath
+          - base:
+              # Nicht fragen. Brauchen wir weil wir ein namespaced Object erstellen wollen. Keinen Plan
+              apiVersion: kubernetes.m.crossplane.io/v1alpha1
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: v1
+                    kind: Service
+                    metadata:
+                      name: appenzeller
+                      namespace: placeholder
+                    spec:
+                      ports:
+                        - port: 80
+                          targetPort: 80
+                      selector:
+                        app: appenzeller
+                providerConfigRef:
+                  kind: ClusterProviderConfig
+                  name: kubernetes-intern
+            name: service
+            patches:
+              - fromFieldPath: metadata.name
+                toFieldPath: spec.forProvider.manifest.metadata.name
+                type: FromCompositeFieldPath
+              - fromFieldPath: metadata.namespace
+                toFieldPath: spec.forProvider.manifest.metadata.namespace
+                type: FromCompositeFieldPath
+      step: patch-and-transform

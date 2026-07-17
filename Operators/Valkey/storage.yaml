@@ -1,0 +1,9 @@
+apiVersion: valkey.io/v1alpha1
+kind: ValkeyCluster
+metadata:
+  name: my-storage
+spec:
+  shards: 3
+  replicas: 2
+  persistence:
+    size: 1Gi
