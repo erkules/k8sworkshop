@@ -1,0 +1,9 @@
+apiVersion: troubleshoot.sh/v1beta2
+kind: Preflight
+metadata:
+  name: preflight-tutorial
+spec:
+  analyzers:
+  - clusterVersion: {}
+  - distributions: {}
+  - ...

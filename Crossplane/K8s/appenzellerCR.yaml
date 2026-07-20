@@ -1,10 +1,14 @@
 apiVersion: linsenraum.de/v1alpha1
-kind: XAppenzeller
+kind: Appenzeller
 metadata:
   name: emmentaler
 spec:
   anzahl: 3
   # Wenn wir mehrere Compositions haben
-  #crossplane:
-  #  compositionRef:
-  #    name: .....
+  # crossplane:
+  #   compositionRef:
+  #     name: .....
+  #  vs.
+  # compositionSelector:
+  #   matchLabels:
+  #     environment: production

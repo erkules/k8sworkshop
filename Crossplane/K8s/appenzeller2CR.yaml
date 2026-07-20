@@ -1,0 +1,10 @@
+apiVersion: linsenraum.de/v1alpha1
+kind: Appenzeller
+metadata:
+  name: tilsiter
+spec:
+  anzahl: 3
+  # Wenn wir mehrere Compositions haben
+  crossplane:
+    compositionRef:
+      name: appenzeller-go

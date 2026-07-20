@@ -1,15 +1,15 @@
 apiVersion: apiextensions.crossplane.io/v2
 kind: CompositeResourceDefinition
 metadata:
-  name: xappenzellers.linsenraum.de
+  name: appenzellers.linsenraum.de
 spec:
   # Ab Crossplane v2
   scope: Namespaced
   # Name der Ressource (XR)
   group: linsenraum.de
   names:
-    kind: XAppenzeller
-    plural: xappenzellers
+    kind: Appenzeller
+    plural: appenzellers
   # Mit v2 weg
   #claimNames:
   #  kind: Apppenzeller

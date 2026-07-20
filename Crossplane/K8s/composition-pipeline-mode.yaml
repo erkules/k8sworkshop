@@ -8,10 +8,11 @@ metadata:
 spec:
   compositeTypeRef:
     apiVersion: linsenraum.de/v1alpha1
-    kind: XAppenzeller
+    kind: Appenzeller
   mode: Pipeline
   pipeline:
-    - functionRef:
+    - step: patch-and-transform
+      functionRef:
         name: function-patch-and-transform
       input:
         apiVersion: pt.fn.crossplane.io/v1beta1
@@ -88,4 +89,7 @@ spec:
               - fromFieldPath: metadata.namespace
                 toFieldPath: spec.forProvider.manifest.metadata.namespace
                 type: FromCompositeFieldPath
-      step: patch-and-transform
+
+    - step: detect-readiness
+      functionRef:
+        name: function-auto-ready

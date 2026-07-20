@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valkey-envoy
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: valkey-envoy
+
+  template:
+    metadata:
+      labels:
+        app: valkey-envoy
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - valkey-envoy
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: envoy
+          image: envoyproxy/envoy:v1.39-latest
+          args:
+            - -c
+            - /etc/envoy/envoy.yaml
+            - --log-level
+            - info
+
+          ports:
+            - name: valkey
+              containerPort: 6379
+            - name: admin
+              containerPort: 9901
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: admin
+
+          volumeMounts:
+            - name: config
+              mountPath: /etc/envoy
+              readOnly: true
+
+      volumes:
+        - name: config
+          configMap:
+            name: valkey-envoy

@@ -1,0 +1,88 @@
+# Mit AI erstellt ....
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: appenzeller-go
+spec:
+  compositeTypeRef:
+    apiVersion: linsenraum.de/v1alpha1
+    kind: Appenzeller
+  mode: Pipeline
+  pipeline:
+    - step: go-templating
+      functionRef:
+        name: function-go-templating
+      input:
+        apiVersion: gotemplating.fn.crossplane.io/v1beta1
+        kind: GoTemplate
+        source: Inline
+        inline:
+          template: |
+            {{- $xr := .observed.composite.resource -}}
+            {{- $name := get $xr.metadata "name" -}}
+            {{- $namespace := get $xr.metadata "namespace" -}}
+            {{- if not $namespace -}}
+            {{- fail "Appenzeller must be namespaced: metadata.namespace is empty" -}}
+            {{- end }}
+            ---
+            apiVersion: kubernetes.m.crossplane.io/v1alpha1
+            kind: Object
+            metadata:
+              name: {{ printf "%s-deployment" $name | quote }} #:(
+              namespace: {{ $namespace | quote }}
+              annotations:
+                gotemplating.fn.crossplane.io/composition-resource-name: deployment
+            spec:
+              forProvider:
+                manifest:
+                  apiVersion: apps/v1
+                  kind: Deployment
+                  metadata:
+                    name: {{ $name | quote }}
+                    namespace: {{ $namespace | quote }}
+                  spec:
+                    replicas: {{ get $xr.spec "anzahl" }}    # auch doof
+                    selector:
+                      matchLabels:
+                        app.kubernetes.io/name: {{ $name | quote }}
+                    template:
+                      metadata:
+                        labels:
+                          app.kubernetes.io/name: {{ $name | quote }}
+                      spec:
+                        containers:
+                          - image: nginx:latest
+                            name: appenzeller
+                            ports:
+                              - containerPort: 80
+              providerConfigRef:
+                kind: ClusterProviderConfig
+                name: kubernetes-intern
+            ---
+            apiVersion: kubernetes.m.crossplane.io/v1alpha1
+            kind: Object
+            metadata:
+              name: {{ printf "%s-service" $name | quote }}  # s.o.
+              namespace: {{ $namespace | quote }}
+              annotations:
+                gotemplating.fn.crossplane.io/composition-resource-name: service
+            spec:
+              forProvider:
+                manifest:
+                  apiVersion: v1
+                  kind: Service
+                  metadata:
+                    name: {{ $name | quote }}
+                    namespace: {{ $namespace | quote }}
+                  spec:
+                    ports:
+                      - port: 80
+                        targetPort: 80
+                    selector:
+                      app.kubernetes.io/name: {{ $name | quote }}
+              providerConfigRef:
+                kind: ClusterProviderConfig
+                name: kubernetes-intern
+    - step: detect-readiness
+      functionRef:
+        name: function-auto-ready
