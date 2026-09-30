@@ -11,7 +11,7 @@ Kurze Einführung in Crossplane
   - Liefert dazu aber auch den Controller
 - Composition 
   - Eine Implementierungsmöglichkeit der API
-- Composite Resource (XR) / Claim (XRC)
+- Composite Resource (XR) # Früher gab es Claims (XRC) 
   - die konkrete Instanz
 - Managed Resources (MR)
   - Provider stellen verschiedene Ressourcen (MR) zur Verfügung

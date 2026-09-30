@@ -32,3 +32,4 @@ spec:
                   description: Replicationszahl
               required:
                 - anzahl
+                # Info: Felder die von ToCompositeFieldPath gefüllt werden sollen müssen hier auch erwähnt werden :)

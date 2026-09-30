@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: client
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - image: erkules/generalcli:20260715
+        name: generalcli
+        command:
+        - sleep
+        - infinity
+      
+        resources: {}
+status: {}

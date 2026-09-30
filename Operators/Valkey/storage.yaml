@@ -7,3 +7,4 @@ spec:
   replicas: 2
   persistence:
     size: 1Gi
+    reclaimPolicy: Delete

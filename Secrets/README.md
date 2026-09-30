@@ -1,30 +1,32 @@
 # Secrets
 
-* haben mit Verschlüsselung nichts zu tun
-* Eher API :D
+## Simpel/
 
-* * Opaque
-* * kubernetes.io/service-account-token
-* * kubernetes.io/tls
-* * kubernetes.io/dockerconfigjson
-* * kubernetes.io/ssh-auth
-* * kubernetes.io/basic-auth
-* * ..
+Einfache vanilla K8s-Beispiele
 
+## CSI/ 
 
+Secret Stroge CSI mit Vault <3
 
+## Sealed/
 
+Sealed Secrets 
 
+Keine Ahnung warum man das noch nutzen sollte
 
-Resume:
+## SOPS/
 
-SOPS top
-Sealed outdated
-Vault@CSI  mäh
+Einfaches SOPS <3
 
-IWO:
+## ExternalSecrets/
+
+ESO ist mega. Vergesst SealedSecrets
 
 
-Bei Vault separates Secretmanagemen (Domain)
-Kann aber auch gewollt sein.
-Secrets sind nur im Pod (es sei denn mensch nutzt sync feature (eh kapputt))
+
+
+## Kamus/
+
+There might be Dragons, also bitte ignorieren
+
+

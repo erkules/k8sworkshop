@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- client-dep.yaml
+- valkey-envoy-cm.yaml
+- valkey-envoy-dep.yaml
+- valkey-envoy-svc.yaml
+- valkeycluster.yaml

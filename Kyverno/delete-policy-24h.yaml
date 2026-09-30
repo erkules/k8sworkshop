@@ -1,0 +1,15 @@
+# APP.4.4.A21 Regelmäßiger Restart von Pods (H)
+# Aber nur halbe Miete
+apiVersion: policies.kyverno.io/v1
+kind: DeletingPolicy
+metadata:
+  name: delete-pods-older-than-24h
+spec:
+  schedule: "*/15 * * * *"
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+  conditions:
+    - expression: "time.now() - object.metadata.creationTimestamp > duration('24h')"

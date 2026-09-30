@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: valkey
+spec:
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      valkey.io/cluster: "haha-valkey-resources"
+  podMetricsEndpoints:
+    - port: metrics

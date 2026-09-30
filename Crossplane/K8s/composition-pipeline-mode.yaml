@@ -61,7 +61,8 @@ spec:
                 toFieldPath: spec.forProvider.manifest.metadata.namespace
                 type: FromCompositeFieldPath
           - base:
-              # Nicht fragen. Brauchen wir weil wir ein namespaced Object erstellen wollen. Keinen Plan
+              # Nicht fragen. 
+              # Brauchen wir weil wir ein namespaced Object erstellen wollen. 
               apiVersion: kubernetes.m.crossplane.io/v1alpha1
               kind: Object
               spec:

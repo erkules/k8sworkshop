@@ -21,10 +21,14 @@ spec:
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  app: wwwanti
-              topologyKey: kubernetes.io/hostname
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - wwwanti
+            topologyKey: kubernetes.io/hostname
       containers:
-        - name: image1
-          image: erkules/nginxhostname:v1
+      - name: image1
+        image: erkules/nginxhostname:v1
+

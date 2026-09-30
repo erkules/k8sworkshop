@@ -3,6 +3,8 @@ Weil wir hier deklarativ user anlegen können :)
 
 Braucht den cert-manager :)
 
+https://github.com/rajsinghtech/garage-operator 
+
 helm install garage-operator oci://ghcr.io/rajsinghtech/charts/garage-operator \
   --namespace garage-operator-system \
   --create-namespace

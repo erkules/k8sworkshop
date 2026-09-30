@@ -9,7 +9,7 @@ spec:
     ports:
     - name:          nicht-notwendig
       containerPort: 80
-    - name:          nerv #prometheus-operator will benamste Ports
+    - name:          nerv #prometheus-operator will benamste Ports (seit v0.65 (2023) nicht mehr.
       containerPort: 8080
     
 

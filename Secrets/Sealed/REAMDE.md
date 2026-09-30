@@ -1,22 +1,21 @@
 # Sealed Secrets
 
 ~~~
-helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+helm repo add sealed-secrets https://bitnami.github.io/sealed-secrets
 helm repo update
-helm upgrade --install sealed sealed-secrets/sealed-secrets
+# Wenn es so installiert wird, findet kubeseal den controller :/
+helm install sealed-secrets -n kube-system --set-string fullnameOverride=sealed-secrets-controller sealed-secrets/sealed-secrets
 ~~~
 
 * Die Un/Sealing Applikation läuft im Cluster
 * CLI zum sealen
-* SealedSecret.bitnami.com/v1alpha1
 
 Schauen:
 
 Das SealedSecret landet im GIT
 
- kubeseal  --controller-name=sealed-sealed-secrets --controller-namespace=default
 ~~~
-cat ../secret.yaml | kubeseal -o yaml -
+cat secret.yaml | kubeseal -o yaml -
 ~~~
 
 
@@ -34,8 +33,13 @@ cat ../secret.yaml | kubeseal -o yaml - | kubectl apply -f -
 Getting the Cert:
 
 ~~~
-kubeseal --cert the-cert.pem
-or
-kubectl -n kube-system get secret sealed-secrets-key9wkvr -o json | jq -r '.data."tls.crt"' | base64 -d 
+kubeseal --fetch-cert >cert.pem
 ~~~
+
+Ohne laufenden Cluster nutzen
+~~~
+kubectl --cert cert.pem 
+~~~
+
+Achtung bitte lieber nicht nutzen
 
