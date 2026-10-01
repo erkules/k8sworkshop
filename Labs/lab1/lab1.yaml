@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab1
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: lab-client
+  namespace: lab1
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: public-config
+  namespace: lab1
+data:
+  message: "Diese ConfigMap darf gelesen werden."
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: protected-secret
+  namespace: lab1
+type: Opaque
+stringData:
+  flag: "Diese Information darf lab-client nicht lesen."
+
+---
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: Role
+#metadata:
+#  name: application-reader
+#  namespace: lab1
+#rules:
+#  - apiGroups: [""]
+#    resources:
+#      - pods
+#      - configmaps
+#    verbs:
+#      - get
+#      - list
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+#kind: ClusterRoleBinding
+metadata:
+  name: application-reader
+  namespace: lab1
+subjects:
+  - kind: ServiceAccount
+    name: lab-client
+    namespace: lab1
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lab-client
+  namespace: lab1
+spec:
+  serviceAccountName: lab-client
+
+  containers:
+    - name: client
+      image: alpine
+      command:
+        - sleep
+        - infinity
+
+#      volumeMounts:
+#        - name: api-credentials
+#          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+#          readOnly: true
+#
+#      securityContext:
+#        runAsNonRoot: true
+#        allowPrivilegeEscalation: false
+#        readOnlyRootFilesystem: true
+#        capabilities:
+#          drop:
+#            - ALL
+#
+#  securityContext:
+#    seccompProfile:
+#      type: RuntimeDefault
+#
+#  volumes:
+#    - name: api-credentials
+#      projected:
+#        defaultMode: 0400
+#        sources:
+#          - serviceAccountToken:
+#              path: token
+#              expirationSeconds: 600
+#          - configMap:
+#              name: kube-root-ca.crt
+#              items:
+#                - key: ca.crt
+#                  path: ca.crt

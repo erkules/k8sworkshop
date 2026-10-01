@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab2
+  labels:
+    app.kubernetes.io/part-of: kubernetes-security-training
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gitlab-job
+  namespace: lab2
+automountServiceAccountToken: true # Ist default. Aber hier ist eine Stellschraube
+---
+# Hups der #howdareyou
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: gitlab-job-cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: gitlab-job
+    namespace: lab2
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab-runner-job
+  namespace: lab2
+  labels:
+    app: gitlab-runner-job
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab-runner-job
+  template:
+    metadata:
+      labels:
+        app: gitlab-runner-job
+        app.kubernetes.io/component: job
+    spec:
+      serviceAccountName: gitlab-job
+      automountServiceAccountToken: true # Default
+      containers:
+        - name: job
+          image: alpine:3.22
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - "trap 'exit 0' TERM INT; while true; do sleep 3600; done"

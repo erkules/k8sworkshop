@@ -1,0 +1,213 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: k8s-security-lab
+  labels:
+    app.kubernetes.io/part-of: kubernetes-security-training
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: database-credentials
+  namespace: k8s-security-lab
+type: Opaque
+stringData:
+  username: training
+  password: database-demo-password
+  database: training
+---
+# Dieses Secret wird nicht in den Runner gemountet. Der absichtlich zu breite
+# ServiceAccount kann es jedoch über die Kubernetes API lesen.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-credentials
+  namespace: k8s-security-lab
+type: Opaque
+stringData:
+  access-key: AKIA-DEMO-NOT-A-REAL-KEY
+  secret-key: cloud-demo-secret
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-init
+  namespace: k8s-security-lab
+data:
+  01-training.sql: |
+    CREATE TABLE customers (
+      id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+      name text NOT NULL,
+      email text NOT NULL
+    );
+
+    INSERT INTO customers (name, email) VALUES
+      ('Ada Admin', 'ada@example.invalid'),
+      ('Bob Builder', 'bob@example.invalid');
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+  namespace: k8s-security-lab
+  labels:
+    app: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:17-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: password
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: database
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -ec
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d
+              readOnly: true
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: init
+          configMap:
+            name: database-init
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  namespace: k8s-security-lab
+spec:
+  selector:
+    app: database
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gitlab-runner
+  namespace: k8s-security-lab
+automountServiceAccountToken: true
+---
+# Absichtlich zu weit gefasst: Der Runner kann Secrets und Pods im gesamten
+# Lab-Namespace untersuchen und Befehle in anderen Pods ausführen.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: gitlab-runner-overprivileged
+  namespace: k8s-security-lab
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "secrets", "configmaps"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "patch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: gitlab-runner-overprivileged
+  namespace: k8s-security-lab
+subjects:
+  - kind: ServiceAccount
+    name: gitlab-runner
+    namespace: k8s-security-lab
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: gitlab-runner-overprivileged
+---
+# Kein echter GitLab Runner: Der Pod simuliert eine kompromittierte CI-Workload.
+# Das PostgreSQL-Image liefert Shell, psql, base64 und BusyBox-wget mit.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab-runner
+  namespace: k8s-security-lab
+  labels:
+    app: gitlab-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab-runner
+  template:
+    metadata:
+      labels:
+        app: gitlab-runner
+    spec:
+      serviceAccountName: gitlab-runner
+      containers:
+        - name: runner
+          image: postgres:17-alpine
+          imagePullPolicy: IfNotPresent
+          command: ["sh", "-c", "trap 'exit 0' TERM INT; while true; do sleep 3600; done"]
+          env:
+            - name: PGHOST
+              value: database
+            - name: PGPORT
+              value: "5432"
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: database
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-credentials
+                  key: password
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
