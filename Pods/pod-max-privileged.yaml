@@ -11,7 +11,7 @@ spec:
       env:
         - name: SLEEPTIME
           value: "5000"
-      image: cgr.dev/chainguard/wolfi-base
+      image: alpine
       securityContext:
         privileged: true
       command: 

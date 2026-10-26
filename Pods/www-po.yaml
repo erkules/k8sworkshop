@@ -1,3 +1,6 @@
+# YAML-Datei
+# beginn/ende alphanumerisch 
+# -_. erlaubt
 apiVersion: v1
 kind: Pod
 metadata:
